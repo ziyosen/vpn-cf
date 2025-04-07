@@ -49,7 +49,7 @@ async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> 
     
         wasm_bindgen_futures::spawn_local(async move {
             let events = server.events().unwrap();
-            if let Err(e) = VmessStream::new(cx.data, &server, events).process().await {
+            if let Err(e) = ProxyStream::new(cx.data, &server, events).process().await {
                 console_log!("[tunnel]: {}", e);
             }
         });

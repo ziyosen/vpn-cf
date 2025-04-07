@@ -1,3 +1,5 @@
+use super::ProxyStream;
+
 use crate::common::{
     hash, KDFSALT_CONST_AEAD_RESP_HEADER_IV, KDFSALT_CONST_AEAD_RESP_HEADER_KEY,
     KDFSALT_CONST_AEAD_RESP_HEADER_LEN_IV, KDFSALT_CONST_AEAD_RESP_HEADER_LEN_KEY,
@@ -5,12 +7,7 @@ use crate::common::{
     KDFSALT_CONST_VMESS_HEADER_PAYLOAD_LENGTH_AEAD_IV,
     KDFSALT_CONST_VMESS_HEADER_PAYLOAD_LENGTH_AEAD_KEY,
 };
-use crate::config::Config;
-
 use std::io::Cursor;
-use std::pin::Pin;
-use std::task::{Context, Poll};
-
 use aes::cipher::KeyInit;
 use aes_gcm::{
     aead::{Aead, Payload},
@@ -18,35 +15,11 @@ use aes_gcm::{
 };
 use md5::{Digest, Md5};
 use sha2::Sha256;
-
-use bytes::{BufMut, BytesMut};
-use futures_util::Stream;
-use pin_project_lite::pin_project;
-use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt, ReadBuf};
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use worker::*;
 
-pin_project! {
-    pub struct VmessStream<'a> {
-        pub config: Config,
-        pub ws: &'a WebSocket,
-        pub buffer: BytesMut,
-        #[pin]
-        pub events: EventStream<'a>,
-    }
-}
 
-impl<'a> VmessStream<'a> {
-    pub fn new(config: Config, ws: &'a WebSocket, events: EventStream<'a>) -> Self {
-        let buffer = BytesMut::new();
-
-        Self {
-            config,
-            ws,
-            buffer,
-            events,
-        }
-    }
-
+impl <'a> ProxyStream<'a> {
     async fn aead_decrypt(&mut self) -> Result<Vec<u8>> {
         let key = crate::md5!(
             &self.config.uuid.as_bytes(),
@@ -127,7 +100,7 @@ impl<'a> VmessStream<'a> {
         Ok(header_payload)
     }
 
-    pub async fn process(&mut self) -> Result<()> {
+    pub async fn process_vmess(&mut self) -> Result<()> {
         let mut buf = Cursor::new(self.aead_decrypt().await?);
 
         // https://xtls.github.io/en/development/protocols/vmess.html#command-section
@@ -197,94 +170,16 @@ impl<'a> VmessStream<'a> {
             ];
 
             for (target_addr, target_port) in addr_pool {
-                let mut forward_data = async |addr: String, port: u16| -> Result<()> {
-                    // connect to remote socket
-                    let mut remote_socket = Socket::builder().connect(addr, port).map_err(|e| {
-                        Error::RustError(e.to_string())
-                    })?;
-    
-                    // check remote socket
-                    remote_socket.opened().await.map_err(|e| {
-                        Error::RustError(e.to_string())
-                    })?;
-    
-                    // forward data
-                    tokio::io::copy_bidirectional(self, &mut remote_socket)
-                        .await
-                        .map_err(|e| {
-                            Error::RustError(e.to_string())
-                        })?;
-                    Ok(())
-                };
-
-                if let Err(e) = forward_data(target_addr, target_port).await {
-                    console_error!("error forwarding data: {}", e)
+                if let Err(e) = self.handle_tcp_outbound(target_addr, target_port).await {
+                    console_error!("error handling tcp: {}", e)
                 }
             }
         } else {
-            // cloudflare worker doesn't support udp but we can handle some special cases
-            // for example if request is dns over udp we can instead use the request and
-            // handle it using a DoH.
-
-            // DNS:
-            let mut buff = vec![0u8; 65535];
-
-            let n = self.read(&mut buff).await?;
-            let data = &buff[..n];
-            if crate::dns::doh(data).await.is_ok() {
-                self.write(&data).await?;
+            if let Err(e) = self.handle_udp_outbound().await {
+                console_error!("error handling udp: {}", e)
             }
         }
 
         Ok(())
-    }
-}
-
-impl<'a> AsyncRead for VmessStream<'a> {
-    fn poll_read(
-        self: Pin<&mut Self>,
-        cx: &mut Context<'_>,
-        buf: &mut ReadBuf<'_>,
-    ) -> Poll<tokio::io::Result<()>> {
-        let mut this = self.project();
-
-        loop {
-            let size = std::cmp::min(this.buffer.len(), buf.remaining());
-            if size > 0 {
-                buf.put_slice(&this.buffer.split_to(size));
-                return Poll::Ready(Ok(()));
-            }
-
-            match this.events.as_mut().poll_next(cx) {
-                Poll::Ready(Some(Ok(WebsocketEvent::Message(msg)))) => {
-                    msg.bytes().iter().for_each(|x| this.buffer.put_slice(&x));
-                }
-                Poll::Pending => return Poll::Pending,
-                _ => return Poll::Ready(Ok(())),
-            }
-        }
-    }
-}
-
-impl<'a> AsyncWrite for VmessStream<'a> {
-    fn poll_write(
-        self: Pin<&mut Self>,
-        _: &mut Context<'_>,
-        buf: &[u8],
-    ) -> Poll<tokio::io::Result<usize>> {
-        return Poll::Ready(
-            self.ws
-                .send_with_bytes(buf)
-                .map(|_| buf.len())
-                .map_err(|e| std::io::Error::new(std::io::ErrorKind::Other, e.to_string())),
-        );
-    }
-
-    fn poll_flush(self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<tokio::io::Result<()>> {
-        Poll::Ready(Ok(()))
-    }
-
-    fn poll_shutdown(self: Pin<&mut Self>, _: &mut Context<'_>) -> Poll<tokio::io::Result<()>> {
-        unimplemented!()
     }
 }

@@ -42,19 +42,21 @@ macro_rules! sha256 {
 }
 
 pub async fn parse_addr<R: AsyncRead + std::marker::Unpin>(buf: &mut R) -> Result<String> {
+    // combined addr type between Vmess, VLESS, and Trojan.
+    // VLESS wouldn't connect to ipv6 address due to mismatch addr type
     let addr = match buf.read_u8().await? {
         1 => {
             let mut addr = [0u8; 4];
             buf.read_exact(&mut addr).await?;
             Ipv4Addr::new(addr[0], addr[1], addr[2], addr[3]).to_string()
         }
-        2 => {
+        2 | 3 => {
             let len = buf.read_u8().await?;
             let mut domain = vec![0u8; len as _];
             buf.read_exact(&mut domain).await?;
             String::from_utf8_lossy(&domain).to_string()
         }
-        3 => {
+        4 => {
             let mut addr = [0u8; 16];
             buf.read_exact(&mut addr).await?;
             Ipv6Addr::new(
