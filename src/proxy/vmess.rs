@@ -155,14 +155,14 @@ impl<'a> VmessStream<'a> {
         let cmd = buf.read_u8().await?;
         let is_tcp = cmd == 0x1;
 
-        let port = {
+        let remote_port = {
             let mut port = [0u8; 2];
             buf.read_exact(&mut port).await?;
             ((port[0] as u16) << 8) | (port[1] as u16)
         };
-        let addr = crate::common::parse_addr(&mut buf).await?;
+        let remote_addr = crate::common::parse_addr(&mut buf).await?;
 
-        console_log!("connecting to upstream {}:{} [is_tcp={is_tcp}]", addr, port);
+        console_log!("connecting to upstream {}:{} [is_tcp={is_tcp}]", remote_addr, remote_port);
 
         // encrypt payload
         let key = &crate::sha256!(&key)[..16];
@@ -191,8 +191,36 @@ impl<'a> VmessStream<'a> {
         self.write(&header).await?;
 
         if is_tcp {
-            let mut upstream = Socket::builder().connect(addr, port)?;
-            tokio::io::copy_bidirectional(self, &mut upstream).await?;
+            let addr_pool = [
+                (remote_addr.clone(), remote_port),
+                (self.config.proxy_addr.clone(), self.config.proxy_port)
+            ];
+
+            for (target_addr, target_port) in addr_pool {
+                let mut forward_data = async |addr: String, port: u16| -> Result<()> {
+                    // connect to remote socket
+                    let mut remote_socket = Socket::builder().connect(addr, port).map_err(|e| {
+                        Error::RustError(e.to_string())
+                    })?;
+    
+                    // check remote socket
+                    remote_socket.opened().await.map_err(|e| {
+                        Error::RustError(e.to_string())
+                    })?;
+    
+                    // forward data
+                    tokio::io::copy_bidirectional(self, &mut remote_socket)
+                        .await
+                        .map_err(|e| {
+                            Error::RustError(e.to_string())
+                        })?;
+                    Ok(())
+                };
+
+                if let Err(e) = forward_data(target_addr, target_port).await {
+                    console_error!("error forwarding data: {}", e)
+                }
+            }
         } else {
             // cloudflare worker doesn't support udp but we can handle some special cases
             // for example if request is dns over udp we can instead use the request and

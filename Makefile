@@ -6,8 +6,8 @@ help: ## display help section
 
 .PHONY: deploy
 deploy: ## deploy to cf workers
-	@ npx wrangler deploy
+	@ wrangler deploy
 
 .PHONY: dev
 dev: ## run the project locally
-	@ npx wrangler dev
+	@ wrangler dev --local
