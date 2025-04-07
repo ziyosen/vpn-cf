@@ -1,11 +1,13 @@
 mod common;
 mod config;
 mod proxy;
+mod fe;
 
 use crate::config::Config;
 use crate::proxy::*;
 
 use base64::{engine::general_purpose::URL_SAFE, Engine as _};
+use fe::build_front_end;
 use serde::Serialize;
 use serde_json::json;
 use uuid::Uuid;
@@ -56,8 +58,7 @@ async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> 
     
         Response::from_websocket(client)
     } else {
-        let req = Fetch::Url(Url::parse("https://example.com")?);
-        req.send().await
+        Response::from_html(build_front_end())
     }
 }
 
