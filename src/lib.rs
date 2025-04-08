@@ -24,11 +24,28 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
     let config = Config { uuid, host: host.clone(), proxy_addr: host, proxy_port: 80};
 
     Router::with_data(config)
+        .on_async("/", fe)
+        .on_async("/sub", sub)
         .on("/link", link)
         .on_async("/:proxyip", tunnel)
         .run(req, env)
         .await
 }
+
+async fn get_response_from_url(url: &str) -> Result<Response> {
+    let req = Fetch::Url(Url::parse(url)?);
+    let mut res = req.send().await?;
+    Response::from_html(res.text().await?)
+}
+
+async fn fe(_: Request, _: RouteContext<Config>) -> Result<Response> {
+    get_response_from_url("https://raw.githubusercontent.com/FoolVPN-ID/Siren/refs/heads/master/web/index.html").await
+}
+
+async fn sub(_: Request, _: RouteContext<Config>) -> Result<Response> {
+    get_response_from_url("https://raw.githubusercontent.com/FoolVPN-ID/Siren/refs/heads/master/web/sub.html").await
+}
+
 
 async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> {
     if let Some(proxyip) = cx.param("proxyip") {
@@ -56,10 +73,9 @@ async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> 
     
         Response::from_websocket(client)
     } else {
-        let req = Fetch::Url(Url::parse("https://raw.githubusercontent.com/FoolVPN-ID/Siren/refs/heads/master/index.html")?);
-        let mut res = req.send().await?;
-        Response::from_html(res.text().await?)
+        Response::from_html("hi from wasm!")
     }
+
 }
 
 fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {

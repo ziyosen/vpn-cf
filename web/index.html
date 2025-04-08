@@ -6,20 +6,11 @@
     <title>MyWebsite</title>
     <!-- Tailwind + DaisyUI CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        plugins: [
-          tailwindcss.plugin(function ({ addComponents }) {
-            addComponents(require("https://cdn.jsdelivr.net/npm/daisyui@latest/src/index.js"));
-          }),
-        ],
-      };
-    </script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.8.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.24/dist/full.min.css" rel="stylesheet" type="text/css" />
   </head>
   <body class="bg-base-100 text-base-content">
     <!-- Navbar -->
-    <div class="navbar bg-base-200 px-6">
+    <div class="navbar bg-base-200 px-6 fixed">
       <div class="flex-1">
         <a class="btn btn-ghost text-xl">MyWebsite</a>
       </div>
