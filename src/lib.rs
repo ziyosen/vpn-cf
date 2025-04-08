@@ -5,6 +5,7 @@ mod proxy;
 use crate::config::Config;
 use crate::proxy::*;
 
+use std::collections::HashMap;
 use base64::{engine::general_purpose::URL_SAFE, Engine as _};
 use serde::Serialize;
 use serde_json::json;
@@ -50,13 +51,21 @@ async fn sub(_: Request, cx: RouteContext<Config>) -> Result<Response> {
 
 
 async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> {
-    if let Some(proxyip) = cx.param("proxyip") {
-        if PROXYIP_PATTERN.is_match(proxyip) {
-            if let Some((addr, port_str)) = proxyip.split_once('-') {
-                if let Ok(port) = port_str.parse() {
-                    cx.data.proxy_addr = addr.to_string();
-                    cx.data.proxy_port = port;
-                }
+    let mut proxyip = cx.param("proxyip").unwrap().to_string();
+    if proxyip.len() == 2 {
+        let req = Fetch::Url(Url::parse("https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/kvProxyList.json")?);
+        let mut res = req.send().await?;
+        if res.status_code() == 200 {
+            let proxy_kv: HashMap<String, Vec<String>> = serde_json::from_str(&res.text().await?)?;
+            proxyip = proxy_kv[&proxyip][0].clone().replace(":", "-");
+        }
+    }
+
+    if PROXYIP_PATTERN.is_match(&proxyip) {
+        if let Some((addr, port_str)) = proxyip.split_once('-') {
+            if let Ok(port) = port_str.parse() {
+                cx.data.proxy_addr = addr.to_string();
+                cx.data.proxy_port = port;
             }
         }
     }
@@ -101,16 +110,16 @@ fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
             "net": "ws",
             "type": "none",
             "host": host,
-            "path": "/216.10.243.159-443",
+            "path": "/KR",
             "tls": "",
             "sni": "",
             "alpn": ""}
         );
         format!("vmess://{}", URL_SAFE.encode(config.to_string()))
     };
-    let vless_link = format!("vless://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2F216.10.243.159-443&security=tls&sni={host}#siren vless");
-    let trojan_link = format!("trojan://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2F216.10.243.159-443&security=tls&sni={host}#siren trojan");
-    let ss_link = format!("ss://{}@{host}:443?encryption=none&type=ws&host={host}&path=%2F216.10.243.159-443&security=tls&sni={host}&plugin=v2ray-plugin%3Btls%3Bmux%3D0%3Bmode%3Dwebsocket%3Bpath%3D%2F216.10.243.159-443%3Bhost%3D{host}#siren ss", URL_SAFE.encode(format!("none:{uuid}")));
+    let vless_link = format!("vless://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2FKR&security=tls&sni={host}#siren vless");
+    let trojan_link = format!("trojan://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2FKR&security=tls&sni={host}#siren trojan");
+    let ss_link = format!("ss://{}@{host}:443?plugin=v2ray-plugin%3Btls%3Bmux%3D0%3Bmode%3Dwebsocket%3Bpath%3D%2FKR%3Bhost%3D{host}#siren ss", URL_SAFE.encode(format!("none:{uuid}")));
     
     Response::from_json(&Link {
         links: [

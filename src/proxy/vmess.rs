@@ -135,8 +135,6 @@ impl <'a> ProxyStream<'a> {
         };
         let remote_addr = crate::common::parse_addr(&mut buf).await?;
 
-        console_log!("connecting to upstream {}:{} [is_tcp={is_tcp}]", remote_addr, remote_port);
-
         // encrypt payload
         let key = &crate::sha256!(&key)[..16];
         let iv = &crate::sha256!(&iv)[..16];

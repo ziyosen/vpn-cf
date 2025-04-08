@@ -14,8 +14,7 @@ impl <'a> ProxyStream<'a> {
         };
         
         let is_tcp = true; // difficult to detect udp packet from shadowsocks
-        console_log!("connecting to upstream {}:{} [is_tcp={is_tcp}]", remote_addr, remote_port);
-
+        
         if is_tcp {
             let addr_pool = [
                 (remote_addr.clone(), remote_port),

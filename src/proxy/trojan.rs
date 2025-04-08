@@ -27,8 +27,6 @@ impl <'a> ProxyStream<'a> {
         // remove crlf
         self.read_u16().await?;
 
-        console_log!("connecting to upstream {}:{} [is_tcp={is_tcp}]", remote_addr, remote_port);
-
         if is_tcp {
             let addr_pool = [
                 (remote_addr.clone(), remote_port),

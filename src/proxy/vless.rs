@@ -31,8 +31,6 @@ impl <'a> ProxyStream<'a> {
         };
         let remote_addr = crate::common::parse_addr(self).await?;
 
-        console_log!("connecting to upstream {}:{} [is_tcp={is_tcp}]", remote_addr, remote_port);
-
         if is_tcp {
             let addr_pool = [
                 (remote_addr.clone(), remote_port),

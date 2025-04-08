@@ -78,6 +78,8 @@ impl<'a> ProxyStream<'a> {
     }
 
     pub async fn handle_tcp_outbound(&mut self, addr: String, port: u16) -> Result<()> {
+        console_log!("connecting to upstream {}:{}", addr, port);
+
         let mut remote_socket = Socket::builder().connect(addr, port).map_err(|e| {
             Error::RustError(e.to_string())
         })?;
