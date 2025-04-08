@@ -21,7 +21,9 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
         .var("UUID")
         .map(|x| Uuid::parse_str(&x.to_string()).unwrap_or_default())?;
     let host = req.url()?.host().map(|x| x.to_string()).unwrap_or_default();
-    let config = Config { uuid, host: host.clone(), proxy_addr: host, proxy_port: 443};
+    let main_page_url = env.var("MAIN_PAGE_URL").map(|x|x.to_string()).unwrap();
+    let sub_page_url = env.var("SUB_PAGE_URL").map(|x|x.to_string()).unwrap();
+    let config = Config { uuid, host: host.clone(), proxy_addr: host, proxy_port: 443, main_page_url, sub_page_url};
 
     Router::with_data(config)
         .on_async("/", fe)
@@ -32,18 +34,18 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
         .await
 }
 
-async fn get_response_from_url(url: &str) -> Result<Response> {
-    let req = Fetch::Url(Url::parse(url)?);
+async fn get_response_from_url(url: String) -> Result<Response> {
+    let req = Fetch::Url(Url::parse(url.as_str())?);
     let mut res = req.send().await?;
     Response::from_html(res.text().await?)
 }
 
-async fn fe(_: Request, _: RouteContext<Config>) -> Result<Response> {
-    get_response_from_url("https://raw.githubusercontent.com/FoolVPN-ID/Siren/refs/heads/master/web/index.html").await
+async fn fe(_: Request, cx: RouteContext<Config>) -> Result<Response> {
+    get_response_from_url(cx.data.main_page_url).await
 }
 
-async fn sub(_: Request, _: RouteContext<Config>) -> Result<Response> {
-    get_response_from_url("https://raw.githubusercontent.com/FoolVPN-ID/Siren/refs/heads/master/web/sub.html").await
+async fn sub(_: Request, cx: RouteContext<Config>) -> Result<Response> {
+    get_response_from_url(cx.data.sub_page_url).await
 }
 
 
