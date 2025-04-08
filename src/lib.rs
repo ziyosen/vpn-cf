@@ -21,7 +21,7 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
         .var("UUID")
         .map(|x| Uuid::parse_str(&x.to_string()).unwrap_or_default())?;
     let host = req.url()?.host().map(|x| x.to_string()).unwrap_or_default();
-    let config = Config { uuid, host: host.clone(), proxy_addr: host, proxy_port: 80};
+    let config = Config { uuid, host: host.clone(), proxy_addr: host, proxy_port: 443};
 
     Router::with_data(config)
         .on_async("/", fe)
@@ -81,17 +81,17 @@ async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> 
 fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
     #[derive(Serialize)]
     struct Link {
-        description: String,
-        link: String,
+        links: [String; 4],
     }
 
-    let link = {
-        let host = cx.data.host.to_string();
-        let uuid = cx.data.uuid.to_string();
+    let host = cx.data.host.to_string();
+    let uuid = cx.data.uuid.to_string();
+
+    let vmess_link = {
         let config = json!({
-            "ps": "tunl",
+            "ps": "siren vmess",
             "v": "2",
-            "add": "162.159.16.149",
+            "add": host,
             "port": "80",
             "id": uuid,
             "aid": "0",
@@ -99,17 +99,23 @@ fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
             "net": "ws",
             "type": "none",
             "host": host,
-            "path": "",
+            "path": "/216.10.243.159-443",
             "tls": "",
             "sni": "",
             "alpn": ""}
         );
         format!("vmess://{}", URL_SAFE.encode(config.to_string()))
     };
-
+    let vless_link = format!("vless://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2F216.10.243.159-443&security=tls&sni={host}#siren vless");
+    let trojan_link = format!("trojan://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2F216.10.243.159-443&security=tls&sni={host}#siren trojan");
+    let ss_link = format!("ss://{}@{host}:443?encryption=none&type=ws&host={host}&path=%2F216.10.243.159-443&security=tls&sni={host}&plugin=v2ray-plugin%3Btls%3Bmux%3D0%3Bmode%3Dwebsocket%3Bpath%3D%2F216.10.243.159-443%3Bhost%3D{host}#siren ss", URL_SAFE.encode(format!("none:{uuid}")));
+    
     Response::from_json(&Link {
-        link,
-        description:
-            "visit https://scanner.github1.cloud/ and replace the IP address in the configuration with a clean one".to_string()
+        links: [
+            vmess_link,
+            vless_link,
+            trojan_link,
+            ss_link
+        ],
     })
 }
