@@ -1,13 +1,11 @@
 mod common;
 mod config;
 mod proxy;
-mod fe;
 
 use crate::config::Config;
 use crate::proxy::*;
 
 use base64::{engine::general_purpose::URL_SAFE, Engine as _};
-use fe::build_front_end;
 use serde::Serialize;
 use serde_json::json;
 use uuid::Uuid;
@@ -58,7 +56,9 @@ async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> 
     
         Response::from_websocket(client)
     } else {
-        Response::from_html(build_front_end())
+        let req = Fetch::Url(Url::parse("https://raw.githubusercontent.com/FoolVPN-ID/Siren/refs/heads/master/index.html")?);
+        let mut res = req.send().await?;
+        Response::from_html(res.text().await?)
     }
 }
 
