@@ -11,6 +11,12 @@ an Indonesia serverless v2ray tunnel
   - [x] Shadowsocks
 - [x] Domain over https
 
+## Endpoints
+
+- / > Main page
+- /link > Proxy link
+- /sub > Subscription page
+
 ## Deploy
 
 ### CI (Github Actions)
