@@ -53,12 +53,23 @@ async fn sub(_: Request, cx: RouteContext<Config>) -> Result<Response> {
 async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> {
     let mut proxyip = cx.param("proxyip").unwrap().to_string();
     if proxyip.len() == 2 {
-        let req = Fetch::Url(Url::parse("https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/kvProxyList.json")?);
-        let mut res = req.send().await?;
-        if res.status_code() == 200 {
-            let proxy_kv: HashMap<String, Vec<String>> = serde_json::from_str(&res.text().await?)?;
-            proxyip = proxy_kv[&proxyip][0].clone().replace(":", "-");
+        let kv = cx.kv("SIREN")?;
+        let mut proxy_kv_str = kv.get("proxy_kv").text().await?.unwrap_or("".to_string());
+
+        if proxy_kv_str.len() == 0 {
+            console_log!("getting proxy kv from github...");
+            let req = Fetch::Url(Url::parse("https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/kvProxyList.json")?);
+            let mut res = req.send().await?;
+            if res.status_code() == 200 {
+                proxy_kv_str = res.text().await?.to_string();
+                kv.put("proxy_kv", &proxy_kv_str)?.expiration_ttl(60 * 60 * 24).execute().await?; // 24 hours
+            } else {
+                return Err(Error::from(format!("error getting proxy kv: {}", res.status_code())));
+            }
         }
+        
+        let proxy_kv: HashMap<String, Vec<String>> = serde_json::from_str(&proxy_kv_str)?;
+        proxyip = proxy_kv[&proxyip][0].clone().replace(":", "-");
     }
 
     if PROXYIP_PATTERN.is_match(&proxyip) {
