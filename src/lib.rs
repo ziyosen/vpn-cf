@@ -7,7 +7,6 @@ use crate::proxy::*;
 
 use std::collections::HashMap;
 use base64::{engine::general_purpose::URL_SAFE, Engine as _};
-use serde::Serialize;
 use serde_json::json;
 use uuid::Uuid;
 use worker::*;
@@ -15,6 +14,7 @@ use once_cell::sync::Lazy;
 use regex::Regex;
 
 static PROXYIP_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^.+-\d+$").unwrap());
+static PROXYKV_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^([A-Z]{2})").unwrap());
 
 #[event(fetch)]
 async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
@@ -52,10 +52,13 @@ async fn sub(_: Request, cx: RouteContext<Config>) -> Result<Response> {
 
 async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> {
     let mut proxyip = cx.param("proxyip").unwrap().to_string();
-    if proxyip.len() == 2 {
+    if PROXYKV_PATTERN.is_match(&proxyip)  {
+        let kvid_list: Vec<String> = proxyip.split(",").map(|s|s.to_string()).collect();
         let kv = cx.kv("SIREN")?;
         let mut proxy_kv_str = kv.get("proxy_kv").text().await?.unwrap_or("".to_string());
-
+        let mut rand_buf = [0u8, 1];
+        getrandom::getrandom(&mut rand_buf).expect("failed generating random number");
+        
         if proxy_kv_str.len() == 0 {
             console_log!("getting proxy kv from github...");
             let req = Fetch::Url(Url::parse("https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/kvProxyList.json")?);
@@ -69,7 +72,14 @@ async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> 
         }
         
         let proxy_kv: HashMap<String, Vec<String>> = serde_json::from_str(&proxy_kv_str)?;
-        proxyip = proxy_kv[&proxyip][0].clone().replace(":", "-");
+        
+        // select random KV ID
+        let kv_index = (rand_buf[0] as usize) % kvid_list.len();
+        proxyip = kvid_list[kv_index].clone();
+        
+        // select random proxy ip
+        let proxyip_index = (rand_buf[0] as usize) % proxy_kv[&proxyip].len();
+        proxyip = proxy_kv[&proxyip][proxyip_index].clone().replace(":", "-");
     }
 
     if PROXYIP_PATTERN.is_match(&proxyip) {
@@ -101,11 +111,6 @@ async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> 
 }
 
 fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
-    #[derive(Serialize)]
-    struct Link {
-        links: [String; 4],
-    }
-
     let host = cx.data.host.to_string();
     let uuid = cx.data.uuid.to_string();
 
@@ -132,12 +137,5 @@ fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
     let trojan_link = format!("trojan://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2FKR&security=tls&sni={host}#siren trojan");
     let ss_link = format!("ss://{}@{host}:443?plugin=v2ray-plugin%3Btls%3Bmux%3D0%3Bmode%3Dwebsocket%3Bpath%3D%2FKR%3Bhost%3D{host}#siren ss", URL_SAFE.encode(format!("none:{uuid}")));
     
-    Response::from_json(&Link {
-        links: [
-            vmess_link,
-            vless_link,
-            trojan_link,
-            ss_link
-        ],
-    })
+    Response::from_body(ResponseBody::Body(format!("{vmess_link}\n{vless_link}\n{trojan_link}\n{ss_link}").into()))
 }
