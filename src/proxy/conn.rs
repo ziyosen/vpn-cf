@@ -9,6 +9,9 @@ use pin_project_lite::pin_project;
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt, ReadBuf};
 use worker::*;
 
+static MAX_WEBSOCKET_SIZE: usize = 512 * 1024; // 512kb
+static MAX_BUFFER_SIZE: usize = 4 * 1024 * 1024; // 4Mb
+
 pin_project! {
     pub struct ProxyStream<'a> {
         pub config: Config,
@@ -129,7 +132,18 @@ impl<'a> AsyncRead for ProxyStream<'a> {
 
             match this.events.as_mut().poll_next(cx) {
                 Poll::Ready(Some(Ok(WebsocketEvent::Message(msg)))) => {
-                    msg.bytes().iter().for_each(|x| this.buffer.put_slice(&x));
+                    if let Some(data) = msg.bytes() {
+                        if data.len() > MAX_WEBSOCKET_SIZE {
+                            return Poll::Ready(Err(std::io::Error::new(std::io::ErrorKind::Other, "websocket buffer too long")))
+                        }
+                        
+                        if this.buffer.len() + data.len() > MAX_BUFFER_SIZE {
+                            console_log!("buffer full, applying backpressure");
+                            return Poll::Pending;
+                        }
+                        
+                        this.buffer.put_slice(&data);
+                    }
                 }
                 Poll::Pending => return Poll::Pending,
                 _ => return Poll::Ready(Ok(())),
