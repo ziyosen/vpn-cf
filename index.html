@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create V2ray accounts with VMESS, VLESS, TROJAN, and SHADOWSHOCK protocols using Cloudflare Workers">
+    <meta name="keywords" content="V2ray, Cloudflare Workers, VMESS, VLESS, TROJAN, SHADOWSHOCK, proxy, VPN">
+    <meta name="author" content="Inconigto Mode">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Inconigto Mode">
+    <meta property="og:image" content="https://raw.githubusercontent.com/akulelaki696/bg/refs/heads/main/20250106_010158.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Inconigto Mode">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:description" content="Inconigto Mode">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/akulelaki696/bg/refs/heads/main/20250106_010158.jpg">
+    <meta property="twitter:creator" content="@InconigtoMode">
+	
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
+    <meta name="theme-color" content="#0f0c29"> 
+    <!-- Favicon -->
+    <link rel="icon" href="https://raw.githubusercontent.com/AFRcloud/BG/main/icons8-film-noir-80.png"/>
+    
+    <title>Inconigto Mode</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #ff6b6b;
+            --dark-bg: #0f0c29;
+            --card-bg: rgba(15, 14, 32, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0ff;
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --success-color: #38ef7d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(106, 17, 203, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(37, 117, 252, 0.15) 0%, transparent 40%);
+            z-index: -1;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+                0 0 30px rgba(106, 17, 203, 0.2) inset;
+            overflow: hidden;
+            padding: 40px 30px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.07) inset,
+                0 0 40px rgba(106, 17, 203, 0.3) inset;
+            transform: translateY(-5px);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 0%,
+                rgba(78, 78, 219, 0.1) 45%,
+                rgba(78, 78, 219, 0.3) 50%,
+                rgba(78, 78, 219, 0.1) 55%,
+                transparent 100%
+            );
+            z-index: -1;
+            transform: rotate(30deg);
+            animation: shine 8s infinite linear;
+        }
+        
+        @keyframes shine {
+            0% {
+                transform: translateY(100%) rotate(30deg);
+            }
+            100% {
+                transform: translateY(-100%) rotate(30deg);
+            }
+        }
+        
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+        
+        .profile-img-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 30px;
+            transition: transform 0.5s ease;
+        }
+        
+        .profile-img-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid transparent;
+            background: linear-gradient(145deg, var(--primary-color), var(--secondary-color)) border-box;
+            animation: pulse 4s infinite;
+            box-shadow: 
+                0 0 20px rgba(106, 17, 203, 0.5),
+                0 0 40px rgba(106, 17, 203, 0.3),
+                0 0 60px rgba(106, 17, 203, 0.1);
+            transition: all 0.5s ease;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 
+                    0 0 20px rgba(106, 17, 203, 0.5),
+                    0 0 40px rgba(106, 17, 203, 0.3),
+                    0 0 60px rgba(106, 17, 203, 0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 0 25px rgba(106, 17, 203, 0.7),
+                    0 0 50px rgba(106, 17, 203, 0.5),
+                    0 0 75px rgba(106, 17, 203, 0.3);
+            }
+            100% {
+                box-shadow: 
+                    0 0 20px rgba(106, 17, 203, 0.5),
+                    0 0 40px rgba(106, 17, 203, 0.3),
+                    0 0 60px rgba(106, 17, 203, 0.1);
+            }
+        }
+        
+        .profile-img-container::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+            z-index: -1;
+            opacity: 0.6;
+            animation: rotate 12s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .profile-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(106, 17, 203, 0.3);
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        .profile-name::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.3;
+            filter: blur(8px);
+        }
+        
+        .service-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            text-align: center;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.4;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-badge {
+            background: linear-gradient(45deg, #11998e, var(--success-color));
+            color: var(--text-primary);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(56, 239, 125, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .status-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(56, 239, 125, 0.4);
+        }
+        
+        .status-badge i {
+            font-size: 0.8rem;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .divider {
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(106, 17, 203, 0.5), transparent);
+            margin: 25px auto;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--secondary-color);
+        }
+        
+        .protocol-icons {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin: 25px 0;
+        }
+        
+        .protocol-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .protocol-icon:hover {
+            transform: translateY(-5px);
+        }
+        
+        .protocol-icon:hover .protocol-icon-circle {
+            background: linear-gradient(45deg, rgba(106, 17, 203, 0.3), rgba(37, 117, 252, 0.3));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 10px 20px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(106, 17, 203, 0.5);
+        }
+        
+        .protocol-icon:hover .protocol-icon-text {
+            color: var(--text-primary);
+        }
+        
+        .protocol-icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .protocol-icon-circle::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle at center,
+                rgba(255, 255, 255, 0.2) 0%,
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .protocol-icon:hover .protocol-icon-circle::after {
+            opacity: 1;
+        }
+        
+        .protocol-icon-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        
+        .profile-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+        
+        .profile-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            border-left: 3px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .profile-link:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .profile-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .profile-link i {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        
+        .profile-link:hover i {
+            color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        .profile-link span {
+            font-size: 1.05rem;
+            word-break: break-all;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-link:hover span {
+            color: var(--text-primary);
+        }
+        
+        .action-button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            letter-spacing: 1.5px;
+            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+        
+        .action-button:hover::before {
+            left: 100%;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(106, 17, 203, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .action-button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .footer-credit {
+            margin-top: 45px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        
+        .footer-credit a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .footer-credit a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-credit a:hover {
+            color: var(--text-primary);
+        }
+        
+        .footer-credit a:hover::after {
+            width: 100%;
+        }
+        
+        .footer-divider {
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(106, 17, 203, 0.3), transparent);
+            margin: 18px auto;
+        }
+        
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .card {
+                padding: 30px 20px;
+            }
+            
+            .profile-img-container {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .profile-name {
+                font-size: 1.8rem;
+            }
+            
+            .protocol-icon-circle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .action-button {
+                padding: 14px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles-container" id="particles"></div>
+    
+    <div class="container">
+        <div class="card">
+            <div class="profile-header">
+                <div class="profile-img-container">
+                    <img src="https://raw.githubusercontent.com/akulelaki696/bg/refs/heads/main/20250106_010158.jpg" alt="Inconigto Mode Profile" class="profile-img">
+                </div>
+                <h1 class="profile-name" data-text="Inconigto Mode">Inconigto Mode</h1>
+                <p class="service-description">V2ray Account Generator based on Cloudflare Workers</p>
+                <div class="status-badge">
+                    <i class="fas fa-circle"></i> Service Online
+                </div>
+            </div>
+            
+            <div class="protocol-icons">
+                <div class="protocol-icon">
+                    <div class="protocol-icon-circle">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <span class="protocol-icon-text">VMESS</span>
+                </div>
+                <div class="protocol-icon">
+                    <div class="protocol-icon-circle">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <span class="protocol-icon-text">VLESS</span>
+                </div>
+                <div class="protocol-icon">
+                    <div class="protocol-icon-circle">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <span class="protocol-icon-text">TROJAN</span>
+                </div>
+                <div class="protocol-icon">
+                    <div class="protocol-icon-circle">
+                        <i class="fas fa-ghost"></i>
+                    </div>
+                    <span class="protocol-icon-text">SHADOW</span>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="profile-links">
+                <a href="https://t.me/noir7R" target="_blank" class="profile-link">
+                    <i class="fab fa-telegram"></i>
+                    <span>@noir7R</span>
+                </a>
+                <a href="https://t.me/InconigtoMode" target="_blank" class="profile-link">
+                    <i class="fab fa-telegram"></i>
+                    <span>@InconigtoMode</span>
+                </a>
+                <a href="https://t.me/Inconigto_Mode" target="_blank" class="profile-link">
+                    <i class="fab fa-telegram"></i>
+                    <span>@Inconigto_Mode</span>
+                </a>
+            </div>
+            
+            <a href="https://vpn.checker-ip.web.id/link" target="_blank" class="action-button">
+                CREATE V2RAY ACCOUNT
+            </a><br>
+            <a href="https://vpn.checker-ip.web.id/sub" target="_blank" class="action-button">
+                CREATE V2RAY SUBSCRIPTION
+            </a>
+            
+            <div class="footer-credit">
+                <div class="footer-divider"></div>
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> Inconigto Mode</p>
+                <p>Powered with <i class="fas fa-heart" style="color: var(--accent-color);"></i> by <a href="https://t.me/Inconigto_Mode" target="_blank">Inconigto Mode</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Enhanced particle effect
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 80;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // Random position
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100 + 100; // Start below the viewport
+            
+            // Random size
+            const size = Math.random() * 6 + 1;
+            
+            // Random opacity
+            const opacity = Math.random() * 0.6 + 0.1;
+            
+            // Random animation duration
+            const duration = Math.random() * 20 + 10;
+            
+            // Random animation delay
+            const delay = Math.random() * 10;
+            
+            // Random color
+            const colors = ['#6a11cb', '#2575fc', '#a0a0ff', '#ffffff'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Apply styles
+            particle.style.left = `${posX}%`;
+            particle.style.top = `${posY}%`;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.opacity = opacity;
+            particle.style.background = color;
+            particle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `${delay}s`;
+            
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Add data-text attribute for text shadow effect
+        document.querySelector('.profile-name').setAttribute('data-text', 'Inconigto Mode');
+    </script>
+</body>
+</html>
