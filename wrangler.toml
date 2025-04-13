@@ -14,22 +14,7 @@ routes = [
   { pattern = "support.zoom.us.vpn.checker-ip.web.id", custom_domain = true },
   { pattern = "cache.netflix.com.vpn.checker-ip.web.id", custom_domain = true },
 
-  { pattern = "inconigto.biz.id", custom_domain = true },
-  { pattern = "ava.game.naver.com.inconigto.biz.id", custom_domain = true },
-  { pattern = "df.game.naver.com.inconigto.biz.id", custom_domain = true },
-  { pattern = "graph.instagram.com.inconigto.biz.id", custom_domain = true },
-  { pattern = "zaintest.vuclip.com.inconigto.biz.id", custom_domain = true },
-  { pattern = "support.zoom.us.inconigto.biz.id", custom_domain = true },
-  { pattern = "cache.netflix.com.inconigto.biz.id", custom_domain = true },
-
-  { pattern = "inconigto.web.id", custom_domain = true },
-  { pattern = "ava.game.naver.com.inconigto.web.id", custom_domain = true },
-  { pattern = "df.game.naver.com.inconigto.web.id", custom_domain = true },
-  { pattern = "graph.instagram.com.inconigto.web.id", custom_domain = true },
-  { pattern = "zaintest.vuclip.com.inconigto.web.id", custom_domain = true },
-  { pattern = "support.zoom.us.inconigto.web.id", custom_domain = true },
-  { pattern = "cache.netflix.com.inconigto.web.id", custom_domain = true },
-]
+  ]
 
 
 [[kv_namespaces]]
