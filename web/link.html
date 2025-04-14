@@ -688,7 +688,7 @@
                     <div class="flex">
                         <input type="text" id="proxy-url" class="flex-1 px-4 py-2.5 glass-input rounded-l-lg text-sm" 
                             placeholder="Enter custom proxy list URL" 
-                            value="https://raw.githubusercontent.com/InconigtoMode/proxylist/refs/heads/main/all.txt">
+                            value="https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/cek/proxyList.txt">
                         <button id="load-custom-url" class="primary-btn px-4 py-2.5 rounded-r-lg">
                             Load
                         </button>
@@ -1672,7 +1672,7 @@ function generateQRCodeLastResort(text, container) {
     try {
         // Method 3: Try to generate QR code as data URL
         const encodedText = encodeURIComponent(text);
-        const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodedText}`;
+        const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodedText}`;
         
         const img = document.createElement('img');
         img.src = qrApiUrl;
