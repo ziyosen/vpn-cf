@@ -13,12 +13,13 @@ binding = "SIREN"
 id = "31e0673f59a74088b3c677189944dd80"
 
 [build]
-command = "cargo install worker-build && worker-build --release"
+command = "cargo install -q worker-build && worker-build --release"
 
 [env.dev]
-build = { command = "cargo install worker-build && worker-build --dev" }
+build = { command = "cargo install -q worker-build && worker-build --dev" }
 
 [vars]
 UUID = "f282b878-8711-45a1-8c69-5564172123c1"
-MAIN_PAGE_URL = "https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/index.html"
-SUB_PAGE_URL = "https://raw.githubusercontent.com/FoolVPN-ID/Siren/refs/heads/master/web/sub.html"
+MAIN_PAGE_URL = "https://raw.githubusercontent.com/InconigtoMode/inconigto-vpn/refs/heads/master/web/index.html"
+SUB_PAGE_URL = "https://raw.githubusercontent.com/InconigtoMode/inconigto-vpn/refs/heads/master/web/sub.html"
+LINK_PAGE_URL = "https://raw.githubusercontent.com/InconigtoMode/inconigto-vpn/refs/heads/master/web/link.html"
