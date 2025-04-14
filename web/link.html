@@ -1013,7 +1013,7 @@
                                     <option value="tls">TLS</option>
                                     <option value="none">None</option>
                                 </select>
-                                <input type="hidden" id="trojan-sni" name="sni" value="inconigto-mode.web.id">
+                                <input type="hidden" id="trojan-sni" name="sni" value="vpn.checker-ip.web.id">
                             </div>
                             
                             <div>
@@ -1252,9 +1252,11 @@ let selectedProxy = null;
 const defaultProxyUrl = 'https://raw.githubusercontent.com/InconigtoMode/proxylist/refs/heads/main/all.txt';
 
 
-const serverDomains = ['inconigto-mode.web.id','inconigto.web.id','inconigto.biz.id'];
+const serverDomains = ['inconigto-mode.web.id'];
 let selectedServerDomain = serverDomains[0]; // Default to first domain
-const defaultUUID = 'bbbbbbbb-cccc-4ddd-eeee-ffffffffffff';
+
+const defaultUUID = 'f282b878-8711-45a1-8c69-5564172123c1';
+
 const itemsPerPage = 10;
 let currentPage = 1;
 
