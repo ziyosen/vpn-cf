@@ -86,110 +86,110 @@ async fn fe(_: Request, cx: RouteContext<Config>) -> Result<Response> {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Siren VPN Configuration</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.0/dist/sweetalert2.min.css">
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
       padding: 2rem;
-      background: #f9f9f9;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #0056b3;
+      margin-bottom: 2rem;
     }
 
     .config {
-      background: #fff;
-      padding: 1rem;
-      margin-bottom: 1rem;
+      background-color: #fff;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       border-left: 4px solid #007bff;
       position: relative;
     }
 
-    code {
-      display: block;
-      word-break: break-word;
-      white-space: pre-wrap;
+    .config h2 {
+      font-size: 1.8rem;
+      color: #007bff;
+      margin-bottom: 1rem;
     }
 
-    h1 {
-      color: #333;
+    code {
+      display: block;
+      background-color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
 
     .copy-btn {
       position: absolute;
-      top: 50%;
-      right: 1rem;
-      transform: translateY(-50%);
-      padding: 0.5rem 1rem;
-      background: #007bff;
-      color: white;
+      top: 1.5rem;
+      right: 1.5rem;
+      background-color: #007bff;
+      color: #fff;
       border: none;
-      cursor: pointer;
       border-radius: 5px;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
     }
 
     .copy-btn:hover {
-      background: #0056b3;
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
   <h1>Siren VPN Configuration</h1>
 
-  <!-- Vmess 80 -->
-  <div class="config" id="vmess_80">
+  <div class="config">
     <h2>Vmess 80</h2>
-    <code>{vmess_80}</code>
-    <button class="copy-btn" onclick="copyToClipboard('#vmess_80')">Copy</button>
+    <button class="copy-btn" onclick="copyText('vmess_80')">Copy</button>
+    <code id="vmess_80">{vmess_80}</code>
   </div>
 
-  <!-- Vmess 443 -->
-  <div class="config" id="vmess_443">
+  <div class="config">
     <h2>Vmess 443</h2>
-    <code>{vmess_443}</code>
-    <button class="copy-btn" onclick="copyToClipboard('#vmess_443')">Copy</button>
+    <button class="copy-btn" onclick="copyText('vmess_443')">Copy</button>
+    <code id="vmess_443">{vmess_443}</code>
   </div>
 
-  <!-- VLESS -->
-  <div class="config" id="vless">
+  <div class="config">
     <h2>VLESS</h2>
-    <code>{vless}</code>
-    <button class="copy-btn" onclick="copyToClipboard('#vless')">Copy</button>
+    <button class="copy-btn" onclick="copyText('vless')">Copy</button>
+    <code id="vless">{vless}</code>
   </div>
 
-  <!-- Trojan -->
-  <div class="config" id="trojan">
+  <div class="config">
     <h2>Trojan</h2>
-    <code>{trojan}</code>
-    <button class="copy-btn" onclick="copyToClipboard('#trojan')">Copy</button>
+    <button class="copy-btn" onclick="copyText('trojan')">Copy</button>
+    <code id="trojan">{trojan}</code>
   </div>
 
-  <!-- Shadowsocks -->
-  <div class="config" id="ss">
+  <div class="config">
     <h2>Shadowsocks (SS)</h2>
-    <code>{ss}</code>
-    <button class="copy-btn" onclick="copyToClipboard('#ss')">Copy</button>
+    <button class="copy-btn" onclick="copyText('ss')">Copy</button>
+    <code id="ss">{ss}</code>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.0/dist/sweetalert2.all.min.js"></script>
   <script>
-    function copyToClipboard(elementId) {
-      const text = document.querySelector(elementId).querySelector('code').textContent;
-
-      // Copy to clipboard
+    function copyText(id) {
+      const codeBlock = document.getElementById(id);
+      const text = codeBlock.textContent;
       navigator.clipboard.writeText(text).then(() => {
-        // Show success message with SweetAlert2
-        Swal.fire({
-          icon: 'success',
-          title: 'Copied!',
-          text: 'Configuration has been copied to clipboard.',
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }).catch((err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Failed!',
-          text: 'Failed to copy configuration.',
-        });
+        alert('Copied to clipboard!');
+      }).catch(err => {
+        alert('Failed to copy!');
       });
     }
   </script>
