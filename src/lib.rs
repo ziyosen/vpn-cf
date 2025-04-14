@@ -88,10 +88,25 @@ async fn fe(_: Request, cx: RouteContext<Config>) -> Result<Response> {
   <meta charset="UTF-8" />
   <title>Siren VPN</title>
   <style>
-    body {{ font-family: sans-serif; padding: 2rem; background: #f9f9f9; }}
-    .config {{ background: #fff; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #007bff; }}
-    code {{ display: block; word-break: break-all; white-space: pre-wrap; }}
-    h1 {{ color: #333; }}
+    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
+    .config { background: #fff; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #007bff; position: relative; }
+    code { display: block; word-break: break-all; white-space: pre-wrap; }
+    h1 { color: #333; }
+    .copy-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.3rem 0.6rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .copy-btn:hover {
+      background-color: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -99,30 +114,46 @@ async fn fe(_: Request, cx: RouteContext<Config>) -> Result<Response> {
 
   <div class="config">
     <h2>Vmess 80</h2>
+    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
     <code>{vmess_80}</code>
   </div>
 
   <div class="config">
     <h2>Vmess 443</h2>
+    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
     <code>{vmess_443}</code>
   </div>
 
   <div class="config">
     <h2>VLESS</h2>
+    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
     <code>{vless}</code>
   </div>
 
   <div class="config">
     <h2>Trojan</h2>
+    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
     <code>{trojan}</code>
   </div>
 
   <div class="config">
     <h2>Shadowsocks (SS)</h2>
+    <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>
     <code>{ss}</code>
   </div>
+
+  <script>
+    function copyToClipboard(btn) {
+      const code = btn.nextElementSibling.textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+      });
+    }
+  </script>
 </body>
 </html>
+
 "#);
 
     Response::from_html(html)
