@@ -85,116 +85,144 @@ async fn fe(_: Request, cx: RouteContext<Config>) -> Result<Response> {
     let html = format!(r#"<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Siren VPN Configuration</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 2rem;
-      background-color: #f0f2f5;
-      color: #333;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siren VPN Configuration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f7;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
 
-    h1 {
-      text-align: center;
-      font-size: 2.5rem;
-      color: #0056b3;
-      margin-bottom: 2rem;
-    }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
 
-    .config {
-      background-color: #fff;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      border-left: 4px solid #007bff;
-      position: relative;
-    }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    .config h2 {
-      font-size: 1.8rem;
-      color: #007bff;
-      margin-bottom: 1rem;
-    }
+        .section {
+            margin-bottom: 30px;
+        }
 
-    code {
-      display: block;
-      background-color: #f5f5f5;
-      padding: 1rem;
-      border-radius: 4px;
-      font-size: 1rem;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
+        .section h2 {
+            color: #4CAF50;
+        }
 
-    .copy-btn {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 0.4rem 0.8rem;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: background-color 0.3s ease;
-    }
+        .config-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f9f9f9;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    .copy-btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
+        .config-link input {
+            width: 80%;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            background-color: #f1f1f1;
+            color: #333;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        .config-link button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .config-link button:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #888;
+        }
+
+    </style>
 </head>
 <body>
-  <h1>Siren VPN Configuration</h1>
 
-  <div class="config">
-    <h2>Vmess 80</h2>
-    <button class="copy-btn" onclick="copyText('vmess_80')">Copy</button>
-    <code id="vmess_80">{vmess_80}</code>
-  </div>
+    <div class="container">
+        <h1>Siren VPN Configuration</h1>
 
-  <div class="config">
-    <h2>Vmess 443</h2>
-    <button class="copy-btn" onclick="copyText('vmess_443')">Copy</button>
-    <code id="vmess_443">{vmess_443}</code>
-  </div>
+        <div class="section">
+            <h2>Vmess Configurations</h2>
+            <div class="config-link" id="vmess-80">
+                <input type="text" id="vmess-80-input" value="{{vmess_80}}" readonly />
+                <button onclick="copyToClipboard('vmess-80-input')">Copy</button>
+            </div>
+            <div class="config-link" id="vmess-443">
+                <input type="text" id="vmess-443-input" value="{{vmess_443}}" readonly />
+                <button onclick="copyToClipboard('vmess-443-input')">Copy</button>
+            </div>
+        </div>
 
-  <div class="config">
-    <h2>VLESS</h2>
-    <button class="copy-btn" onclick="copyText('vless')">Copy</button>
-    <code id="vless">{vless}</code>
-  </div>
+        <div class="section">
+            <h2>VLESS Configuration</h2>
+            <div class="config-link" id="vless">
+                <input type="text" id="vless-input" value="{{vless}}" readonly />
+                <button onclick="copyToClipboard('vless-input')">Copy</button>
+            </div>
+        </div>
 
-  <div class="config">
-    <h2>Trojan</h2>
-    <button class="copy-btn" onclick="copyText('trojan')">Copy</button>
-    <code id="trojan">{trojan}</code>
-  </div>
+        <div class="section">
+            <h2>Trojan Configuration</h2>
+            <div class="config-link" id="trojan">
+                <input type="text" id="trojan-input" value="{{trojan}}" readonly />
+                <button onclick="copyToClipboard('trojan-input')">Copy</button>
+            </div>
+        </div>
 
-  <div class="config">
-    <h2>Shadowsocks (SS)</h2>
-    <button class="copy-btn" onclick="copyText('ss')">Copy</button>
-    <code id="ss">{ss}</code>
-  </div>
+        <div class="section">
+            <h2>Shadowsocks (SS) Configuration</h2>
+            <div class="config-link" id="ss">
+                <input type="text" id="ss-input" value="{{ss}}" readonly />
+                <button onclick="copyToClipboard('ss-input')">Copy</button>
+            </div>
+        </div>
 
-  <script>
-    function copyText(id) {
-      const codeBlock = document.getElementById(id);
-      const text = codeBlock.textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        alert('Copied to clipboard!');
-      }).catch(err => {
-        alert('Failed to copy!');
-      });
-    }
-  </script>
+        <div class="footer">
+            <p>Powered by Siren VPN</p>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(elementId) {
+            var copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand("copy");
+            alert("Copied the text: " + copyText.value);
+        }
+    </script>
+
 </body>
 </html>
+
 "#);
 
     Response::from_html(html)
