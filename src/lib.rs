@@ -18,18 +18,19 @@ static PROXYKV_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^([A-Z]{2})").un
 
 #[event(fetch)]
 async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
-    let uuid = env.var("UUID")
+    let uuid = env
+        .var("UUID")
         .map(|x| Uuid::parse_str(&x.to_string()).unwrap_or_default())?;
-
     let host = req.url()?.host().map(|x| x.to_string()).unwrap_or_default();
-
+    let main_page_url = env.var("MAIN_PAGE_URL").map(|x| x.to_string()).unwrap();
+    let sub_page_url = env.var("SUB_PAGE_URL").map(|x| x.to_string()).unwrap();
     let config = Config {
         uuid,
         host: host.clone(),
         proxy_addr: host,
         proxy_port: 443,
-        main_page_url: env.var("MAIN_PAGE_URL")?.to_string(),
-        sub_page_url: env.var("SUB_PAGE_URL")?.to_string(),
+        main_page_url,
+        sub_page_url,
     };
 
     Router::with_data(config)
@@ -48,49 +49,42 @@ async fn get_response_from_url(url: String) -> Result<Response> {
 }
 
 async fn fe(_: Request, cx: RouteContext<Config>) -> Result<Response> {
-    get_response_from_url(cx.data.main_page_url).await
+    get_response_from_url(cx.data.main_page_url.clone()).await
 }
 
 async fn sub(_: Request, cx: RouteContext<Config>) -> Result<Response> {
-    get_response_from_url(cx.data.sub_page_url).await
+    get_response_from_url(cx.data.sub_page_url.clone()).await
 }
 
 async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> {
     let mut proxyip = cx.param("proxyip").unwrap().to_string();
 
-    // Cek jika proxy menggunakan KV ID (seperti "ID,SG")
     if PROXYKV_PATTERN.is_match(&proxyip) {
         let kvid_list: Vec<String> = proxyip.split(',').map(|s| s.to_string()).collect();
         let kv = cx.kv("SIREN")?;
         let mut proxy_kv_str = kv.get("proxy_kv").text().await?.unwrap_or_default();
-
         let mut rand_buf = [0u8; 1];
         getrandom::getrandom(&mut rand_buf).expect("failed generating random number");
 
-        // Fetch dari GitHub jika belum ada cache
         if proxy_kv_str.is_empty() {
-            console_log!("Getting proxy kv from GitHub...");
-            let url = "https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/kvProxyList.json";
-            let mut res = Fetch::Url(Url::parse(url)?).send().await?;
+            console_log!("getting proxy kv from github...");
+            let req = Fetch::Url(Url::parse("https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/kvProxyList.json")?);
+            let mut res = req.send().await?;
             if res.status_code() == 200 {
-                proxy_kv_str = res.text().await?;
-                kv.put("proxy_kv", &proxy_kv_str)?
-                    .expiration_ttl(60 * 60 * 24)
-                    .execute()
-                    .await?;
+                proxy_kv_str = res.text().await?.to_string();
+                kv.put("proxy_kv", &proxy_kv_str)?.expiration_ttl(60 * 60 * 24).execute().await?;
             } else {
-                return Err(Error::from(format!("Error getting proxy kv: {}", res.status_code())));
+                return Err(Error::from(format!("error getting proxy kv: {}", res.status_code())));
             }
         }
 
         let proxy_kv: HashMap<String, Vec<String>> = serde_json::from_str(&proxy_kv_str)?;
 
         let kv_index = (rand_buf[0] as usize) % kvid_list.len();
-        let selected_kvid = &kvid_list[kv_index];
+        proxyip = kvid_list[kv_index].clone();
 
-        let ip_list = &proxy_kv[selected_kvid];
-        let proxyip_index = (rand_buf[0] as usize) % ip_list.len();
-        proxyip = ip_list[proxyip_index].replace(":", "-");
+        let proxyip_index = (rand_buf[0] as usize) % proxy_kv[&proxyip].len();
+        proxyip = proxy_kv[&proxyip][proxyip_index].clone().replace(":", "-");
     }
 
     if PROXYIP_PATTERN.is_match(&proxyip) {
@@ -121,10 +115,9 @@ async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> 
 }
 
 fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
-    let host = cx.data.host.to_string();
+    let host = cx.data.host.clone();
     let uuid = cx.data.uuid.to_string();
 
-    // VMess port 80 (tanpa TLS)
     let vmess_config_80 = json!({
         "v": "2",
         "ps": "siren vmess 80",
@@ -143,7 +136,6 @@ fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
     });
     let vmess_link_80 = format!("vmess://{}", URL_SAFE.encode(vmess_config_80.to_string()));
 
-    // VMess port 443 (dengan TLS)
     let vmess_config_443 = json!({
         "v": "2",
         "ps": "siren vmess 443",
@@ -162,11 +154,20 @@ fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
     });
     let vmess_link_443 = format!("vmess://{}", URL_SAFE.encode(vmess_config_443.to_string()));
 
-    // Link lainnya (VLESS, Trojan, Shadowsocks)
-    let vless_link = format!("vless://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2FKR&security=tls&sni={host}#siren vless");
-    let trojan_link = format!("trojan://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2FKR&security=tls&sni={host}#siren trojan");
-    let ss_link = format!("ss://{}@{host}:443?plugin=v2ray-plugin%3Btls%3Bmux%3D0%3Bmode%3Dwebsocket%3Bpath%3D%2FKR%3Bhost%3D{host}#siren ss", URL_SAFE.encode(format!("none:{uuid}")));
+    let vless_link = format!(
+        "vless://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2FKR&security=tls&sni={host}#siren vless"
+    );
+    let trojan_link = format!(
+        "trojan://{uuid}@{host}:443?encryption=none&type=ws&host={host}&path=%2FKR&security=tls&sni={host}#siren trojan"
+    );
+    let ss_link = format!(
+        "ss://{}@{host}:443?plugin=v2ray-plugin%3Btls%3Bmux%3D0%3Bmode%3Dwebsocket%3Bpath%3D%2FKR%3Bhost%3D{host}#siren ss",
+        URL_SAFE.encode(format!("none:{uuid}"))
+    );
 
-    let all_links = format!("{vmess_link_80}\n{vmess_link_443}\n{vless_link}\n{trojan_link}\n{ss_link}");
-    Response::from_body(ResponseBody::Body(all_links.into()))
+    Response::from_body(
+        ResponseBody::Body(format!(
+            "{vmess_link_80}\n{vmess_link_443}\n{vless_link}\n{trojan_link}\n{ss_link}"
+        ).into())
+    )
 }
