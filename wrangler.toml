@@ -2,15 +2,10 @@ name = "siren"
 main = "build/worker/shim.mjs"
 compatibility_date = "2024-05-23"
 minify = true
-workers_dev = true
-
-routes = [
-  { pattern = "vpn.checker-ip.web.id", custom_domain = true }
-]
 
 [[kv_namespaces]]
 binding = "SIREN"
-id = "31e0673f59a74088b3c677189944dd80"
+id = "216a79ea5462492da7aa737cc8d7a2af"
 
 [build]
 command = "cargo install worker-build && worker-build --release"
