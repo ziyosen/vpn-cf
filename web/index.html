@@ -597,19 +597,52 @@
       display: none;
     }
     
+    .camera-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--primary-color);
+  border-radius: 50%;
+  padding: 10px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.7; /* transparan */
+}
+
+.camera-icon:hover {
+  background: var(--secondary-color);
+  opacity: 1; /* kembali solid saat hover */
+}
+
     </style>
     
     
 <body>
+  <body>
   <div class="particles-container" id="particles"></div>
 
   <div class="container">
     <div class="card">
       <div class="profile-header">
         <div class="profile-img-container">
-          <img id="profile-img" src="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg" alt="Geo Project Profile" class="profile-img" />
+          <!-- Default logo -->
+          <img
+            id="profile-img"
+            src="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg"
+            alt="Geo Project Profile"
+            class="profile-img"
+          />
+          <!-- Camera icon -->
+          <div class="camera-icon">
+            <i class="fa fa-camera"></i>
+          </div>
         </div>
+
+        <!-- Hidden file input -->
         <input type="file" id="logo-upload" accept="image/*" />
+ 
            <h1 class="profile-name" data-text="Geo Project">Geo Project</h1>
                 <p class="service-description">V2ray Account Generator based on Cloudflare Workers</p>
                 <div class="status-badge">
@@ -694,28 +727,28 @@
 </div>
 
   <script>
-    // Get elements
     const logoImg = document.getElementById("profile-img");
     const logoUpload = document.getElementById("logo-upload");
+    const cameraIcon = document.querySelector(".camera-icon");
 
-    // Check if there's a logo in localStorage and set it
+    // Load saved logo from localStorage
     if (localStorage.getItem("logo")) {
       logoImg.src = localStorage.getItem("logo");
     }
 
-    // Handle click on profile image
-    logoImg.addEventListener("click", () => {
-      logoUpload.click(); // Trigger the file input when image is clicked
+    // Trigger file input when the camera icon is clicked
+    cameraIcon.addEventListener("click", () => {
+      logoUpload.click();
     });
 
-    // Handle file upload
+    // Handle image upload
     logoUpload.addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (file && file.type.startsWith("image/")) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           logoImg.src = e.target.result;
-          localStorage.setItem("logo", e.target.result); // Save logo to localStorage
+          localStorage.setItem("logo", e.target.result);
         };
         reader.readAsDataURL(file);
       }
