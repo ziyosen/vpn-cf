@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>INCONIGTO - MODE</title>
+<title>GEO - PROJECT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -693,7 +693,7 @@ select.form-control {
         
         <form id="subLinkForm">
             <div class="form-group">
-                <label for="configType">PROTOCOL TYPE</label>
+                <label for="configType" style="font-weight: bold;">PROTOCOL TYPE</label>
                 <select id="configType" class="form-control" required>
                     <option value="vless">VLESS</option>
                     <option value="vmess">VMESS</option>
@@ -704,20 +704,19 @@ select.form-control {
             </div>
 
             <div class="form-group">
-                <label for="formatType">FORMAT TYPE</label>
+                <label for="formatType" style="font-weight: bold;">FORMAT TYPE</label>
                 <select id="formatType" class="form-control" required>
                     <option value="v2ray">V2RAY</option>
                     <option value="clash">CLASH</option>
                 </select>
             </div>
             
-            <label for="uuid">UUID</label>
-                <input type="text" id="uuid" class="form-control" value="f282b878-8711-45a1-8c69-5564172123c1" required>
-                <button type="button" id="generateUuid" class="uuid-generate">GENERATE</button>
-            
-            
+            <label for="uuid" style="font-weight: bold;">UUID</label>
+<input type="text" id="uuid" class="form-control" value="f282b878-8711-45a1-8c69-5564172123c1" required>
+<button type="button" id="generateUuid" class="uuid-generate" style="display: none;">GENERATE</button>
+
             <div class="form-group">
-                <label for="bugType">BUG TYPE</label>
+                <label for="bugType" style="font-weight: bold;">BUG TYPE</label>
                 <select id="bugType" class="form-control" required>
                     <option value="default">DEFAULT</option>
                     <option value="non-wildcard">NON-WILDCARD</option>
@@ -726,7 +725,7 @@ select.form-control {
             </div>
             
             <div class="form-group">
-                <label for="mainDomain">MAIN DOMAIN <span class="info-badge">DEFAULT</span></label>
+                <label for="mainDomain" style="font-weight: bold;">MAIN DOMAIN <span class="info-badge">DEFAULT</span></label>
                 <input type="text" id="mainDomain" class="form-control" value="vpn.checker-ip.web.id" required>
             </div>
             
@@ -736,7 +735,7 @@ select.form-control {
             </div>
             
             <div class="form-group">
-                <label for="tls">TLS ENCRYPTION</label>
+                <label for="tls" style="font-weight: bold;">TLS ENCRYPTION</label>
                 <select id="tls" class="form-control">
                     <option value="true">ENABLED</option>
                     <option value="false">DISABLED</option>
@@ -745,14 +744,14 @@ select.form-control {
             
             <div class="form-row">
                 <div class="form-group">
-                    <label for="country">REGION FILTER</label>
+                    <label for="country" style="font-weight: bold;">REGION FILTER</label>
                     <select id="country" class="form-control">
                         <option value="">Loading regions...</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="limit">QUANTITY</label>
+                    <label for="limit" style="font-weight: bold;">QUANTITY</label>
                     <input type="number" id="limit" class="form-control" min="1" max="20" value="5" placeholder="Max 20" required>
                 </div>
             </div>
@@ -840,26 +839,6 @@ select.form-control {
     const PROXY_CHECK_API_URL = 'https://apicek.t-me-inconigto.workers.dev/proxy';
     const PATH_PREFIX = 'Geo-Project'; // Hardcoded path prefix
     
-    // Helper Functions
-    function generateUUIDv4() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = Math.random() * 16 | 0;
-            const v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
-    
-    // Safe base64 encoding function
-    function safeBase64Encode(str) {
-        try {
-            // Make sure we're working with a string
-            const stringToEncode = typeof str === 'object' ? JSON.stringify(str) : String(str);
-            return window.btoa(stringToEncode);
-        } catch (e) {
-            console.error("Base64 encoding error:", e);
-            return "";
-        }
-    }
     
     // Check if proxy is valid via API
     async function checkProxyValidity(ip, port) {
