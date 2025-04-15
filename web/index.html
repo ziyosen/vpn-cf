@@ -592,20 +592,30 @@
                 font-size: 1.1rem;
             }
         }
+        
+        #logo-upload {
+      display: none;
+    }
+    
     </style>
     
     
-</head>
 <body>
-    <div class="particles-container" id="particles"></div>
-    
-    <div class="container">
-        <div class="card">
-            <div class="profile-header">
-                <div class="profile-img-container">
-                    <img src="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg" alt="Geo Project Profile" class="profile-img">
-                </div>
-                <h1 class="profile-name" data-text="Geo Project">Geo Project</h1>
+  <div class="particles-container" id="particles"></div>
+
+  <div class="container">
+    <div class="card">
+      <div class="profile-header">
+        <div class="profile-img-container">
+          <!-- Default logo -->
+          <img id="profile-img" src="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg" alt="Geo Project Profile" class="profile-img" />
+        </div>
+
+        <!-- File input hidden -->
+        <input type="file" id="logo-upload" accept="image/*" />
+      
+
+<h1 class="profile-name" data-text="Geo Project">Geo Project</h1>
                 <p class="service-description">V2ray Account Generator based on Cloudflare Workers</p>
                 <div class="status-badge">
                     <i class="fas fa-circle"></i> Service Online
@@ -648,7 +658,7 @@
                 CREATE V2RAY SUBSCRIPTION
             </a>
             
-            <!-- Bagian kontak sosial media dengan warna ikon asli -->
+            
 <div class="protocol-icons" style="margin-top: 30px; display: flex; gap: 30px; justify-content: center;">
   <div class="protocol-icon">
     <a href="https://github.com/" target="_blank" rel="noopener noreferrer" style="color: #333;">
@@ -688,6 +698,35 @@
     </p>
 </div>
 
+  <script>
+    // Get elements
+    const logoImg = document.getElementById("profile-img");
+    const logoUpload = document.getElementById("logo-upload");
+
+    // Check if there's a logo in localStorage and set it
+    if (localStorage.getItem("logo")) {
+      logoImg.src = localStorage.getItem("logo");
+    }
+
+    // Handle click on profile image
+    logoImg.addEventListener("click", () => {
+      logoUpload.click(); // Trigger the file input when image is clicked
+    });
+
+    // Handle file upload
+    logoUpload.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith("image/")) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          logoImg.src = e.target.result;
+          localStorage.setItem("logo", e.target.result); // Save logo to localStorage
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+                
     <script>
         // Enhanced particle effect
         const particlesContainer = document.getElementById('particles');
