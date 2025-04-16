@@ -1777,36 +1777,39 @@ function processProxyData(text) {
     }
     
     // Parse proxy list with the detected delimiter
-    proxyList = lines.map(line => {
-        const parts = line.split(delimiter);
+proxyList = lines.map(line => {
+    const parts = line.split(delimiter);
+
+    // Require at least IP and port
+    if (parts.length >= 2) {
+        const country = parts.length >= 3 ? parts[2].trim() : 'Unknown';
         
-        // Require at least IP and port
-        if (parts.length >= 2) {
-            return {
-                ip: parts[0].trim(),
-                port: parts[1].trim(),
-                country: parts.length >= 3 ? parts[2].trim() : 'Unknown',
-                provider: parts.length >= 4 ? parts[3].trim() : 'Unknown Provider'
-            };
-        }
-        return null;
-    }).filter(proxy => proxy && proxy.ip && proxy.port);
-    
-    console.log(`Processed ${proxyList.length} valid proxies`);
-    
-    // If no valid proxies were found, show message and use fallback
-    if (proxyList.length === 0) {
-        noProxiesMessage.classList.remove('hidden');
-        displayFallbackProxyList();
-        return;
+        return {
+            ip: parts[0].trim(),
+            port: parts[1].trim(),
+            country: country,
+            provider: parts.length >= 4 ? parts[3].trim() : 'Unknown Provider',
+            flag: country !== 'Unknown' ? `<span class="flag-icon flag-icon-${country.toLowerCase()}"></span>` : '' // Add flag
+        };
     }
-    
-    // Reset pagination
-    currentPage = 1;
-    filteredProxyList = [...proxyList];
-    
-    // Render the proxy list
-    renderProxyList();
+    return null;
+}).filter(proxy => proxy && proxy.ip && proxy.port);
+
+console.log(`Processed ${proxyList.length} valid proxies`);
+
+// If no valid proxies were found, show message and use fallback
+if (proxyList.length === 0) {
+    noProxiesMessage.classList.remove('hidden');
+    displayFallbackProxyList();
+    return;
+}
+
+// Reset pagination
+currentPage = 1;
+filteredProxyList = [...proxyList];
+
+// Render the proxy list
+renderProxyList();
 }
 
 // Function to render the proxy list with pagination
@@ -1926,7 +1929,7 @@ function renderProxyList() {
 
 // Function to check proxy status in the list
 function checkProxyStatusInList(proxy, statusBadge) {
-    const statusURL = `https://corsproxy.io/?https://api.checker-ip.web.id/check?ip=${proxy.ip}:${proxy.port}`;
+    const statusURL = `https://cors.geo-project.workers.dev/?url=https://api.checker-ip.web.id/check?ip=${proxy.ip}:${proxy.port}`;
     
     fetch(statusURL)
         .then(response => response.json())
@@ -2116,7 +2119,7 @@ async function selectProxy(index) {
 // Function to check proxy status in the account creation section
 function checkProxyStatus(proxy) {
     const startTime = performance.now();
-    const statusURL = `https://corsproxy.io/?https://api.checker-ip.web.id/check?ip=${proxy.ip}:${proxy.port}`;
+    const statusURL = `https://cors.geo-project.workers.dev/?url=https://api.checker-ip.web.id/check?ip=${proxy.ip}:${proxy.port}`;
     const statusContainer = document.getElementById('proxy-status-container');
     const statusLoading = document.getElementById('proxy-status-loading');
     const statusActive = document.getElementById('proxy-status-active');
@@ -2208,14 +2211,14 @@ function loadProxyList(url) {
         },
         // CORS Anywhere proxy
         async () => {
-            const corsUrl = `https://corsproxy.io/${url}`;
+            const corsUrl = `https://cors.geo-project.workers.dev/?url=${url}`;
             const response = await fetch(corsUrl);
             if (!response.ok) throw new Error('CORS Anywhere proxy failed');
             return await response.text();
         },
         // AllOrigins proxy
         async () => {
-            const corsUrl = `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
+            const corsUrl = `https://cors.geo-project.workers.dev/?url=${encodeURIComponent(url)}`;
             const response = await fetch(corsUrl);
             if (!response.ok) throw new Error('AllOrigins proxy failed');
             const data = await response.json();
@@ -2223,7 +2226,7 @@ function loadProxyList(url) {
         },
         // CORS.sh proxy
         async () => {
-            const corsUrl = `https://cors.sh/${url}`;
+            const corsUrl = `https://cors.geo-project.workers.dev/?url=${url}`;
             const response = await fetch(corsUrl, {
                 headers: {
                     'x-cors-api-key': 'temp_' + Math.random().toString(36).substring(2,12),
