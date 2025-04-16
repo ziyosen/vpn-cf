@@ -491,46 +491,58 @@
         }
         
         .footer-credit {
-            margin-top: 45px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-        
-        .footer-credit a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-        
-        .footer-credit a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--secondary-color);
-            transition: width 0.3s ease;
-        }
-        
-        .footer-credit a:hover {
-            color: var(--text-primary);
-        }
-        
-        .footer-credit a:hover::after {
-            width: 100%;
-        }
-        
-        .footer-divider {
-            width: 50%;
-            height: 1px;
-            background: linear-gradient(to right, transparent, rgba(106, 17, 203, 0.3), transparent);
-            margin: 18px auto;
-        }
-        
+        max-width: 380px;
+        margin: 4px auto;
+        padding: 4px 8px;
+        background: rgba(135, 206, 250, 0.1);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 12px;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 0.75rem;
+        color: #ffffffcc;
+        text-align: center; /* Menyentuhkan ke tengah */
+        border: 1px solid rgba(135, 206, 250, 0.2);
+        line-height: 1.2;
+    }
+
+    .footer-credit a {
+        color: var(--text-secondary, #87cefa);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        position: relative;
+    }
+
+    .footer-credit a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--secondary-color, #87cefa);
+        transition: width 0.3s ease;
+    }
+
+    .footer-credit a:hover {
+        color: var(--text-primary, #ffffff);
+    }
+
+    .footer-credit a:hover::after {
+        width: 100%;
+    }
+
+    .footer-divider {
+        width: 40%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(106, 17, 203, 0.3), transparent);
+        margin: 6px auto;
+    }
+
+    .footer-credit p {
+        margin: 2px 0;
+    }
         .particles-container {
             position: fixed;
             top: 0;
@@ -714,14 +726,21 @@
 </div>
             <div class="footer-credit">
     <div class="footer-divider"></div>
+
     <p>
-        &copy; <script>document.write(new Date().getFullYear())</script> 
-        <i class="fas fa-heart" style="color: var(--accent-color);"></i> 
+        <strong>Remod :</strong>
+        &copy; <script>document.write(new Date().getFullYear())</script>
+        <i class="fas fa-heart" style="color: var(--accent-color);"></i>
         <a href="https://t.me/sampiiiiu" target="_blank">Geo Project</a>
     </p>
+
     <p>
-        Powered by 
-        <a href="https://t.me/d_fordlalatina" target="_blank">Dicky Mulia Fiqri</a> &amp; 
+        <strong>Worker :</strong>
+        <a href="https://t.me/d_fordlalatina" target="_blank">Dicky Mulia Fiqri</a>
+    </p>
+
+    <p>
+        <strong>Web :</strong>
         <a href="https://t.me/Inconigto_Mode" target="_blank">Incognito Mode || Yūrei</a>
     </p>
 </div>
