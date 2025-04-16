@@ -837,8 +837,28 @@ select.form-control {
     // Constants
     const DEFAULT_PROXY_BANK_URL = 'https://raw.githubusercontent.com/InconigtoMode/proxylist/refs/heads/main/ProxyList.txt';
     const PROXY_CHECK_API_URL = 'https://apicek.t-me-inconigto.workers.dev/proxy';
-    const PATH_PREFIX = 'Geo-Project'; // Hardcoded path prefix
+    const PATH_PREFIX = 'Inconigto-Mode'; // Hardcoded path prefix
     
+    // Helper Functions
+    function generateUUIDv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+    
+    // Safe base64 encoding function
+    function safeBase64Encode(str) {
+        try {
+            // Make sure we're working with a string
+            const stringToEncode = typeof str === 'object' ? JSON.stringify(str) : String(str);
+            return window.btoa(stringToEncode);
+        } catch (e) {
+            console.error("Base64 encoding error:", e);
+            return "";
+        }
+    }
     
     // Check if proxy is valid via API
     async function checkProxyValidity(ip, port) {
