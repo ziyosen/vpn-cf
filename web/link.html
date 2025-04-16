@@ -1926,24 +1926,21 @@ function renderProxyList() {
 
 // Function to check proxy status in the list
 function checkProxyStatusInList(proxy, statusBadge) {
-    const statusURL = `https://apicek.t-me-inconigto.workers.dev/proxy?ip=${proxy.ip}&port=${proxy.port}`;
+    const statusURL = `https://corsproxy.io/?https://api.checker-ip.web.id/check?ip=${proxy.ip}:${proxy.port}`;
     
     fetch(statusURL)
         .then(response => response.json())
         .then(data => {
-            if (data.proxyip === true) {
+            if (data.status && data.status.toUpperCase() === "ACTIVE") {
                 statusBadge.className = 'inline-block w-3 h-3 rounded-full bg-emerald-500 ml-2';
-                statusBadge.innerHTML = '';
-                statusBadge.title = 'Aktif';
+                statusBadge.title = `Aktif (${data.delay || '-'})`;
             } else {
                 statusBadge.className = 'inline-block w-3 h-3 rounded-full bg-rose-500 ml-2';
-                statusBadge.innerHTML = '';
                 statusBadge.title = 'Mati';
             }
         })
         .catch(error => {
             statusBadge.className = 'inline-block w-3 h-3 rounded-full bg-amber-500 ml-2';
-            statusBadge.innerHTML = '';
             statusBadge.title = 'Tidak diketahui';
             console.error("Fetch error:", error);
         });
@@ -2119,7 +2116,7 @@ async function selectProxy(index) {
 // Function to check proxy status in the account creation section
 function checkProxyStatus(proxy) {
     const startTime = performance.now();
-    const statusURL = `https://apicek.t-me-inconigto.workers.dev/proxy?ip=${proxy.ip}&port=${proxy.port}`;
+    const statusURL = `https://corsproxy.io/?https://api.checker-ip.web.id/check?ip=${proxy.ip}:${proxy.port}`;
     const statusContainer = document.getElementById('proxy-status-container');
     const statusLoading = document.getElementById('proxy-status-loading');
     const statusActive = document.getElementById('proxy-status-active');
@@ -2137,23 +2134,24 @@ function checkProxyStatus(proxy) {
     fetch(statusURL)
         .then(response => response.json())
         .then(data => {
-            const endTime = performance.now();
-            let latency = Math.floor((endTime - startTime));
-            
             // Hide loading state
             statusLoading.classList.add('hidden');
-            
-            if (data.proxyip === true) {
+
+            if (data.status && data.status.toUpperCase() === "ACTIVE") {
+                // Aktif
                 statusActive.classList.remove('hidden');
-                latencyElement.textContent = `${latency}ms`;
+                latencyElement.textContent = data.delay || '-';
             } else {
+                // Mati
                 statusDead.classList.remove('hidden');
+                latencyElement.textContent = '-';
             }
         })
         .catch(error => {
-            // Hide loading state
+            // Error
             statusLoading.classList.add('hidden');
             statusUnknown.classList.remove('hidden');
+            latencyElement.textContent = '-';
             console.error("Fetch error:", error);
         });
 }
@@ -2210,14 +2208,14 @@ function loadProxyList(url) {
         },
         // CORS Anywhere proxy
         async () => {
-            const corsUrl = `https://cors-anywhere.herokuapp.com/${url}`;
+            const corsUrl = `https://corsproxy.io/${url}`;
             const response = await fetch(corsUrl);
             if (!response.ok) throw new Error('CORS Anywhere proxy failed');
             return await response.text();
         },
         // AllOrigins proxy
         async () => {
-            const corsUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+            const corsUrl = `https://corsproxy.io/?url=${encodeURIComponent(url)}`;
             const response = await fetch(corsUrl);
             if (!response.ok) throw new Error('AllOrigins proxy failed');
             const data = await response.json();
