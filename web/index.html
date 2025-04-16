@@ -9,7 +9,6 @@
     <meta name="robots" content="index, follow">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css">
     <meta name="theme-color" content="#0f0c29"> 
     <title>Geo Project</title>
     
@@ -629,93 +628,8 @@
   opacity: 1; /* kembali solid saat hover */
 }
 
-font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-
-    .profile-name {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-      margin-top: 30px;
-    }
-
-    .service-description {
-      color: #777;
-    }
-
-    .status-badge {
-      margin-top: 10px;
-    }
-
-    /* Drawer Input Container */
-    .slide-input {
-      position: fixed;
-      top: 50%;
-      right: -270px;
-      transform: translateY(-50%);
-      background: #fff;
-      padding: 15px;
-      border-radius: 16px 0 0 16px;
-      box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.1);
-      transition: right 0.4s ease;
-      z-index: 999;
-      width: 220px;
-    }
-
-    .slide-input.active {
-      right: 10px;
-    }
-
-    #name-input {
-      padding: 5px 10px;
-      font-size: 14px;
-      width: 100%;
-      border-radius: 8px;
-      border: 2px solid #87cefa;
-      transition: border-color 0.3s;
-      margin-bottom: 10px;
-    }
-
-    #name-input:focus {
-      border-color: #66ccff;
-      outline: none;
-    }
-
-    #confirm-btn {
-      padding: 8px;
-      background-color: #66ccff;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-      width: 100%;
-    }
-
-    #confirm-btn:hover {
-      background-color: #3399cc;
-    }
-
-    .toggle-tab {
-      position: fixed;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      background: #66ccff;
-      color: white;
-      padding: 6px 10px;
-      font-size: 12px;
-      border-radius: 6px 0 0 6px;
-      cursor: pointer;
-      z-index: 1000;
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-    }
-    
     </style>
+    
     
 <body>
   <body>
@@ -741,21 +655,13 @@ font-family: sans-serif;
         <!-- Hidden file input -->
         <input type="file" id="logo-upload" accept="image/*" />
  
-           <h1 class="profile-name" data-text="Geo Project" id="profile-name">Geo Project</h1>
-  <p class="service-description">V2ray Account Generator based on Cloudflare Workers</p>
-  <div class="status-badge">
-    <i class="fas fa-circle"></i> Service Online
-  </div>
-
-  <!-- Tombol tab untuk membuka panel -->
-  <div class="toggle-tab" id="open-tab">Edit Name</div>
-
-  <!-- Panel input dan tombol OK -->
-  <div class="slide-input" id="input-panel">
-    <input type="text" id="name-input" placeholder="Enter your custom name" />
-    <button id="confirm-btn">OK</button>
-  </div>
-           
+           <h1 class="profile-name" data-text="Geo Project">Geo Project</h1>
+                <p class="service-description">V2ray Account Generator based on Cloudflare Workers</p>
+                <div class="status-badge">
+                    <i class="fas fa-circle"></i> Service Online
+                </div>
+            </div>
+            
             <div class="protocol-icons">
                 <div class="protocol-icon">
                     <div class="protocol-icon-circle">
@@ -838,46 +744,6 @@ font-family: sans-serif;
         <a href="https://t.me/Inconigto_Mode" target="_blank">Incognito Mode || Yūrei</a>
     </p>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.js"></script>
-  <script>
-    const defaultName = "Geo Project";
-    const profileNameElement = document.getElementById('profile-name');
-    const nameInput = document.getElementById('name-input');
-    const confirmBtn = document.getElementById('confirm-btn');
-    const inputPanel = document.getElementById('input-panel');
-    const openTab = document.getElementById('open-tab');
-
-    const savedName = localStorage.getItem('profileName');
-    profileNameElement.textContent = savedName ? savedName : defaultName;
-
-    openTab.addEventListener('click', () => {
-      inputPanel.classList.add('active');
-      nameInput.focus();
-    });
-
-    confirmBtn.addEventListener('click', () => {
-      const newName = nameInput.value.trim();
-      if (newName) {
-        Swal.fire({
-          title: 'Are you sure?',
-          text: "You want to change the name?",
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonText: 'Yes, change it!',
-          cancelButtonText: 'No'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            profileNameElement.textContent = newName;
-            localStorage.setItem('profileName', newName);
-            Swal.fire('Changed!', 'Your profile name has been updated.', 'success');
-            nameInput.value = '';
-            inputPanel.classList.remove('active');
-          }
-        });
-      }
-    });
-  </script>
 
   <script>
     const logoImg = document.getElementById("profile-img");
