@@ -695,7 +695,7 @@ select.form-control {
         <div class="tech-detail tech-detail-3"></div>
         
         <div class="title-container">
-            <h1 class="title">GEO - PROJECT</h1>
+            <h1 class="title" style="font-weight: bold;">GEO - PROJECT</h1>
             <p class="subtitle">Advanced Subscription Link Generator</p>
         </div>
         
@@ -715,26 +715,28 @@ select.form-control {
                 <label for="formatType" style="font-weight: bold;">FORMAT TYPE</label>
                 <select id="formatType" class="form-control" required>
                     <option value="v2ray">V2RAY</option>
-                    <option value="nekobox">NEKOBOX</option>
                     <option value="clash">CLASH</option>
+                    <option value="singbox">SINGBOX</option>
+                    <option value="nekobox">NEKOBOX</option>
                 </select>
             </div>
             
             <label for="uuid" style="font-weight: bold;">UUID</label>
-<input type="text" id="uuid" class="form-control" value="f282b878-8711-45a1-8c69-5564172123c1" required>
-<button type="button" id="generateUuid" class="uuid-generate" style="display: none;">GENERATE</button>
+              <input type="text" id="uuid" class="form-control" value="f282b878-8711-45a1-8c69-5564172123c1" required>
+          <button type="button" id="generateUuid" class="uuid-generate" style="display: none;">GENERATE</button>
 
+            
             <div class="form-group">
                 <label for="bugType" style="font-weight: bold;">BUG TYPE</label>
                 <select id="bugType" class="form-control" required>
-                    <option value="default">DIRECT</option>
-                    <option value="non-wildcard">WEBSOCKET</option>
-                    <option value="wildcard">WILDCARD WEBSOCKET</option>
+                    <option value="default">DEFAULT</option>
+                    <option value="non-wildcard">NON-WILDCARD</option>
+                    <option value="wildcard">WILDCARD</option>
                 </select>
             </div>
             
             <div class="form-group">
-                <label for="mainDomain" style="font-weight: bold;">MAIN DOMAIN <span class="info-badge">SELECT</span></label>
+                <label for="mainDomain">MAIN DOMAIN <span class="info-badge">SELECT</span></label>
                 <select id="mainDomain" class="form-control" required>
                     <!-- Will be populated from MainDomains array -->
                 </select>
@@ -742,9 +744,8 @@ select.form-control {
             
             <div id="customBugContainer" class="form-group custom-bug-container">
                 <label for="customBug" style="font-weight: bold;">CUSTOM BUG</label>
-                <input type="text" id="customBug" class="form-control" placeholder="Example : BUG-WLG.COM, BUG-VIU.COM, BUG-ZOOM.COM">
-                <div class="select-info">Pisah Dengan Koma Jika Ingin Banyak BUG sekaligus</div>
-                <div class="select-info">Supported Wildcard : ava.game.naver.com, quiz.int.vidio.com ,graph.instagram.com, zaintest.vuclip.com, support.zoom.us, cache.netflix.com</div>
+                <input type="text" id="customBug" class="form-control" placeholder="e.g., google.com, youtube.com, instagram.com">
+                <div class="select-info">Separate multiple domains with commas</div>
             </div>
             
             <div class="form-group">
@@ -765,14 +766,14 @@ select.form-control {
                 
                 <div class="form-group">
                     <label for="limit" style="font-weight: bold;">QUANTITY</label>
-                    <input type="number" id="limit" class="form-control" min="1" max="50" value="5" placeholder="Max 50" required>
+                    <input type="number" id="limit" class="form-control" min="1" max="20" value="5" placeholder="Max 20" required>
                 </div>
             </div>
             
             <div class="form-group validation-group">
                 <label class="form-check">
                     <input type="checkbox" id="validateProxies" class="form-check-input" checked>
-                    <span class="form-check-label">Fiter ProxyIP ACTIVE Untuk Subscription ?</span>
+                    <span class="form-check-label" style="font-weight: bold;">Validate proxies before generating</span>
                 </label>
             </div>
             
@@ -853,7 +854,7 @@ select.form-control {
     const PATH_PREFIX = 'Geo-Project'; // Hardcoded path prefix
     const MainDomains = [
         'vpn.checker-ip.web.id',
-        ];
+    ];
 
     const CustomBugs = [];
     
@@ -957,8 +958,8 @@ async function checkProxyValidity(ip, port) {
             
             // Keep the default options
             const defaultOptions = `
-                <option value="random">RANDOM</option>
                 <option value="">GLOBAL (ALL)</option>
+                <option value="random">RANDOM</option>
             `;
             
             // Add the country codes from GitHub with their names
@@ -1057,15 +1058,103 @@ function generateClashVMess(name, uuid, domain, host, sni, proxyHost, proxyPort,
   udp: true`;
 }
 
+// Generate Singbox configuration
+function generateSingboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPort, tls, type) {
+    const ports = tls ? '443' : '80';
+    const snio = tls ? `\n      "tls": {\n        "enabled": true,\n        "server_name": "${sni}",\n        "insecure": true\n      },` : '';
+    
+    let config = '';
+    if (type === 'vless') {
+        config = `    {
+      "type": "vless",
+      "tag": "${name}",
+      "domain_strategy": "ipv4_only",
+      "server": "${domain}",
+      "server_port": ${ports},
+      "uuid": "${uuid}",${snio}
+      "multiplex": {
+        "protocol": "smux",
+        "max_streams": 32
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/${PATH_PREFIX}/${proxyHost}-${proxyPort}",
+        "headers": {
+          "Host": "${host}"
+        },
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      },
+      "packet_encoding": "xudp"
+    }`;
+    } else if (type === 'vmess') {
+        config = `    {
+      "type": "vmess",
+      "tag": "${name}",
+      "domain_strategy": "ipv4_only",
+      "server": "${domain}",
+      "server_port": ${ports},
+      "uuid": "${uuid}",
+      "alter_id": 0,
+      "security": "zero",${snio}
+      "multiplex": {
+        "protocol": "smux",
+        "max_streams": 32
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/${PATH_PREFIX}/${proxyHost}-${proxyPort}",
+        "headers": {
+          "Host": "${host}"
+        },
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      },
+      "packet_encoding": "xudp"
+    }`;
+    } else if (type === 'trojan') {
+        config = `    {
+      "type": "trojan",
+      "tag": "${name}",
+      "domain_strategy": "ipv4_only",
+      "server": "${domain}",
+      "server_port": ${ports},
+      "password": "${uuid}",${snio}
+      "multiplex": {
+        "protocol": "smux",
+        "max_streams": 32
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/${PATH_PREFIX}/${proxyHost}-${proxyPort}",
+        "headers": {
+          "Host": "${host}"
+        },
+        "early_data_header_name": "Sec-WebSocket-Protocol"
+      }
+    }`;
+    } else if (type === 'ss') {
+        config = `    {
+      "type": "shadowsocks",
+      "tag": "${name}",
+      "server": "${domain}",
+      "server_port": 443,
+      "method": "none",
+      "password": "${uuid}",
+      "plugin": "v2ray-plugin",
+      "plugin_opts": "mux=0;path=/${PATH_PREFIX}/${proxyHost}-${proxyPort};host=${host};tls=${tls ? '1' : '0'}"
+    }`;
+    }
+    
+    return config;
+}
 
 // Generate Nekobox configuration
 function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPort, tls, type) {
     const ports = tls ? '443' : '80';
-    const snio = tls ? `\n      "tls": {\n        "enabled": true,\n        "insecure": false,\n        "server_name": "${sni}",\n        "utls": {\n          "enabled": true,\n          "fingerprint": "randomized"\n        }\n      },` : '';
-
+    const snio = tls ? `\n      "tls": {\n        "disable_sni": false,\n        "enabled": true,\n        "insecure": true,\n        "server_name": "${sni}"\n      },` : '';
+    
     let config = '';
     if (type === 'vless') {
-        config = `{
+        config = `    {
       "domain_strategy": "ipv4_only",
       "flow": "",
       "multiplex": {
@@ -1090,7 +1179,7 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
       "uuid": "${uuid}"
     }`;
     } else if (type === 'trojan') {
-        config = `{
+        config = `    {
       "domain_strategy": "ipv4_only",
       "multiplex": {
         "enabled": false,
@@ -1113,7 +1202,7 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
       "type": "trojan"
     }`;
     } else if (type === 'ss') {
-        config = `{
+        config = `    {
       "type": "shadowsocks",
       "tag": "${name}",
       "server": "${domain}",
@@ -1123,25 +1212,6 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
       "plugin": "v2ray-plugin",
       "plugin_opts": "mux=0;path=/${PATH_PREFIX}/${proxyHost}-${proxyPort};host=${host};tls=${tls ? '1' : '0'}"
     }`;
-    } else if (type === 'vmess') {
-        config = `{
-  "alter_id": 0,
-  "packet_encoding": "",
-  "security": "zero",
-  "server": "${domain}",
-  "server_port": 443,${snio}
-  "transport": {
-    "headers": {
-      "Host": "${host}"
-    },
-    "path": "/${PATH_PREFIX}/${proxyHost}-${proxyPort}",
-    "type": "ws"
-  },
-  "uuid": "${uuid}",
-  "type": "vmess",
-  "domain_strategy": "prefer_ipv4",
-  "tag": "${name}"
-}`;
     }
     
     return config;
@@ -1225,7 +1295,7 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
             invalidCountEl.textContent = '0';
             
             // Prepare validation tasks in batches to avoid overwhelming the browser
-            const BATCH_SIZE = 5; // Process 10 proxies at a time
+            const BATCH_SIZE = 10; // Process 10 proxies at a time
             let validCount = 0;
             let invalidCount = 0;
             let processedCount = 0;
@@ -1382,9 +1452,229 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
             }
             
             // Return a single Clash configuration with all proxies
-            return `#GEO-PROJECT\nproxies:\n${allProxies.join('\n')}`;
+            return `#Stupid-World\nproxies:\n${allProxies.join('\n')}`;
         } 
-        
+        // For Singbox format
+        else if (formatType === 'singbox') {
+            let allProxies = [];
+            let proxyTags = [];
+            
+            for (let i = 0; i < limitedProxies.length; i++) {
+                const line = limitedProxies[i];
+                const parts = line.split(',');
+                if (parts.length < 3) continue;
+                
+                const [proxyHost, proxyPort, countryCode, ...ispParts] = parts;
+                const isp = ispParts.join(' ') || 'Unknown';
+                const sanitizedIsp = isp.replace(/[\n\r]+/g, "").trim();
+                
+                // If we have multiple bugs, create configs for each bug
+                const bugsToUse = customBugs && customBugs.length > 0 ? customBugs : [mainDomain];
+                
+                for (const bug of bugsToUse) {
+                    // Determine domain, host, and SNI for this specific bug
+                    let bugDomain, bugHost, bugSni;
+                    
+                    switch (bugType) {
+                        case 'default':
+                            bugDomain = mainDomain;
+                            bugHost = mainDomain;
+                            bugSni = mainDomain;
+                            break;
+                        case 'non-wildcard':
+                            bugDomain = bug;
+                            bugHost = mainDomain;
+                            bugSni = mainDomain;
+                            break;
+                        case 'wildcard':
+                            bugDomain = bug;
+                            bugHost = `${bug}.${mainDomain}`;
+                            bugSni = `${bug}.${mainDomain}`;
+                            break;
+                    }
+                    
+                    const bugLabel = bug !== mainDomain ? `[${bug}]` : '';
+                    const name = `(${countryCode}) ${sanitizedIsp} ${bugLabel} ${i+1}`;
+                    
+                    switch (type) {
+                        case 'vmess':
+                            proxyTags.push(`        "${name}",`);
+                            allProxies.push(generateSingboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vmess'));
+                            break;
+                        case 'vless':
+                            proxyTags.push(`        "${name}",`);
+                            allProxies.push(generateSingboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vless'));
+                            break;
+                        case 'trojan':
+                            proxyTags.push(`        "${name}",`);
+                            allProxies.push(generateSingboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'trojan'));
+                            break;
+                        case 'shadowsocks':
+                            proxyTags.push(`        "${name}",`);
+                            allProxies.push(generateSingboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'ss'));
+                            break;
+                        case 'mix':
+                            proxyTags.push(`        "${name} vmess",`);
+                            proxyTags.push(`        "${name} vless",`);
+                            proxyTags.push(`        "${name} trojan",`);
+                            proxyTags.push(`        "${name} ss",`);
+                            allProxies.push(generateSingboxConfig(`${name} vmess`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vmess'));
+                            allProxies.push(generateSingboxConfig(`${name} vless`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vless'));
+                            allProxies.push(generateSingboxConfig(`${name} trojan`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'trojan'));
+                            allProxies.push(generateSingboxConfig(`${name} ss`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'ss'));
+                            break;
+                    }
+                }
+            }
+            
+            // Remove trailing comma from the last proxy
+            if (allProxies.length > 0) {
+                const lastProxy = allProxies[allProxies.length - 1];
+                allProxies[allProxies.length - 1] = lastProxy.replace(/,\s*$/, '');
+            }
+            
+            // Create the full Singbox configuration
+            return `#### STUPID WORLD #### 
+
+{
+  "log": {
+    "level": "info"
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "remote-dns",
+        "address": "https://family.cloudflare-dns.com/dns-query",
+        "address_resolver": "direct-dns",
+        "strategy": "ipv4_only"
+      },
+      {
+        "tag": "direct-dns",
+        "address": "local",
+        "strategy": "ipv4_only"
+      },
+      {
+        "tag": "dns-final",
+        "address": "local",
+        "address_resolver": "dns-local",
+        "strategy": "ipv4_only"
+      },
+      {
+        "tag": "dns-local",
+        "address": "local"
+      },
+      {
+        "tag": "dns-block",
+        "address": "rcode://success"
+      }
+    ],
+    "rules": [
+      {
+        "domain": [
+          "family.cloudflare-dns.com",
+          "${mainDomain}"
+        ],
+        "server": "direct-dns"
+      }
+    ],
+    "final": "dns-final",
+    "independent_cache": true
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "mtu": 1400,
+      "inet4_address": "172.19.0.1/30",
+      "inet6_address": "fdfe:dcba:9876::1/126",
+      "auto_route": true,
+      "strict_route": true,
+      "endpoint_independent_nat": true,
+      "stack": "mixed",
+      "sniff": true
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "Internet",
+      "type": "selector",
+      "outbounds": [
+        "Best Latency",
+${proxyTags.join('\n')}
+        "direct"
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "Best Latency",
+      "outbounds": [
+${proxyTags.join('\n')}
+        "direct"
+      ],
+      "url": "https://ping.wildcrd.us.kg",
+      "interval": "30s"
+    },
+${allProxies.join(',\n')},
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "direct",
+      "tag": "bypass"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    },
+    {
+      "type": "dns",
+      "tag": "dns-out"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "port": 53,
+        "outbound": "dns-out"
+      },
+      {
+        "inbound": "dns-in",
+        "outbound": "dns-out"
+      },
+      {
+        "network": "udp",
+        "port": 443,
+        "outbound": "block"
+      },
+      {
+        "source_ip_cidr": [
+          "224.0.0.0/3",
+          "ff00::/8"
+        ],
+        "ip_cidr": [
+          "224.0.0.0/3",
+          "ff00::/8"
+        ],
+        "outbound": "block"
+      }
+    ],
+    "auto_detect_interface": true
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": false
+    },
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "external_ui": "ui",
+      "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/gh-pages.zip",
+      "external_ui_download_detour": "Internet",
+      "secret": "stupid",
+      "default_mode": "rule"
+    }
+  }
+}`;
+        }
         // For Nekobox format
         else if (formatType === 'nekobox') {
             let allProxies = [];
@@ -1428,34 +1718,27 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
                     const name = `(${countryCode}) ${sanitizedIsp} ${bugLabel} ${i+1}`;
                     
                     switch (type) {
-    case 'vless':
-        proxyTags.push(`        "${name}",`);
-        allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vless'));
-        break;
-    case 'trojan':
-        proxyTags.push(`        "${name}",`);
-        allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'trojan'));
-        break;
-    case 'shadowsocks':
-        proxyTags.push(`        "${name}",`);
-        allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'ss'));
-        break;
-    case 'vmess':
-        proxyTags.push(`        "${name}",`);
-        allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vmess'));
-        break;
-    case 'mix':
-        proxyTags.push(`        "${name} -[VLESS-${tls ? 'TLS' : 'NTLS'}]",`);
-        proxyTags.push(`        "${name} -[TROJAN-${tls ? 'TLS' : 'NTLS'}]",`);
-        proxyTags.push(`        "${name} -[SS-${tls ? 'TLS' : 'NTLS'}]",`);
-        proxyTags.push(`        "${name} -[VMESS-${tls ? 'TLS' : 'NTLS'}]",`);
-
-        allProxies.push(generateNekoboxConfig(`${name} -[VLESS-${tls ? 'TLS' : 'NTLS'}]`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vless'));
-        allProxies.push(generateNekoboxConfig(`${name} -[TROJAN-${tls ? 'TLS' : 'NTLS'}]`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'trojan'));
-        allProxies.push(generateNekoboxConfig(`${name} -[SS-${tls ? 'TLS' : 'NTLS'}]`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'ss'));
-        allProxies.push(generateNekoboxConfig(`${name} -[VMESS-${tls ? 'TLS' : 'NTLS'}]`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vmess'));  // Added vmess config
-        break;
-}
+                        case 'vless':
+                            proxyTags.push(`        "${name}",`);
+                            allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vless'));
+                            break;
+                        case 'trojan':
+                            proxyTags.push(`        "${name}",`);
+                            allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'trojan'));
+                            break;
+                        case 'shadowsocks':
+                            proxyTags.push(`        "${name}",`);
+                            allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'ss'));
+                            break;
+                        case 'mix':
+                            proxyTags.push(`        "${name} vless",`);
+                            proxyTags.push(`        "${name} trojan",`);
+                            proxyTags.push(`        "${name} ss",`);
+                            allProxies.push(generateNekoboxConfig(`${name} vless`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vless'));
+                            allProxies.push(generateNekoboxConfig(`${name} trojan`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'trojan'));
+                            allProxies.push(generateNekoboxConfig(`${name} ss`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'ss'));
+                            break;
+                    }
                 }
             }
             
@@ -1466,7 +1749,8 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
             }
             
             // Create the full Nekobox configuration
-            return `##GEO-PROJECT##
+            return `#### STUPID WORLD #### 
+
 {
   "dns": {
     "final": "dns-final",
@@ -1848,7 +2132,5 @@ ${allProxies.join(',\n')},
         });
     });
 </script>
-
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"931600ff9fd3fcf0","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.3.0","token":"699b92b44d49410cb972cc556d389863"}' crossorigin="anonymous"></script>
 </body>
 </html>
