@@ -5,7 +5,7 @@ minify = true
 workers_dev = true
 
 routes = [
-  # Domain utama - vpn.checker-ip.web.id
+  # Domain: vpn.checker-ip.web.id
   { pattern = "vpn.checker-ip.web.id", custom_domain = true },
   { pattern = "ava.game.naver.com.vpn.checker-ip.web.id", custom_domain = true },
   { pattern = "df.game.naver.com.vpn.checker-ip.web.id", custom_domain = true },
@@ -14,14 +14,14 @@ routes = [
   { pattern = "support.zoom.us.vpn.checker-ip.web.id", custom_domain = true },
   { pattern = "cache.netflix.com.vpn.checker-ip.web.id", custom_domain = true },
 
-  # Domain alternatif - free.vpn-cf.xyz
+  # Domain: free.vpn-cf.xyz
   { pattern = "free.vpn-cf.xyz", custom_domain = true },
   { pattern = "ava.game.naver.com.free.vpn-cf.xyz", custom_domain = true },
   { pattern = "df.game.naver.com.free.vpn-cf.xyz", custom_domain = true },
   { pattern = "graph.instagram.com.free.vpn-cf.xyz", custom_domain = true },
   { pattern = "zaintest.vuclip.com.free.vpn-cf.xyz", custom_domain = true },
   { pattern = "support.zoom.us.free.vpn-cf.xyz", custom_domain = true },
-  { pattern = "cache.netflix.com.free.vpn-cf.xyz", custom_domain = true },
+  { pattern = "cache.netflix.com.free.vpn-cf.xyz", custom_domain = true }
 ]
 
 [[kv_namespaces]]
@@ -37,5 +37,5 @@ build = { command = "cargo install -q worker-build && worker-build --dev" }
 [vars]
 UUID = "f282b878-8711-45a1-8c69-5564172123c1"
 MAIN_PAGE_URL = "https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/index.html"
-SUB_PAGE_URL = "https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/sub.html"
+SUB_PAGE_URL  = "https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/sub.html"
 LINK_PAGE_URL = "https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/link.html"
