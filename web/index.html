@@ -10,7 +10,6 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://inconigto-mode.vercel.app/">
     <meta property="og:title" content="Geo Project - V2ray Account Generator">
     <meta property="og:description" content="Geo Project">
     <meta property="og:image" content="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg">
@@ -20,7 +19,6 @@
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://inconigto-mode.vercel.app/">
     <meta property="twitter:title" content="Geo Project - V2ray Account Generator">
     <meta property="twitter:description" content="Geo Project">
     <meta property="twitter:image" content="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg">
@@ -836,7 +834,6 @@
   	<div class="card">
   <header class="navbar">
     <h2 class="profile-name" data-text="Geo Project" style="font-size: 1.3rem; font-weight: normal;">Geo Project</h2>
-
     <button class="menu-toggle" onclick="toggleMenu()">
       <i class="fas fa-bars"></i>
     </button>
@@ -849,20 +846,16 @@
 <br>
 <div class="profile-header">
         <div class="profile-img-container">
-          <!-- Default logo -->
           <img
             id="profile-img"
             src="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg"
             alt="Geo Project Profile"
             class="profile-img"
           />
-          <!-- Camera icon -->
           <div class="camera-icon">
             <i class="fa fa-camera"></i>
           </div>
         </div>
-
-        <!-- Hidden file input -->
         <input type="file" id="logo-upload" accept="image/*" />
  
            <div class="status-badge">
@@ -919,8 +912,7 @@
         <i class="fab fa-telegram fa-2x"></i>
       </a>
     </div>
-  </div>
-
+  </div>  
   <div class="footer-credit">
                 <div class="footer-divider"></div>
                 <p>&copy; <script>document.write(new Date().getFullYear())</script> Geo Project</p>
@@ -928,24 +920,19 @@
             </div>
         </div>
     </div>
-    
-  <!-- JavaScript Toggle -->
   	<script>
     const logoImg = document.getElementById("profile-img");
     const logoUpload = document.getElementById("logo-upload");
     const cameraIcon = document.querySelector(".camera-icon");
-
-    // Load saved logo from localStorage
+    
     if (localStorage.getItem("logo")) {
       logoImg.src = localStorage.getItem("logo");
     }
 
-    // Trigger file input when the camera icon is clicked
     cameraIcon.addEventListener("click", () => {
       logoUpload.click();
     });
 
-    // Handle image upload
     logoUpload.addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (file && file.type.startsWith("image/")) {
@@ -958,9 +945,7 @@
       }
     });
   </script>
-                
     <script>
-        // Enhanced particle effect
         const particlesContainer = document.getElementById('particles');
         const particleCount = 80;
         
@@ -968,27 +953,15 @@
             const particle = document.createElement('div');
             particle.classList.add('particle');
             
-            // Random position
             const posX = Math.random() * 100;
-            const posY = Math.random() * 100 + 100; // Start below the viewport
-            
-            // Random size
+            const posY = Math.random() * 100 + 100;
             const size = Math.random() * 6 + 1;
-            
-            // Random opacity
             const opacity = Math.random() * 0.6 + 0.1;
-            
-            // Random animation duration
             const duration = Math.random() * 20 + 10;
-            
-            // Random animation delay
             const delay = Math.random() * 10;
-            
-            // Random color
             const colors = ['#6a11cb', '#2575fc', '#a0a0ff', '#ffffff'];
             const color = colors[Math.floor(Math.random() * colors.length)];
-            
-            // Apply styles
+
             particle.style.left = `${posX}%`;
             particle.style.top = `${posY}%`;
             particle.style.width = `${size}px`;
@@ -1001,8 +974,6 @@
             
             particlesContainer.appendChild(particle);
         }
-        
-        // Add data-text attribute for text shadow effect
         document.querySelector('.profile-name').setAttribute('data-text', 'Geo Project');
     </script>
   <script>
