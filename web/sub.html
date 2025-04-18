@@ -725,7 +725,6 @@ select.form-control {
               <input type="text" id="uuid" class="form-control" value="f282b878-8711-45a1-8c69-5564172123c1" required>
           <button type="button" id="generateUuid" class="uuid-generate" style="display: none;">GENERATE</button>
 
-            
             <div class="form-group">
                 <label for="bugType" style="font-weight: bold;">BUG TYPE</label>
                 <select id="bugType" class="form-control" required>
@@ -736,7 +735,7 @@ select.form-control {
             </div>
             
             <div class="form-group">
-                <label for="mainDomain">MAIN DOMAIN <span class="info-badge">SELECT</span></label>
+                <label for="mainDomain" style="font-weight: bold;">MAIN DOMAIN <span class="info-badge">SELECT</span></label>
                 <select id="mainDomain" class="form-control" required>
                     <!-- Will be populated from MainDomains array -->
                 </select>
@@ -777,21 +776,21 @@ select.form-control {
                 </label>
             </div>
             
-            <button type="submit" class="btn">Generate Configuration</button>
+            <button type="submit" class="btn" style="font-weight: bold;">Generate Configuration</button>
         </form>
         
         <div id="loading" class="loading">
             <div class="spinner"></div>
-            <div class="loading-text typing">Fetching proxy data and generating configs...</div>
+            <div class="loading-text typing" style="font-weight: bold;">Fetching proxy data and generating configs...</div>
         </div>
         
         <div id="validation-status" class="validation-status">
-            <div>Validating proxies... <span id="validation-count">0/0</span></div>
+            <div style="font-weight: bold;">Validating proxies... <span id="validation-count">0/0</span></div>
             <div class="validation-progress">
                 <div id="validation-bar" class="validation-bar"></div>
             </div>
             <div class="validation-stats">
-                <div>Valid: <span id="valid-count">0</span></div>
+                <div style="font-weight: bold;">Valid: <span id="valid-count">0</span></div>
                 <div>Invalid: <span id="invalid-count">0</span></div>
             </div>
         </div>
@@ -800,7 +799,7 @@ select.form-control {
         
         <div id="result" class="result">
             <div class="result-header">
-                <div class="result-title">CONFIGURATION GENERATED</div>
+                <div class="result-title" style="font-weight: bold;">CONFIGURATION GENERATED</div>
             </div>
             <div class="output-container">
                 <textarea id="output" class="output" readonly></textarea>
@@ -826,8 +825,8 @@ select.form-control {
     <div class="circuit-dot circuit-dot-3"></div>
     <div class="circuit-dot circuit-dot-4"></div>
     
-    <div class="footer-logo">GEO-PROJECT</div>
-    <div class="footer-powered">POWERED BY SECURE TECHNOLOGY</div>
+    <div class="footer-logo" style="font-weight: bold;">GEO-PROJECT</div>
+    <div class="footer-powered" style="font-weight: bold;">POWERED BY SECURE TECHNOLOGY</div>
     <div class="footer-social">
         <a href="https://t.me/inconigto_Mode" class="social-link" target="_blank">
             <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -836,7 +835,7 @@ select.form-control {
             </svg>
             @sampiiiiu
         </a>
-        <a href="https://t.me/InconigtoMode" class="social-link" target="_blank">
+        <a href="https://t.me/sampiiiiu" class="social-link" target="_blank">
             <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
                 <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
@@ -857,15 +856,6 @@ select.form-control {
     ];
 
     const CustomBugs = [];
-    
-    // Helper Functions
-    function generateUUIDv4() {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = Math.random() * 16 | 0;
-            const v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-    }
     
     // Safe base64 encoding function
     function safeBase64Encode(str) {
@@ -1201,6 +1191,32 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
       },
       "type": "trojan"
     }`;
+    } else if (type === 'vmess') {
+        config = `    {
+      "domain_strategy": "ipv4_only",
+      "multiplex": {
+        "enabled": false,
+        "max_streams": 32,
+        "protocol": "smux"
+      },
+      "packet_encoding": "xudp",
+      "server": "${domain}",
+      "server_port": ${ports},
+      "tag": "${name}",${snio}
+      "transport": {
+        "early_data_header_name": "Sec-WebSocket-Protocol",
+        "headers": {
+          "Host": "${host}"
+        },
+        "max_early_data": 0,
+        "path": "/${PATH_PREFIX}/${proxyHost}-${proxyPort}",
+        "type": "ws"
+      },
+      "type": "vmess",
+      "uuid": "${uuid}",
+      "alter_id": 0,
+      "security": "zero"
+    }`;
     } else if (type === 'ss') {
         config = `    {
       "type": "shadowsocks",
@@ -1452,7 +1468,7 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
             }
             
             // Return a single Clash configuration with all proxies
-            return `#Geo-Project\nproxies:\n${allProxies.join('\n')}`;
+            return `#GEO PROJECT\nproxies:\n${allProxies.join('\n')}`;
         } 
         // For Singbox format
         else if (formatType === 'singbox') {
@@ -1572,7 +1588,7 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
       {
         "domain": [
           "family.cloudflare-dns.com",
-          "${mainDomain}"
+          "${domain}"
         ],
         "server": "direct-dns"
       }
@@ -1669,7 +1685,7 @@ ${allProxies.join(',\n')},
       "external_ui": "ui",
       "external_ui_download_url": "https://github.com/MetaCubeX/metacubexd/archive/gh-pages.zip",
       "external_ui_download_detour": "Internet",
-      "secret": "stupid",
+      "secret": "project",
       "default_mode": "rule"
     }
   }
@@ -1722,6 +1738,10 @@ ${allProxies.join(',\n')},
                             proxyTags.push(`        "${name}",`);
                             allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vless'));
                             break;
+                        case 'vmess':
+                            proxyTags.push(`        "${name}",`);
+                            allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vmess'));
+                            break;
                         case 'trojan':
                             proxyTags.push(`        "${name}",`);
                             allProxies.push(generateNekoboxConfig(name, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'trojan'));
@@ -1732,9 +1752,11 @@ ${allProxies.join(',\n')},
                             break;
                         case 'mix':
                             proxyTags.push(`        "${name} vless",`);
+                            proxyTags.push(`        "${name} vmess",`);
                             proxyTags.push(`        "${name} trojan",`);
                             proxyTags.push(`        "${name} ss",`);
                             allProxies.push(generateNekoboxConfig(`${name} vless`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vless'));
+                            allProxies.push(generateNekoboxConfig(`${name} vmess`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'vmess'));
                             allProxies.push(generateNekoboxConfig(`${name} trojan`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'trojan'));
                             allProxies.push(generateNekoboxConfig(`${name} ss`, uuid, bugDomain, bugHost, bugSni, proxyHost, proxyPort, tls, 'ss'));
                             break;
@@ -1749,7 +1771,7 @@ ${allProxies.join(',\n')},
             }
             
             // Create the full Nekobox configuration
-            return `#### STUPID WORLD #### 
+            return `#### GEO PROJECT #### 
 
 {
   "dns": {
@@ -1760,7 +1782,7 @@ ${allProxies.join(',\n')},
         "disable_cache": false,
         "domain": [
           "family.cloudflare-dns.com",
-          "${mainDomain}"
+          "${domain}"
         ],
         "server": "direct-dns"
       }
@@ -2045,11 +2067,6 @@ ${allProxies.join(',\n')},
             } else {
                 customBugContainer.style.display = 'block';
             }
-        });
-        
-        // UUID generator button
-        generateUuidBtn.addEventListener('click', () => {
-            uuidInput.value = generateUUIDv4();
         });
         
         // Form submission handler
