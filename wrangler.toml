@@ -1,4 +1,4 @@
-name = "siren"
+name = "v2ray"
 main = "build/worker/shim.mjs"
 compatibility_date = "2024-05-23"
 minify = true
@@ -13,6 +13,13 @@ routes = [
   { pattern = "support.zoom.us.vpn.checker-ip.web.id", custom_domain = true },
   { pattern = "cache.netflix.com.vpn.checker-ip.web.id", custom_domain = true },
 
+{ pattern = "free.vpn-cf.xyz", custom_domain = true },
+  { pattern = "ava.game.naver.com.free.vpn-cf.xyz", custom_domain = true },
+  { pattern = "df.game.naver.com.free.vpn-cf.xyz", custom_domain = true },
+  { pattern = "graph.instagram.com.free.vpn-cf.xyz", custom_domain = true },
+  { pattern = "zaintest.vuclip.com.free.vpn-cf.xyz", custom_domain = true },
+  { pattern = "support.zoom.us.free.vpn-cf.xyz", custom_domain = true },
+  { pattern = "cache.netflix.com.free.vpn-cf.xyz", custom_domain = true },
   ]
   
 [[kv_namespaces]]
