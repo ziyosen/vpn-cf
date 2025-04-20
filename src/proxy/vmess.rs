@@ -1,6 +1,4 @@
-use uuid::Uuid;
 use super::ProxyStream;
-
 
 use crate::common::{
     hash, KDFSALT_CONST_AEAD_RESP_HEADER_IV, KDFSALT_CONST_AEAD_RESP_HEADER_KEY,
