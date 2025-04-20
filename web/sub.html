@@ -1032,7 +1032,6 @@ select.form-control {
             });
 
         } else {
-            // Banyak QR code → tampilkan slider
             let currentIndex = 0;
             const modal = document.createElement('div');
             modal.className = 'qr-modal modal-dialog-centered';
@@ -1054,15 +1053,21 @@ select.form-control {
             img.style.display = 'block';
             img.style.margin = '0 auto';
 
-            // Button styles with Bootstrap
             const btnPrev = document.createElement('button');
             btnPrev.classList.add('btn', 'btn-secondary');
-            btnPrev.innerText = 'prev';
-            btnPrev.style.marginRight = '10px';
+            btnPrev.innerText = 'Prev';
 
             const btnNext = document.createElement('button');
             btnNext.classList.add('btn', 'btn-secondary');
             btnNext.innerText = 'Next';
+
+            // Container untuk Prev dan Next agar sejajar
+            const navContainer = document.createElement('div');
+            navContainer.style.display = 'flex';
+            navContainer.style.justifyContent = 'space-between';
+            navContainer.style.marginTop = '15px';
+            navContainer.appendChild(btnPrev);
+            navContainer.appendChild(btnNext);
 
             const closeBtn = document.createElement('button');
             closeBtn.classList.add('btn', 'btn-danger', 'mt-3');
@@ -1072,8 +1077,7 @@ select.form-control {
 
             modal.appendChild(label);
             modal.appendChild(img);
-            modal.appendChild(btnPrev);
-            modal.appendChild(btnNext);
+            modal.appendChild(navContainer);
             modal.appendChild(closeBtn);
             document.body.appendChild(modal);
 
