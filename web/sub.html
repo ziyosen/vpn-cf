@@ -903,8 +903,7 @@ select.form-control {
                         </svg>
                         COPY
                     </button>
-                    
-                    <!-- Download Button -->
+
 <button id="downloadConfig" class="download-btn">
     <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -979,7 +978,6 @@ select.form-control {
             return;
         }
 
-        // Hapus QR sebelumnya
         document.querySelectorAll('.qr-modal').forEach(modal => modal.remove());
 
         const maxLength = 2950;
@@ -997,7 +995,6 @@ select.form-control {
         if (tempChunk) chunks.push(tempChunk.trim());
 
         if (chunks.length === 1) {
-            // Hanya 1 QR code, tampilkan langsung
             QRCode.toDataURL(chunks[0], {
                 width: 400,
                 height: 400,
@@ -1009,11 +1006,20 @@ select.form-control {
                 const modal = document.createElement('div');
                 modal.className = 'qr-modal modal-dialog-centered';
                 modal.style = `
-                    position: fixed; top: 50%; left: 50%;
-                    transform: translate(-50%, -50%);
-                    background: #fff; padding: 20px;
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                    z-index: 9999; text-align: center;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(173, 216, 230, 0.2); 
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
+                backdrop-filter: blur(14px); 
+                -webkit-backdrop-filter: blur(14px); 
+                border-radius: 20px;
+                padding: 20px;
+                z-index: 9999;
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.3); /* Border halus */
+
                 `;
 
                 const img = document.createElement('img');
@@ -1036,11 +1042,20 @@ select.form-control {
             const modal = document.createElement('div');
             modal.className = 'qr-modal modal-dialog-centered';
             modal.style = `
-                position: fixed; top: 50%; left: 50%;
-                transform: translate(-50%, -50%);
-                background: #fff; padding: 20px;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                z-index: 9999; text-align: center;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.15); 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 9999;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Garis pinggir samar */
+
             `;
 
             const label = document.createElement('div');
@@ -1061,7 +1076,6 @@ select.form-control {
             btnNext.classList.add('btn', 'btn-secondary');
             btnNext.innerText = 'Next';
 
-            // Container untuk Prev dan Next agar sejajar
             const navContainer = document.createElement('div');
             navContainer.style.display = 'flex';
             navContainer.style.justifyContent = 'space-between';
