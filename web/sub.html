@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="icon" href="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg"/>
+
 <style>
 :root {
     --color-bg: #050a18;
@@ -731,6 +732,50 @@ select.form-control {
     text-align: center;
 }
 
+.qrcode-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto; /* Tengah secara horizontal */
+    padding: 10px 16px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    border-radius: 6px;
+    background: rgba(0, 120, 220, 0.2);
+    border: 1px solid rgba(0, 160, 255, 0.5);
+    color: #ffffff;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 160, 255, 0.3);
+    display: flex;
+}
+
+.qrcode-btn:hover {
+    background: rgba(0, 160, 255, 0.35);
+    border-color: rgba(0, 200, 255, 0.7);
+    box-shadow: 0 6px 28px rgba(0, 200, 255, 0.35);
+    transform: translateY(-2px);
+}
+
+.qrcode-icon {
+    width: 18px;
+    height: 18px;
+    transition: all 0.3s ease;
+}
+
+.qrcode-icon:hover {
+    transform: scale(1.2);
+}
+
+/* Ini biar tombolnya bener-bener di tengah */
+.center {
+    display: flex;
+    justify-content: center;
+}
+
 </style>
 </head>
 <body>
@@ -767,11 +812,10 @@ select.form-control {
                     </select>
                 </div>
                 
-                <div class="form-group uuid-group">
-                <label for="uuid" style="font-weight: bold;">UUID</label>                
-                <input type="text" id="uuid" class="form-control" value="bef63218-3a18-4f59-acac-28622247e22c" required readonly>
-            </div>
-            
+                <label for="uuid" style="font-weight: bold;">UUID</label>
+                <input type="text" id="uuid" class="form-control" value="f282b878-8711-45a1-8c69-5564172123c1" required>
+                <button type="button" id="generateUuid" class="uuid-generate" style="display: none;">GENERATE</button>
+
                 <div class="form-group">
                     <label for="bugType" style="font-weight: bold;">BUG TYPE</label>
                     <select id="bugType" class="form-control" required>
@@ -783,8 +827,7 @@ select.form-control {
                 
                 <div class="form-group">
                     <label for="mainDomain" style="font-weight: bold;">MAIN DOMAIN <span class="info-badge">SELECT</span></label>
-                    <select id="mainDomain" class="form-control" required>
-                        </select>
+                    <select id="mainDomain" class="form-control" required></select>
                 </div>
                 
                 <div id="customBugContainer" class="form-group custom-bug-container">
@@ -848,68 +891,233 @@ select.form-control {
                     <div class="result-title" style="font-weight: bold;">CONFIGURATION GENERATED</div>
                 </div>
                 <div class="output-container">
-    <textarea id="output" class="output" readonly></textarea>
-</div>
+                    <textarea id="output" class="output" readonly></textarea>
+                </div>
 
-<div class="action-buttons">
-    <button id="copyLink" class="copy-btn">
-        <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-        </svg>
-        COPY
-    </button>
-    
-    <button id="downloadConfig" class="download-btn">
-        <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        DOWNLOAD
-    </button>
+                <div class="action-buttons">
+                    <button id="copyLink" class="copy-btn">
+                        <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        COPY
+                    </button>
+                    
+                    <!-- Download Button -->
+<button id="downloadConfig" class="download-btn">
+    <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    DOWNLOAD
+</button>
+
+<button id="generateQR" class="qrcode-btn">
+    <svg class="qrcode-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    QR CODE
+</button>
 </div>
-</div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="circuit-line circuit-line-1"></div>
+            <div class="circuit-line circuit-line-2"></div>
+            <div class="circuit-line circuit-line-3"></div>
+            <div class="circuit-line circuit-line-4"></div>
+            <div class="circuit-dot circuit-dot-1"></div>
+            <div class="circuit-dot circuit-dot-2"></div>
+            <div class="circuit-dot circuit-dot-3"></div>
+            <div class="circuit-dot circuit-dot-4"></div>
+            
+            <div class="footer-logo" style="font-weight: bold;">GEO-PROJECT</div>
+            <div class="footer-powered" style="font-weight: bold;">POWERED BY SECURE TECHNOLOGY</div>
+            <div class="footer-social">
+                <a href="https://t.me/sampiiiiu" class="social-link" target="_blank">
+                    <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
+                        <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
+                    </svg>
+                    @sampiiiiu
+                </a>
+                <a href="https://t.me/sampiiiiu" class="social-link" target="_blank">
+                    <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
+                        <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
+                    </svg>
+                    @auto_sc
+                </a>
+            </div>
+            <div class="footer-year">© 2025</div>
+        </footer>
     </div>
 
-<footer class="footer">
-    <div class="circuit-line circuit-line-1"></div>
-    <div class="circuit-line circuit-line-2"></div>
-    <div class="circuit-line circuit-line-3"></div>
-    <div class="circuit-line circuit-line-4"></div>
-    <div class="circuit-dot circuit-dot-1"></div>
-    <div class="circuit-dot circuit-dot-2"></div>
-    <div class="circuit-dot circuit-dot-3"></div>
-    <div class="circuit-dot circuit-dot-4"></div>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     
-    <div class="footer-logo" style="font-weight: bold;">GEO-PROJECT</div>
-    <div class="footer-powered" style="font-weight: bold;">POWERED BY SECURE TECHNOLOGY</div>
-    <div class="footer-social">
-        <a href="https://t.me/sampiiiiu" class="social-link" target="_blank">
-            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
-                <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
-            </svg>
-            @sampiiiiu
-        </a>
-        <a href="https://t.me/sampiiiiu" class="social-link" target="_blank">
-            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
-                <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
-            </svg>
-            @auto_sc
-        </a>
-    </div>
-    <div class="footer-year">© 2025</div>
-</footer>
+<script>
+    document.getElementById('generateQR').addEventListener('click', function () {
+        const input = document.getElementById('output').value.trim();
+        const urls = input.split('\n').filter(url =>
+            url.startsWith("vmess://") ||
+            url.startsWith("vless://") ||
+            url.startsWith("trojan://") ||
+            url.startsWith("ss://") ||
+            url.startsWith("v2ray://") ||
+            url.startsWith("v2rayng://")
+        );
+
+        if (urls.length === 0) {
+            alert("No valid config URLs found.");
+            return;
+        }
+
+        // Hapus QR sebelumnya
+        document.querySelectorAll('.qr-modal').forEach(modal => modal.remove());
+
+        const maxLength = 2950;
+        let chunks = [];
+        let tempChunk = "";
+
+        for (let i = 0; i < urls.length; i++) {
+            if ((tempChunk + urls[i] + "\n").length > maxLength) {
+                chunks.push(tempChunk.trim());
+                tempChunk = urls[i] + "\n";
+            } else {
+                tempChunk += urls[i] + "\n";
+            }
+        }
+        if (tempChunk) chunks.push(tempChunk.trim());
+
+        if (chunks.length === 1) {
+            // Hanya 1 QR code, tampilkan langsung
+            QRCode.toDataURL(chunks[0], {
+                width: 400,
+                height: 400,
+                errorCorrectionLevel: 'L',
+                version: 40
+            }, function (err, qrCodeUrl) {
+                if (err) return console.error(err);
+
+                const modal = document.createElement('div');
+                modal.className = 'qr-modal modal-dialog-centered';
+                modal.style = `
+                    position: fixed; top: 50%; left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: #fff; padding: 20px;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                    z-index: 9999; text-align: center;
+                `;
+
+                const img = document.createElement('img');
+                img.src = qrCodeUrl;
+                img.style.width = '3in';
+                img.style.height = '3in';
+
+                const closeBtn = document.createElement('button');
+                closeBtn.classList.add('btn', 'btn-danger', 'mt-3');
+                closeBtn.innerText = 'Close';
+                closeBtn.onclick = () => modal.remove();
+
+                modal.appendChild(img);
+                modal.appendChild(closeBtn);
+                document.body.appendChild(modal);
+            });
+
+        } else {
+            // Banyak QR code → tampilkan slider
+            let currentIndex = 0;
+            const modal = document.createElement('div');
+            modal.className = 'qr-modal modal-dialog-centered';
+            modal.style = `
+                position: fixed; top: 50%; left: 50%;
+                transform: translate(-50%, -50%);
+                background: #fff; padding: 20px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                z-index: 9999; text-align: center;
+            `;
+
+            const label = document.createElement('div');
+            label.style.marginBottom = "10px";
+            label.style.fontWeight = "bold";
+
+            const img = document.createElement('img');
+            img.style.width = '3in';
+            img.style.height = '3in';
+            img.style.display = 'block';
+            img.style.margin = '0 auto';
+
+            // Button styles with Bootstrap
+            const btnPrev = document.createElement('button');
+            btnPrev.classList.add('btn', 'btn-secondary');
+            btnPrev.innerText = 'prev';
+            btnPrev.style.marginRight = '10px';
+
+            const btnNext = document.createElement('button');
+            btnNext.classList.add('btn', 'btn-secondary');
+            btnNext.innerText = 'Next';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.classList.add('btn', 'btn-danger', 'mt-3');
+            closeBtn.innerText = 'Close';
+            closeBtn.style.display = 'block';
+            closeBtn.style.margin = '15px auto 0';
+
+            modal.appendChild(label);
+            modal.appendChild(img);
+            modal.appendChild(btnPrev);
+            modal.appendChild(btnNext);
+            modal.appendChild(closeBtn);
+            document.body.appendChild(modal);
+
+            function updateQR(index) {
+                QRCode.toDataURL(chunks[index], {
+                    width: 400,
+                    height: 400,
+                    errorCorrectionLevel: 'L',
+                    version: 40
+                }, function (err, qrCodeUrl) {
+                    if (err) return console.error(err);
+                    img.src = qrCodeUrl;
+                    label.innerText = `QR ${index + 1} dari ${chunks.length}`;
+                });
+            }
+
+            btnPrev.onclick = () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateQR(currentIndex);
+                }
+            };
+
+            btnNext.onclick = () => {
+                if (currentIndex < chunks.length - 1) {
+                    currentIndex++;
+                    updateQR(currentIndex);
+                }
+            };
+
+            closeBtn.onclick = () => modal.remove();
+
+            updateQR(currentIndex); // Show first
+        }
+    });
+</script>
 
 <script>
-	document.getElementById('downloadConfig').addEventListener('click', function () {
+document.getElementById('downloadConfig').addEventListener('click', function () {
     const configContent = document.getElementById('output').value;
     const format = document.getElementById('formatType').value;
 
+    // Tentukan ekstensi file berdasarkan format yang dipilih
+    let extension = '';
     switch (format) {
         case 'clash':
             extension = 'yaml';
@@ -923,8 +1131,12 @@ select.form-control {
         case 'v2ray':
             extension = 'txt';
             break;
+        default:
+            alert('Format tidak dikenali!');
+            return; // hentikan proses download
     }
 
+    // Buat file dan trigger download
     const blob = new Blob([configContent], { type: 'text/plain' });
     const downloadLink = document.createElement('a');
     downloadLink.href = URL.createObjectURL(blob);
@@ -933,8 +1145,7 @@ select.form-control {
     downloadLink.click();
     document.body.removeChild(downloadLink);
 });
-
-	</script>
+</script>
 <script>
     // Constants
     const DEFAULT_PROXY_BANK_URL = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/cek/proxyList.txt';
