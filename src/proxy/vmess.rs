@@ -1,11 +1,17 @@
+use uuid::Uuid;
+use aes_gcm::{Aes128Gcm, Key, Nonce};
+use aes::Aes128;
+use async_trait::async_trait;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use bytes::Buf;
+use tokio_util::codec::{FramedRead, LinesCodec};
 use super::ProxyStream;
 
 use crate::common::{
     hash, KDFSALT_CONST_AEAD_RESP_HEADER_IV, KDFSALT_CONST_AEAD_RESP_HEADER_KEY,
     KDFSALT_CONST_AEAD_RESP_HEADER_LEN_IV, KDFSALT_CONST_AEAD_RESP_HEADER_LEN_KEY,
     KDFSALT_CONST_VMESS_HEADER_PAYLOAD_AEAD_IV, KDFSALT_CONST_VMESS_HEADER_PAYLOAD_AEAD_KEY,
-    KDFSALT_CONST_VMESS_HEADER_PAYLOAD_LENGTH_AEAD_IV,
-    KDFSALT_CONST_VMESS_HEADER_PAYLOAD_LENGTH_AEAD_KEY,
+    KDFSALT_CONST_VMESS_HEADER_PAYLOAD_LENGTH_AEAD_IV, KDFSALT_CONST_VMESS_HEADER_PAYLOAD_LENGTH_AEAD_KEY,
 };
 use std::io::Cursor;
 use aes::cipher::KeyInit;
@@ -15,12 +21,121 @@ use aes_gcm::{
 };
 use md5::{Digest, Md5};
 use sha2::Sha256;
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use worker::*;
 
+// Struct untuk ProxyStream
+#[derive(Debug)]
+pub struct ProxyStream<'a> {
+    pub config: &'a Config,
+    pub stream: FramedRead<'a, tokio::net::TcpStream, LinesCodec>,
+}
 
-impl <'a> ProxyStream<'a> {
-    async fn aead_decrypt(&mut self) -> Result<Vec<u8>> {
+#[derive(Debug)]
+pub struct Config {
+    pub proxy_addr: String,
+    pub proxy_port: u16,
+}
+
+#[async_trait]
+impl<'a> ProxyStream<'a> {
+    // Fungsi dekripsi AEAD dengan UUID
+    pub async fn aead_decrypt(&mut self, uuid_str: &str) -> Result<Vec<u8>, String> {
+        // Validasi UUID yang diterima
+        let uuid = Uuid::parse_str(uuid_str)
+            .map_err(|_| "Invalid UUID format".to_string())?;
+
+        // Gunakan UUID yang telah diparse sebagai bytes
+        let key = &uuid.as_bytes()[..16]; // Ambil 16 bytes pertama dari UUID sebagai kunci
+
+        let mut auth_id = [0u8; 16];
+        self.stream.read_exact(&mut auth_id).await.map_err(|e| e.to_string())?;
+
+        let mut len = [0u8; 18];
+        self.stream.read_exact(&mut len).await.map_err(|e| e.to_string())?;
+
+        let mut nonce = [0u8; 8];
+        self.stream.read_exact(&mut nonce).await.map_err(|e| e.to_string())?;
+
+        let header_length = {
+            let header_length_key = &key[..16];
+            let header_length_nonce = &nonce[..12];
+
+            let len = Aes128Gcm::new(Key::from_slice(header_length_key))
+                .decrypt(Nonce::from_slice(header_length_nonce), &len)
+                .map_err(|e| e.to_string())?;
+
+            ((len[0] as u16) << 8) | (len[1] as u16)
+        };
+
+        let mut cmd = vec![0u8; (header_length + 16) as _];
+        self.stream.read_exact(&mut cmd).await.map_err(|e| e.to_string())?;
+
+        let header_payload = {
+            let payload_key = &key[..16];
+            let payload_nonce = &nonce[..12];
+
+            Aes128Gcm::new(Key::from_slice(payload_key))
+                .decrypt(Nonce::from_slice(payload_nonce), &cmd)
+                .map_err(|e| e.to_string())?
+        };
+
+        Ok(header_payload)
+    }
+
+    // Fungsi untuk memproses data VMess
+    pub async fn process_vmess(&mut self, uuid_str: &str) -> Result<(), String> {
+        let decrypted_data = self.aead_decrypt(uuid_str).await?;
+        let mut buf = &decrypted_data[..];
+
+        let version = buf[0];
+        if version != 1 {
+            return Err("invalid version".to_string());
+        }
+
+        let iv = &buf[1..17];
+        let key = &buf[17..33];
+
+        let options = &buf[33..37];
+        let cmd = buf[37];
+        let is_tcp = cmd == 0x1;
+
+        let remote_port = ((buf[38] as u16) << 8) | (buf[39] as u16);
+        let remote_addr = &buf[40..44]; // Example address byte slice
+
+        // Melakukan enkripsi payload
+        let key = &key[..16];
+        let iv = &iv[..16];
+
+        // Proses header dan payload enkripsi
+        let length_key = &key[..16];
+        let length_iv = &iv[..12];
+
+        let length = Aes128Gcm::new(Key::from_slice(length_key))
+            .encrypt(Nonce::from_slice(length_iv), &4u16.to_be_bytes())
+            .map_err(|e| e.to_string())?;
+
+        // Menulis hasil
+        self.stream.write_all(&length).await.map_err(|e| e.to_string())?;
+
+        let payload_key = &key[..16];
+        let payload_iv = &iv[..12];
+        let header = {
+            let header = [options[0], 0x00, 0x00, 0x00];
+            Aes128Gcm::new(Key::from_slice(payload_key))
+                .encrypt(Nonce::from_slice(payload_iv), &header)
+                .map_err(|e| e.to_string())?
+        };
+
+        self.stream.write_all(&header).await.map_err(|e| e.to_string())?;
+
+        Ok(())
+    }
+}
+
+// Implementasi tambahan untuk ProxyStream
+impl<'a> ProxyStream<'a> {
+    // Fungsi dekripsi AEAD dengan key yang dihasilkan dari hash MD5
+    async fn aead_decrypt(&mut self) -> Result<Vec<u8>, String> {
         let key = crate::md5!(
             &self.config.uuid.as_bytes(),
             b"c48619fe-8f02-49e0-b9e9-edf763e17e21"
@@ -29,8 +144,6 @@ impl <'a> ProxyStream<'a> {
         // +-------------------+-------------------+-------------------+
         // |     Auth ID       |   Header Length   |       Nonce       |
         // +-------------------+-------------------+-------------------+
-        // |     16 Bytes      |     18 Bytes      |      8 Bytes      |
-        // +-------------------+-------------------+-------------------+
         let mut auth_id = [0u8; 16];
         self.read_exact(&mut auth_id).await?;
         let mut len = [0u8; 18];
@@ -38,7 +151,7 @@ impl <'a> ProxyStream<'a> {
         let mut nonce = [0u8; 8];
         self.read_exact(&mut nonce).await?;
 
-        // https://github.com/v2fly/v2ray-core/blob/master/proxy/vmess/aead/kdf.go
+        // Proses header length
         let header_length = {
             let header_length_key = &hash::kdf(
                 &key,
@@ -64,7 +177,7 @@ impl <'a> ProxyStream<'a> {
 
             let len = Aes128Gcm::new(header_length_key.into())
                 .decrypt(header_length_nonce.into(), payload)
-                .map_err(|e| Error::RustError(e.to_string()))?;
+                .map_err(|e| e.to_string())?;
 
             ((len[0] as u16) << 8) | (len[1] as u16)
         };
@@ -94,26 +207,20 @@ impl <'a> ProxyStream<'a> {
 
             Aes128Gcm::new(payload_key.into())
                 .decrypt(payload_nonce.into(), payload)
-                .map_err(|e| Error::RustError(e.to_string()))?
+                .map_err(|e| e.to_string())?
         };
 
         Ok(header_payload)
     }
 
-    pub async fn process_vmess(&mut self) -> Result<()> {
+    // Fungsi untuk memproses header VMess
+    pub async fn process_vmess(&mut self) -> Result<(), String> {
         let mut buf = Cursor::new(self.aead_decrypt().await?);
 
-        // https://xtls.github.io/en/development/protocols/vmess.html#command-section
-        //
-        // +---------+--------------------+---------------------+-------------------------------+---------+----------+-------------------+----------+---------+---------+--------------+---------+--------------+----------+
-        // | 1 Byte  |      16 Bytes      |      16 Bytes       |            1 Byte             | 1 Byte  |  4 bits  |      4 bits       |  1 Byte  | 1 Byte  | 2 Bytes |    1 Byte    | N Bytes |   P Bytes    | 4 Bytes  |
-        // +---------+--------------------+---------------------+-------------------------------+---------+----------+-------------------+----------+---------+---------+--------------+---------+--------------+----------+
-        // | Version | Data Encryption IV | Data Encryption Key | Response Authentication Value | Options | Reserved | Encryption Method | Reserved | Command | Port    | Address Type | Address | Random Value | Checksum |
-        // +---------+--------------------+---------------------+-------------------------------+---------+----------+-------------------+----------+---------+---------+--------------+---------+--------------+----------+
-
+        // Proses header dan payload VMess
         let version = buf.read_u8().await?;
         if version != 1 {
-            return Err(Error::RustError("invalid version".to_string()));
+            return Err("invalid version".to_string());
         }
 
         let mut iv = [0u8; 16];
@@ -121,7 +228,7 @@ impl <'a> ProxyStream<'a> {
         let mut key = [0u8; 16];
         buf.read_exact(&mut key).await?;
 
-        // ignore options for now
+        // Ignore options untuk saat ini
         let mut options = [0u8; 4];
         buf.read_exact(&mut options).await?;
 
@@ -135,17 +242,16 @@ impl <'a> ProxyStream<'a> {
         };
         let remote_addr = crate::common::parse_addr(&mut buf).await?;
 
-        // encrypt payload
+        // Encrypt payload
         let key = &crate::sha256!(&key)[..16];
         let iv = &crate::sha256!(&iv)[..16];
 
-        // https://github.com/v2ray/v2ray-core/blob/master/proxy/vmess/encoding/client.go#L196
+        // Encrypt length
         let length_key = &hash::kdf(&key, &[KDFSALT_CONST_AEAD_RESP_HEADER_LEN_KEY])[..16];
         let length_iv = &hash::kdf(&iv, &[KDFSALT_CONST_AEAD_RESP_HEADER_LEN_IV])[..12];
         let length = Aes128Gcm::new(length_key.into())
-            // 4 bytes header: https://github.com/v2ray/v2ray-core/blob/master/proxy/vmess/encoding/client.go#L238
             .encrypt(length_iv.into(), &4u16.to_be_bytes()[..])
-            .map_err(|e| Error::RustError(e.to_string()))?;
+            .map_err(|e| e.to_string())?;
         self.write(&length).await?;
 
         let payload_key = &hash::kdf(&key, &[KDFSALT_CONST_AEAD_RESP_HEADER_KEY])[..16];
@@ -157,10 +263,11 @@ impl <'a> ProxyStream<'a> {
             ];
             Aes128Gcm::new(payload_key.into())
                 .encrypt(payload_iv.into(), &header[..])
-                .map_err(|e| Error::RustError(e.to_string()))?
+                .map_err(|e| e.to_string())?
         };
         self.write(&header).await?;
 
+        // Handle TCP/UDP outbound
         if is_tcp {
             let addr_pool = [
                 (remote_addr.clone(), remote_port),
