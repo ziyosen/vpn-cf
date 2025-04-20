@@ -306,13 +306,12 @@ select.form-control {
 }
 
 .copy-btn {
-    background: linear-gradient(90deg, var(--color-success), var(--color-primary));
-    color: var(--color-bg);
-    border: none;
-    border-radius: 8px;
-    padding: 0.7rem 1rem;
-    font-family: 'Rajdhani', sans-serif;
+    background: linear-gradient(90deg, #7f00ff, #e100ff);
+    margin-top: 10px;
+    font-family: 'Orbitron', sans-serif;
     font-weight: 600;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;    
     font-size: 0.95rem;
     cursor: pointer;
     transition: var(--transition);
@@ -689,24 +688,26 @@ select.form-control {
 .download-btn {
     margin-top: 10px;
     padding: 10px 16px;
-    border-radius: 12px;
-    background: rgba(0, 50, 100, 0.2); /* Blue-black transparent */
-    border: 1px solid rgba(0, 100, 200, 0.4); /* Soft blue border */
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    border-radius: 6px;
+    background: rgba(0, 120, 220, 0.2); /* Lebih terang dan biru */
+    border: 1px solid rgba(0, 160, 255, 0.5); /* Border lebih cerah */
     color: #ffffff;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 4px 20px rgba(0, 100, 200, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 160, 255, 0.3);
 }
 
 .download-btn:hover {
-    background: rgba(0, 80, 160, 0.3);
-    border-color: rgba(0, 150, 255, 0.6);
-    box-shadow: 0 6px 24px rgba(0, 150, 255, 0.3);
+    background: rgba(0, 160, 255, 0.35); /* Hover lebih terang */
+    border-color: rgba(0, 200, 255, 0.7);
+    box-shadow: 0 6px 28px rgba(0, 200, 255, 0.35);
     transform: translateY(-2px);
 }
 
@@ -766,10 +767,11 @@ select.form-control {
                     </select>
                 </div>
                 
-                <label for="uuid" style="font-weight: bold;">UUID</label>
-                <input type="text" id="uuid" class="form-control" value="f282b878-8711-45a1-8c69-5564172123c1" required>
-                <button type="button" id="generateUuid" class="uuid-generate" style="display: none;">GENERATE</button>
-
+                <div class="form-group uuid-group">
+                <label for="uuid" style="font-weight: bold;">UUID</label>                
+                <input type="text" id="uuid" class="form-control" value="bef63218-3a18-4f59-acac-28622247e22c" required readonly>
+            </div>
+            
                 <div class="form-group">
                     <label for="bugType" style="font-weight: bold;">BUG TYPE</label>
                     <select id="bugType" class="form-control" required>
@@ -782,8 +784,7 @@ select.form-control {
                 <div class="form-group">
                     <label for="mainDomain" style="font-weight: bold;">MAIN DOMAIN <span class="info-badge">SELECT</span></label>
                     <select id="mainDomain" class="form-control" required>
-                        <!-- Will be populated from MainDomains array -->
-                    </select>
+                        </select>
                 </div>
                 
                 <div id="customBugContainer" class="form-group custom-bug-container">
@@ -810,7 +811,7 @@ select.form-control {
                     
                     <div class="form-group">
                         <label for="limit" style="font-weight: bold;">QUANTITY</label>
-                        <input type="number" id="limit" class="form-control" min="1" max="20" value="5" placeholder="Max 20" required>
+                        <input type="number" id="limit" class="form-control" min="1" max="100" value="5" placeholder="Max 20" required>
                     </div>
                 </div>
                 
@@ -859,7 +860,7 @@ select.form-control {
         </svg>
         COPY
     </button>
-
+    
     <button id="downloadConfig" class="download-btn">
         <svg class="download-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -886,7 +887,7 @@ select.form-control {
     <div class="footer-logo" style="font-weight: bold;">GEO-PROJECT</div>
     <div class="footer-powered" style="font-weight: bold;">POWERED BY SECURE TECHNOLOGY</div>
     <div class="footer-social">
-        <a href="https://t.me/inconigto_Mode" class="social-link" target="_blank">
+        <a href="https://t.me/sampiiiiu" class="social-link" target="_blank">
             <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
                 <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
@@ -2227,12 +2228,12 @@ ${allProxies.join(',\n')},
             document.execCommand('copy');
             
             const originalText = copyLinkBtn.textContent;
-            copyLinkBtn.textContent = '✓ COPIED SUCCESSFULLY';
-            copyLinkBtn.style.background = 'linear-gradient(90deg, var(--color-success), var(--color-success))';
+            copyLinkBtn.textContent = '✓ COPIED';
+            copyLinkBtn.style.background = 'linear-gradient(90deg, #7f00ff, #e100ff), var(--color-success))';
             
             setTimeout(() => {
                 copyLinkBtn.textContent = originalText;
-                copyLinkBtn.style.background = 'linear-gradient(90deg, var(--color-success), var(--color-primary))';
+                copyLinkBtn.style.background = 'linear-gradient(90deg, #7f00ff, #e100ff), var(--color-primary))';
             }, 2000);
         });
     });
