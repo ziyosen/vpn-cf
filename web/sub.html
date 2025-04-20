@@ -1018,8 +1018,8 @@ select.form-control {
 
                 const img = document.createElement('img');
                 img.src = qrCodeUrl;
-                img.style.width = '3in';
-                img.style.height = '3in';
+                img.style.width = '2.5in';
+                img.style.height = '2.5in';
 
                 const closeBtn = document.createElement('button');
                 closeBtn.classList.add('btn', 'btn-danger', 'mt-3');
@@ -1048,8 +1048,8 @@ select.form-control {
             label.style.fontWeight = "bold";
 
             const img = document.createElement('img');
-            img.style.width = '3in';
-            img.style.height = '3in';
+            img.style.width = '2.5in';
+            img.style.height = '2.5in';
             img.style.display = 'block';
             img.style.margin = '0 auto';
 
@@ -1082,17 +1082,22 @@ select.form-control {
             document.body.appendChild(modal);
 
             function updateQR(index) {
-                QRCode.toDataURL(chunks[index], {
-                    width: 400,
-                    height: 400,
-                    errorCorrectionLevel: 'L',
-                    version: 40
-                }, function (err, qrCodeUrl) {
-                    if (err) return console.error(err);
-                    img.src = qrCodeUrl;
-                    label.innerText = `QR ${index + 1} dari ${chunks.length}`;
-                });
-            }
+    QRCode.toDataURL(chunks[index], {
+        width: 400,
+        height: 400,
+        errorCorrectionLevel: 'L',
+        version: 40
+    }, function (err, qrCodeUrl) {
+        if (err) return console.error(err);
+        img.src = qrCodeUrl;
+        label.innerHTML = `
+            <span style="color: blue;">QR</span> 
+            <span style="color: blue;">${index + 1}</span> 
+            <span style="color: green;">dari</span> 
+            <span style="color: blue;">${chunks.length}</span>
+        `;
+    });
+}
 
             btnPrev.onclick = () => {
                 if (currentIndex > 0) {
@@ -1110,7 +1115,7 @@ select.form-control {
 
             closeBtn.onclick = () => modal.remove();
 
-            updateQR(currentIndex); // Show first
+            updateQR(currentIndex); 
         }
     });
 </script>
