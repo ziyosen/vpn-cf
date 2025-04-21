@@ -1621,63 +1621,43 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
 }
 
 // Main Function
-let usedProxies = new Set(JSON.parse(localStorage.getItem('usedProxies')) || []);
-
-// Log the current used proxies to check
-console.log("Used proxies loaded from localStorage:", Array.from(usedProxies));
-
 async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls, validateProxies, formatType, country = null, limit = null) {
     try {
-        const response = await fetch(DEFAULT_PROXY_BANK_URL);
+        // Cache-busting fetch
+        const response = await fetch(`${DEFAULT_PROXY_BANK_URL}?_=${Date.now()}`);
         if (!response.ok) {
             throw new Error(`Failed to fetch proxy data: ${response.status}`);
         }
-        
+
+        // Split proxies
         const proxyList = (await response.text()).split('\n').filter(Boolean);
+
         let filteredProxies = proxyList;
 
         // Filter by country if specified
         if (country) {
-            if (country.toLowerCase() === 'random') {
-                filteredProxies = proxyList.sort(() => Math.random() - 0.5);
-            } else {
-                filteredProxies = proxyList.filter(line => {
-                    const parts = line.split(',');
-                    return parts.length >= 3 && parts[2]?.toUpperCase() === country.toUpperCase();
-                });
-            }
+            filteredProxies = proxyList.filter(line => {
+                const parts = line.split(',');
+                return parts.length >= 3 && parts[2]?.toUpperCase() === country.toUpperCase();
+            });
         }
-        
+
         if (filteredProxies.length === 0) {
             throw new Error("No proxies found matching your region criteria");
         }
 
-        // Filter out already used proxies
-        filteredProxies = filteredProxies.filter(proxy => !usedProxies.has(proxy));
+        // Shuffle proxies to always get random on refresh
+        filteredProxies = filteredProxies.sort(() => Math.random() - 0.5);
 
-        if (filteredProxies.length === 0) {
-            throw new Error("All proxies have already been used.");
-        }
-
-        // Apply limit to the filtered list before validation
+        // Apply limit after shuffle
         let limitedProxies = filteredProxies;
         if (limit && !isNaN(limit) && limit > 0) {
             limitedProxies = filteredProxies.slice(0, parseInt(limit));
         }
 
-        // Select a proxy
-        const selectedProxy = limitedProxies[Math.floor(Math.random() * limitedProxies.length)];
-
-        // Log the proxy being selected
-        console.log("Selected Proxy: ", selectedProxy);
-
-        // Add selected proxy to used proxies set and store it in localStorage
-        usedProxies.add(selectedProxy);
-        localStorage.setItem('usedProxies', JSON.stringify(Array.from(usedProxies)));
-
-        // Use the first bug if available, otherwise use the main domain
+        // Get bug
         const firstBug = customBugs && customBugs.length > 0 ? customBugs[0] : null;
-        
+
         // Determine domain, host, and SNI based on bug type
         let domain, host, sni;
         
