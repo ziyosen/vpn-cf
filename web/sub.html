@@ -1058,12 +1058,12 @@ select.form-control {
             `;
 
             const qrCanvas = generateQRCodeCanvas(chunks[0]);
-            qrCanvas.style.width = '288px'; // 3in ukuran tampilan
+            qrCanvas.style.width = '288px';
             qrCanvas.style.height = '288px';
 
             const downloadBtn = document.createElement('button');
             downloadBtn.classList.add('btn', 'btn-success', 'mt-3');
-            downloadBtn.innerText = 'Download QR (.gif)';
+            downloadBtn.innerText = 'Download QR';
             downloadBtn.onclick = () => {
                 const link = document.createElement('a');
                 link.download = 'qr_code.gif';
@@ -1137,7 +1137,7 @@ select.form-control {
             // Update QR and download for each chunk
             function updateQR(index) {
                 const qrCanvas = generateQRCodeCanvas(chunks[index]);
-                qrCanvas.style.width = '288px'; // 3in ukuran tampilan
+                qrCanvas.style.width = '288px'; 
                 qrCanvas.style.height = '288px';
 
                 // Update QR image in modal
@@ -1154,7 +1154,7 @@ select.form-control {
 
                 const downloadBtn = document.createElement('button');
                 downloadBtn.classList.add('btn', 'btn-success', 'mt-3');
-                downloadBtn.innerText = 'Download QR (.gif)';
+                downloadBtn.innerText = 'Download QR';
                 downloadBtn.onclick = () => {
                     const link = document.createElement('a');
                     link.download = `qr_code_${index + 1}.gif`;
