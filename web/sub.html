@@ -975,7 +975,7 @@ select.form-control {
     </div>
   </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.min.js"></script>
 <script>
     document.getElementById('generateQR').addEventListener('click', function () {
         const input = document.getElementById('output').value.trim();
@@ -1009,79 +1009,103 @@ select.form-control {
         }
         if (tempChunk) chunks.push(tempChunk.trim());
 
-        if (chunks.length === 1) {
-            QRCode.toDataURL(chunks[0], {
-                width: 400,
-                height: 400,
-                errorCorrectionLevel: 'L',
-                version: 40
-            }, function (err, qrCodeUrl) {
-                if (err) return console.error(err);
+        // Generate QR Code as Canvas
+        function generateQRCodeCanvas(text) {
+            const qr = qrcode(0, 'L');
+            qr.addData(text);
+            qr.make();
+            const canvas = document.createElement('canvas');
+            const cellSize = 3; // Ukuran 3in = 288px → dengan ukuran dinamis kita kontrol via CSS
+            const margin = 4;
+            const size = qr.getModuleCount() * cellSize + margin * 2;
+            canvas.width = canvas.height = size;
+            const ctx = canvas.getContext('2d');
 
-                const modal = document.createElement('div');
-                modal.className = 'qr-modal modal-dialog-centered';
-                modal.style = `
+            // background putih
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, size, size);
+
+            // QR hitam-putih
+            for (let row = 0; row < qr.getModuleCount(); row++) {
+                for (let col = 0; col < qr.getModuleCount(); col++) {
+                    ctx.fillStyle = qr.isDark(row, col) ? '#000000' : '#ffffff';
+                    ctx.fillRect(margin + col * cellSize, margin + row * cellSize, cellSize, cellSize);
+                }
+            }
+
+            return canvas;
+        }
+
+        if (chunks.length === 1) {
+            // Single QR Modal
+            const modal = document.createElement('div');
+            modal.className = 'qr-modal modal-dialog-centered';
+            modal.style = `
                 position: fixed;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                background: rgba(173, 216, 230, 0.2); 
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); 
-                backdrop-filter: blur(14px); 
-                -webkit-backdrop-filter: blur(14px); 
+                background: rgba(173, 216, 230, 0.2);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(14px);
+                -webkit-backdrop-filter: blur(14px);
                 border-radius: 20px;
                 padding: 20px;
                 z-index: 9999;
                 text-align: center;
-                border: 1px solid rgba(255, 255, 255, 0.3); /* Border halus */
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                width: 300px;
+            `;
 
-                `;
+            const qrCanvas = generateQRCodeCanvas(chunks[0]);
+            qrCanvas.style.width = '288px'; // 3in ukuran tampilan
+            qrCanvas.style.height = '288px';
 
-                const img = document.createElement('img');
-                img.src = qrCodeUrl;
-                img.style.width = '3in';
-                img.style.height = '3in';
+            const downloadBtn = document.createElement('button');
+            downloadBtn.classList.add('btn', 'btn-success', 'mt-3');
+            downloadBtn.innerText = 'Download QR (.gif)';
+            downloadBtn.onclick = () => {
+                const link = document.createElement('a');
+                link.download = 'qr_code.gif';
+                link.href = qrCanvas.toDataURL('image/gif');
+                link.click();
+            };
 
-                const closeBtn = document.createElement('button');
-                closeBtn.classList.add('btn', 'btn-danger', 'mt-3');
-                closeBtn.innerText = 'Close';
-                closeBtn.onclick = () => modal.remove();
+            const closeBtn = document.createElement('button');
+            closeBtn.classList.add('btn', 'btn-danger', 'mt-2');
+            closeBtn.innerText = 'Close';
+            closeBtn.onclick = () => modal.remove();
 
-                modal.appendChild(img);
-                modal.appendChild(closeBtn);
-                document.body.appendChild(modal);
-            });
-
+            modal.appendChild(qrCanvas);
+            modal.appendChild(downloadBtn);
+            modal.appendChild(closeBtn);
+            document.body.appendChild(modal);
         } else {
+            // Multiple QR Modal
             let currentIndex = 0;
             const modal = document.createElement('div');
             modal.className = 'qr-modal modal-dialog-centered';
             modal.style = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.15); 
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px); 
-            border-radius: 20px;
-            padding: 20px;
-            z-index: 9999;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Garis pinggir samar */
-
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(255, 255, 255, 0.15);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border-radius: 20px;
+                padding: 20px;
+                z-index: 9999;
+                text-align: center;
+                border: 1px solid rgba(255, 255, 255, 0.3);
             `;
 
             const label = document.createElement('div');
             label.style.marginBottom = "10px";
             label.style.fontWeight = "bold";
 
-            const img = document.createElement('img');
-            img.style.width = '3in';
-            img.style.height = '3in';
-            img.style.display = 'block';
-            img.style.margin = '0 auto';
+            const qrContainer = document.createElement('div');
 
             const btnPrev = document.createElement('button');
             btnPrev.classList.add('btn', 'btn-secondary');
@@ -1105,28 +1129,40 @@ select.form-control {
             closeBtn.style.margin = '15px auto 0';
 
             modal.appendChild(label);
-            modal.appendChild(img);
+            modal.appendChild(qrContainer);
             modal.appendChild(navContainer);
             modal.appendChild(closeBtn);
             document.body.appendChild(modal);
 
+            // Update QR and download for each chunk
             function updateQR(index) {
-    QRCode.toDataURL(chunks[index], {
-        width: 400,
-        height: 400,
-        errorCorrectionLevel: 'L',
-        version: 40
-    }, function (err, qrCodeUrl) {
-        if (err) return console.error(err);
-        img.src = qrCodeUrl;
-        label.innerHTML = `
-            <span style="color: blue;">QR</span> 
-            <span style="color: blue;">${index + 1}</span> 
-            <span style="color: green;">dari</span> 
-            <span style="color: blue;">${chunks.length}</span>
-        `;
-    });
-}
+                const qrCanvas = generateQRCodeCanvas(chunks[index]);
+                qrCanvas.style.width = '288px'; // 3in ukuran tampilan
+                qrCanvas.style.height = '288px';
+
+                // Update QR image in modal
+                qrContainer.innerHTML = '';
+                qrContainer.appendChild(qrCanvas);
+
+                // Update label for QR navigation
+                label.innerHTML = `
+                    <span style="color: blue;">QR</span>
+                    <span style="color: blue;">${index + 1}</span>
+                    <span style="color: green;">dari</span>
+                    <span style="color: blue;">${chunks.length}</span>
+                `;
+
+                const downloadBtn = document.createElement('button');
+                downloadBtn.classList.add('btn', 'btn-success', 'mt-3');
+                downloadBtn.innerText = 'Download QR (.gif)';
+                downloadBtn.onclick = () => {
+                    const link = document.createElement('a');
+                    link.download = `qr_code_${index + 1}.gif`;
+                    link.href = qrCanvas.toDataURL('image/gif');
+                    link.click();
+                };
+                qrContainer.appendChild(downloadBtn);
+            }
 
             btnPrev.onclick = () => {
                 if (currentIndex > 0) {
@@ -1144,7 +1180,8 @@ select.form-control {
 
             closeBtn.onclick = () => modal.remove();
 
-            updateQR(currentIndex); 
+            // Initial QR update
+            updateQR(currentIndex);
         }
     });
 </script>
