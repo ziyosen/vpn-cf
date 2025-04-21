@@ -1066,7 +1066,7 @@ select.form-control {
             downloadBtn.onclick = () => {
                 const link = document.createElement('a');
                 link.download = 'qr_code.jpg';
-                link.href = qrCanvas.toDataURL('image/gif');
+                link.href = qrCanvas.toDataURL('image/jpeg');
                 link.click();
             };
 
@@ -1159,7 +1159,7 @@ closeBtn.style.margin = '10px auto 0';
                 downloadBtn.onclick = () => {
                     const link = document.createElement('a');
                     link.download = `qr_code_${index + 1}.jpg`;
-                    link.href = qrCanvas.toDataURL('image/gif');
+                    link.href = qrCanvas.toDataURL('image/jpeg');                    
                     link.click();
                 };
                 qrContainer.appendChild(downloadBtn);
