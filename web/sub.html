@@ -1623,6 +1623,9 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
 // Main Function
 let usedProxies = new Set(JSON.parse(localStorage.getItem('usedProxies')) || []);
 
+// Check if localStorage is correctly initialized
+console.log("Used proxies loaded from localStorage:", Array.from(usedProxies));
+
 async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls, validateProxies, formatType, country = null, limit = null) {
     try {
         const response = await fetch(DEFAULT_PROXY_BANK_URL);
