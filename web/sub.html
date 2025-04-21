@@ -1623,7 +1623,7 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
 // Main Function
 let usedProxies = new Set(JSON.parse(localStorage.getItem('usedProxies')) || []);
 
-// Check if localStorage is correctly initialized
+// Log the current used proxies to check
 console.log("Used proxies loaded from localStorage:", Array.from(usedProxies));
 
 async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls, validateProxies, formatType, country = null, limit = null) {
