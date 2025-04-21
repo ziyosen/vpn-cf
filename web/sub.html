@@ -1015,7 +1015,7 @@ select.form-control {
             qr.addData(text);
             qr.make();
             const canvas = document.createElement('canvas');
-            const cellSize = 3; // Ukuran 3in = 288px → dengan ukuran dinamis kita kontrol via CSS
+            const cellSize = 3;
             const margin = 4;
             const size = qr.getModuleCount() * cellSize + margin * 2;
             canvas.width = canvas.height = size;
@@ -1045,16 +1045,15 @@ select.form-control {
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                background: rgba(173, 216, 230, 0.2);
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-                backdrop-filter: blur(14px);
-                -webkit-backdrop-filter: blur(14px);
+                background: rgba(255, 255, 255, 0.15);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
                 border-radius: 20px;
-                padding: 20px;
+                padding: 17px;
                 z-index: 9999;
                 text-align: center;
                 border: 1px solid rgba(255, 255, 255, 0.3);
-                width: 300px;
             `;
 
             const qrCanvas = generateQRCodeCanvas(chunks[0]);
@@ -1062,17 +1061,18 @@ select.form-control {
             qrCanvas.style.height = '288px';
 
             const downloadBtn = document.createElement('button');
-            downloadBtn.classList.add('btn', 'btn-success', 'mt-3');
+            downloadBtn.classList.add('btn', 'btn-success', 'mt-2');
             downloadBtn.innerText = 'Download QR';
             downloadBtn.onclick = () => {
                 const link = document.createElement('a');
-                link.download = 'qr_code.gif';
+                link.download = 'qr_code.jpg';
                 link.href = qrCanvas.toDataURL('image/gif');
                 link.click();
             };
 
             const closeBtn = document.createElement('button');
-            closeBtn.classList.add('btn', 'btn-danger', 'mt-2');
+            closeBtn.classList.add('btn', 'btn-danger');
+            closeBtn.style.marginTop = '10px'; // Bisa diubah sesuai kebutuhan
             closeBtn.innerText = 'Close';
             closeBtn.onclick = () => modal.remove();
 
@@ -1108,25 +1108,26 @@ select.form-control {
             const qrContainer = document.createElement('div');
 
             const btnPrev = document.createElement('button');
-            btnPrev.classList.add('btn', 'btn-secondary');
-            btnPrev.innerText = 'Prev';
+btnPrev.classList.add('btn', 'btn-secondary');
+btnPrev.innerText = 'Prev';
+btnPrev.style.marginRight = '10px'; 
 
-            const btnNext = document.createElement('button');
-            btnNext.classList.add('btn', 'btn-secondary');
-            btnNext.innerText = 'Next';
+const btnNext = document.createElement('button');
+btnNext.classList.add('btn', 'btn-secondary');
+btnNext.innerText = 'Next';
 
-            const navContainer = document.createElement('div');
-            navContainer.style.display = 'flex';
-            navContainer.style.justifyContent = 'space-between';
-            navContainer.style.marginTop = '15px';
-            navContainer.appendChild(btnPrev);
-            navContainer.appendChild(btnNext);
+const navContainer = document.createElement('div');
+navContainer.style.display = 'flex';
+navContainer.style.justifyContent = 'space-between';
+navContainer.style.marginTop = '10px';
+navContainer.appendChild(btnPrev);
+navContainer.appendChild(btnNext);
 
-            const closeBtn = document.createElement('button');
-            closeBtn.classList.add('btn', 'btn-danger', 'mt-3');
-            closeBtn.innerText = 'Close';
-            closeBtn.style.display = 'block';
-            closeBtn.style.margin = '15px auto 0';
+const closeBtn = document.createElement('button');
+closeBtn.classList.add('btn', 'btn-danger', 'mt-2');
+closeBtn.innerText = 'Close';
+closeBtn.style.display = 'block';
+closeBtn.style.margin = '10px auto 0';
 
             modal.appendChild(label);
             modal.appendChild(qrContainer);
@@ -1153,11 +1154,11 @@ select.form-control {
                 `;
 
                 const downloadBtn = document.createElement('button');
-                downloadBtn.classList.add('btn', 'btn-success', 'mt-3');
+                downloadBtn.classList.add('btn', 'btn-success', 'mt-2');
                 downloadBtn.innerText = 'Download QR';
                 downloadBtn.onclick = () => {
                     const link = document.createElement('a');
-                    link.download = `qr_code_${index + 1}.gif`;
+                    link.download = `qr_code_${index + 1}.jpg`;
                     link.href = qrCanvas.toDataURL('image/gif');
                     link.click();
                 };
