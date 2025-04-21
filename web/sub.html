@@ -1011,9 +1011,10 @@ select.form-control {
 
         if (chunks.length === 1) {
             QRCode.toDataURL(chunks[0], {
-                width: 512,
-                height: 512,
-                errorCorrectionLevel: 'H' // Toleransi kesalahan lebih tinggi
+                width: 400,
+                height: 400,
+                errorCorrectionLevel: 'L',
+                version: 40
             }, function (err, qrCodeUrl) {
                 if (err) return console.error(err);
 
@@ -1032,14 +1033,14 @@ select.form-control {
                 padding: 20px;
                 z-index: 9999;
                 text-align: center;
-                border: 1px solid rgba(255, 255, 255, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.3); /* Border halus */
+
                 `;
 
                 const img = document.createElement('img');
                 img.src = qrCodeUrl;
-                img.style.width = '3in'; // Memperbesar ukuran QR code
-                img.style.height = '3in';
-                img.style.imageRendering = 'crisp-edges'; // Menjaga ketajaman gambar
+                img.style.width = '2.5in';
+                img.style.height = '2.5in';
 
                 const closeBtn = document.createElement('button');
                 closeBtn.classList.add('btn', 'btn-danger', 'mt-3');
@@ -1068,9 +1069,8 @@ select.form-control {
             padding: 20px;
             z-index: 9999;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            max-height: 80%; /* Membatasi tinggi modal */
-            overflow-y: auto; /* Menambahkan scroll vertikal */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Garis pinggir samar */
+
             `;
 
             const label = document.createElement('div');
@@ -1078,11 +1078,10 @@ select.form-control {
             label.style.fontWeight = "bold";
 
             const img = document.createElement('img');
-            img.style.width = '3in';
-            img.style.height = '3in';
+            img.style.width = '2.5in';
+            img.style.height = '2.5in';
             img.style.display = 'block';
             img.style.margin = '0 auto';
-            img.style.imageRendering = 'crisp-edges';
 
             const btnPrev = document.createElement('button');
             btnPrev.classList.add('btn', 'btn-secondary');
@@ -1112,21 +1111,22 @@ select.form-control {
             document.body.appendChild(modal);
 
             function updateQR(index) {
-                QRCode.toDataURL(chunks[index], {
-                    width: 512,
-                    height: 512,
-                    errorCorrectionLevel: 'H'
-                }, function (err, qrCodeUrl) {
-                    if (err) return console.error(err);
-                    img.src = qrCodeUrl;
-                    label.innerHTML = `
-                        <span style="color: blue;">QR</span> 
-                        <span style="color: blue;">${index + 1}</span> 
-                        <span style="color: green;">dari</span> 
-                        <span style="color: blue;">${chunks.length}</span>
-                    `;
-                });
-            }
+    QRCode.toDataURL(chunks[index], {
+        width: 400,
+        height: 400,
+        errorCorrectionLevel: 'L',
+        version: 40
+    }, function (err, qrCodeUrl) {
+        if (err) return console.error(err);
+        img.src = qrCodeUrl;
+        label.innerHTML = `
+            <span style="color: blue;">QR</span> 
+            <span style="color: blue;">${index + 1}</span> 
+            <span style="color: green;">dari</span> 
+            <span style="color: blue;">${chunks.length}</span>
+        `;
+    });
+}
 
             btnPrev.onclick = () => {
                 if (currentIndex > 0) {
@@ -1144,7 +1144,7 @@ select.form-control {
 
             closeBtn.onclick = () => modal.remove();
 
-            updateQR(currentIndex);
+            updateQR(currentIndex); 
         }
     });
 </script>
