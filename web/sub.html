@@ -1621,7 +1621,6 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
 }
 
 // Main Function
-// Gunakan localStorage untuk menyimpan usedProxies agar tidak hilang saat refresh
 let usedProxies = new Set(JSON.parse(localStorage.getItem('usedProxies')) || []);
 
 async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls, validateProxies, formatType, country = null, limit = null) {
@@ -1633,53 +1632,77 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
         
         const proxyList = (await response.text()).split('\n').filter(Boolean);
         let filteredProxies = proxyList;
-
+        
         // Filter by country if specified
         if (country) {
             if (country.toLowerCase() === 'random') {
-                // Acak dan pastikan proxy yang sudah digunakan tidak terpilih
-                filteredProxies = proxyList.filter(proxy => !usedProxies.has(proxy));
-                filteredProxies = filteredProxies.sort(() => Math.random() - 0.5);
+                filteredProxies = proxyList.sort(() => Math.random() - 0.5);
             } else {
                 filteredProxies = proxyList.filter(line => {
                     const parts = line.split(',');
-                    return parts.length >= 3 && parts[2]?.toUpperCase() === country.toUpperCase() && !usedProxies.has(line);
+                    return parts.length >= 3 && parts[2]?.toUpperCase() === country.toUpperCase();
                 });
             }
         }
-
+        
         if (filteredProxies.length === 0) {
             throw new Error("No proxies found matching your region criteria");
         }
-        
+
+        // Filter out already used proxies before applying the limit
+        filteredProxies = filteredProxies.filter(proxy => !usedProxies.has(proxy));
+
+        if (filteredProxies.length === 0) {
+            throw new Error("All proxies have already been used.");
+        }
+
         // Apply limit to the filtered list before validation
         let limitedProxies = filteredProxies;
         if (limit && !isNaN(limit) && limit > 0) {
             limitedProxies = filteredProxies.slice(0, parseInt(limit));
         }
 
-        // Apply proxy randomness again with stricter validation
-        limitedProxies = limitedProxies.filter(proxy => !usedProxies.has(proxy));
+        // Select a proxy
+        const selectedProxy = limitedProxies[Math.floor(Math.random() * limitedProxies.length)];
 
-        // Jika tidak ada proxy yang valid setelah pengecekan
-        if (limitedProxies.length === 0) {
-            throw new Error("No new proxies available, all proxies have been used.");
+        // Add selected proxy to used proxies set and store it in localStorage
+        usedProxies.add(selectedProxy);
+        localStorage.setItem('usedProxies', JSON.stringify(Array.from(usedProxies)));
+
+        // Use the first bug if available, otherwise use the main domain
+        const firstBug = customBugs && customBugs.length > 0 ? customBugs[0] : null;
+        
+        // Determine domain, host, and SNI based on bug type
+        let domain, host, sni;
+        
+        switch (bugType) {
+            case 'default':
+                domain = mainDomain;
+                host = mainDomain;
+                sni = mainDomain;
+                break;
+            case 'non-wildcard':
+                domain = firstBug || mainDomain;
+                host = mainDomain;
+                sni = mainDomain;
+                break;
+            case 'wildcard':
+                domain = firstBug || mainDomain;
+                host = `${firstBug}.${mainDomain}`;
+                sni = `${firstBug}.${mainDomain}`;
+                break;
         }
 
-        // Tandai proxy yang digunakan untuk iterasi selanjutnya
-        usedProxies.add(limitedProxies[0]);
-
-        // Simpan usedProxies ke localStorage
-        localStorage.setItem('usedProxies', JSON.stringify([...usedProxies]));
-
-        // Proses lanjutan untuk pembuatan konfigurasi
         const results = [];
         let validProxies = [];
-
-        // Check jika validasi proxy diaktifkan
+        
+        // Check proxy validity if enabled
         if (validateProxies) {
+            // Show validation status UI
             document.getElementById('validation-status').style.display = 'block';
             document.getElementById('loading').style.display = 'none';
+            
+            // Initialize validation UI
             const validationBar = document.getElementById('validation-bar');
             const validationCount = document.getElementById('validation-count');
             const validCountEl = document.getElementById('valid-count');
@@ -1689,13 +1712,14 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
             validationCount.textContent = `0/${limitedProxies.length}`;
             validCountEl.textContent = '0';
             invalidCountEl.textContent = '0';
-
-            // Process batch proxy validation
-            const BATCH_SIZE = 10;
+            
+            // Prepare validation tasks in batches to avoid overwhelming the browser
+            const BATCH_SIZE = 10; // Process 10 proxies at a time
             let validCount = 0;
             let invalidCount = 0;
             let processedCount = 0;
-
+            
+            // Process proxies in batches
             for (let i = 0; i < limitedProxies.length; i += BATCH_SIZE) {
                 const batch = limitedProxies.slice(i, i + BATCH_SIZE);
                 const batchPromises = batch.map(async (line) => {
@@ -1708,9 +1732,11 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
                     const isValid = await checkProxyValidity(proxyHost, proxyPort);
                     return { line, isValid };
                 });
-
+                
+                // Process batch in parallel
                 const batchResults = await Promise.all(batchPromises);
-
+                
+                // Update counts and UI
                 for (const result of batchResults) {
                     processedCount++;
                     
@@ -1720,7 +1746,8 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
                     } else {
                         invalidCount++;
                     }
-
+                    
+                    // Update UI efficiently (using requestAnimationFrame to batch DOM updates)
                     if (processedCount % 3 === 0 || processedCount === limitedProxies.length) {
                         requestAnimationFrame(() => {
                             const percentage = (processedCount / limitedProxies.length) * 100;
@@ -1733,21 +1760,52 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
                 }
             }
             
+            // Use valid proxies for configuration generation
             if (validProxies.length === 0) {
+                // If no valid proxies found but we're only asking for a small number,
+                // just use some unvalidated ones to meet the minimum requirement
                 if (parseInt(limit) <= 5) {
-                    console.log("No valid proxies found, using unvalidated ones");
+                    console.log("No valid proxies found, but using unvalidated ones to meet minimum requirement");
                     validProxies = limitedProxies.slice(0, parseInt(limit));
                 } else {
                     throw new Error("No valid proxies found matching your criteria");
                 }
             }
 
+            // Hide validation status UI
             document.getElementById('validation-status').style.display = 'none';
+
+            // Show loading again for config generation
             document.getElementById('loading').style.display = 'block';
 
-            limitedProxies = validProxies.slice(0, parseInt(limit));
+            // If we have fewer valid proxies than requested, add some unvalidated ones to meet the requested limit
+            if (validProxies.length < parseInt(limit)) {
+                // Get all proxy hosts we've already validated (both valid and invalid)
+                const allValidatedHosts = new Set(limitedProxies.map(line => line.split(',')[0]));
+                
+                // Find completely new proxies that haven't been validated at all
+                const newProxies = proxyList.filter(line => {
+                    const host = line.split(',')[0];
+                    return !allValidatedHosts.has(host);
+                });
+                
+                // Add enough new proxies to reach the requested limit
+                const neededCount = parseInt(limit) - validProxies.length;
+                const additionalProxies = newProxies.slice(0, neededCount);
+                
+                // Combine valid proxies with new ones
+                limitedProxies = [...validProxies, ...additionalProxies];
+                
+                // Make sure we don't exceed the requested limit
+                limitedProxies = limitedProxies.slice(0, parseInt(limit));
+                
+                console.log(`Using ${validProxies.length} validated proxies and ${additionalProxies.length} new proxies`);
+            } else {
+                // Use just the valid proxies (might be fewer than requested if we don't have enough new ones)
+                limitedProxies = validProxies.slice(0, parseInt(limit));
+            }
         }
-
+        
         // For Clash format, we'll collect all proxies under a single header
         if (formatType === 'clash') {
             let allProxies = [];
