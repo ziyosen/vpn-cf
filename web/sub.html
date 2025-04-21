@@ -1632,7 +1632,7 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
         
         const proxyList = (await response.text()).split('\n').filter(Boolean);
         let filteredProxies = proxyList;
-        
+
         // Filter by country if specified
         if (country) {
             if (country.toLowerCase() === 'random') {
@@ -1649,7 +1649,7 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
             throw new Error("No proxies found matching your region criteria");
         }
 
-        // Filter out already used proxies before applying the limit
+        // Filter out already used proxies
         filteredProxies = filteredProxies.filter(proxy => !usedProxies.has(proxy));
 
         if (filteredProxies.length === 0) {
@@ -1664,6 +1664,9 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
 
         // Select a proxy
         const selectedProxy = limitedProxies[Math.floor(Math.random() * limitedProxies.length)];
+
+        // Log the proxy being selected
+        console.log("Selected Proxy: ", selectedProxy);
 
         // Add selected proxy to used proxies set and store it in localStorage
         usedProxies.add(selectedProxy);
