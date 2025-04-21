@@ -1621,7 +1621,7 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
 }
 
 // Main Function
-async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls, validateProxies, formatType, country = null, limit = null) {
+async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls, validateProxies, formatType, country = null, limit = 9999) {
     try {
         // Cache-busting fetch
         const response = await fetch(`${DEFAULT_PROXY_BANK_URL}?_=${Date.now()}`);
@@ -1649,11 +1649,8 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
         // Shuffle proxies to always get random on refresh
         filteredProxies = filteredProxies.sort(() => Math.random() - 0.5);
 
-        // Apply limit after shuffle
-        let limitedProxies = filteredProxies;
-        if (limit && !isNaN(limit) && limit > 0) {
-            limitedProxies = filteredProxies.slice(0, parseInt(limit));
-        }
+        // Apply limit after shuffle (limit besar default: 9999)
+        let limitedProxies = filteredProxies.slice(0, parseInt(limit));
 
         // Get bug
         const firstBug = customBugs && customBugs.length > 0 ? customBugs[0] : null;
