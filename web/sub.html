@@ -770,10 +770,22 @@ select.form-control {
     transform: scale(1.2);
 }
 
-/* Ini biar tombolnya bener-bener di tengah */
 .center {
     display: flex;
     justify-content: center;
+}
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 25, 47, 0.9); 
+    color: #cbd5e1; 
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
 }
 
 </style>
@@ -926,9 +938,12 @@ select.form-control {
 </div>
             </div>
         </div>
-
-        <footer class="footer">
-            <div class="circuit-line circuit-line-1"></div>
+<br>
+	<br>
+		<br>
+	<br>
+        <footer>
+    <div class="circuit-line circuit-line-1"></div>
             <div class="circuit-line circuit-line-2"></div>
             <div class="circuit-line circuit-line-3"></div>
             <div class="circuit-line circuit-line-4"></div>
@@ -958,9 +973,9 @@ select.form-control {
             <div class="footer-year">© 2025</div>
         </footer>
     </div>
+  </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <script>
     document.getElementById('generateQR').addEventListener('click', function () {
         const input = document.getElementById('output').value.trim();
@@ -1133,37 +1148,48 @@ select.form-control {
         }
     });
 </script>
-
 <script>
 document.getElementById('downloadConfig').addEventListener('click', function () {
     const configContent = document.getElementById('output').value;
     const format = document.getElementById('formatType').value;
 
-    // Tentukan ekstensi file berdasarkan format yang dipilih
     let extension = '';
+    let prefix = '';
+    let mimeType = '';
+    
     switch (format) {
         case 'clash':
             extension = 'yaml';
+            prefix = 'clash';
+            mimeType = 'application/x-yaml';
             break;
         case 'singbox':
             extension = 'bpf';
+            prefix = 'singbox';
+            mimeType = 'application/octet-stream';
             break;
         case 'nekobox':
             extension = 'json';
+            prefix = 'nekobox';
+            mimeType = 'application/json';
             break;
         case 'v2ray':
             extension = 'txt';
+            prefix = 'v2ray';
+            mimeType = 'text/plain';
             break;
         default:
             alert('Format tidak dikenali!');
-            return; // hentikan proses download
+            return;
     }
 
-    // Buat file dan trigger download
-    const blob = new Blob([configContent], { type: 'text/plain' });
+    const randomNum = Math.floor(1000 + Math.random() * 9000); // 4 digit random
+    const filename = `${prefix}-${randomNum}.${extension}`;
+
+    const blob = new Blob([configContent], { type: mimeType });
     const downloadLink = document.createElement('a');
     downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = `geo-project-config.${extension}`;
+    downloadLink.download = filename;
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
