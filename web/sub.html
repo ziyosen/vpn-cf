@@ -788,6 +788,9 @@ select.form-control {
     padding: 10px 0;
 }
 
+.spacer {
+    margin-top: 20px;
+  }
 </style>
 </head>
 <body>
@@ -925,7 +928,6 @@ select.form-control {
     </svg>
     DOWNLOAD
 </button>
-
 <button id="generateQR" class="qrcode-btn">
     <svg class="qrcode-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -936,44 +938,26 @@ select.form-control {
     QR CODE
 </button>
 </div>
-            </div>
-        </div>
-<br>
-	<br>
-		<br>
-	<br>
-        <footer>
-    <div class="circuit-line circuit-line-1"></div>
-            <div class="circuit-line circuit-line-2"></div>
-            <div class="circuit-line circuit-line-3"></div>
-            <div class="circuit-line circuit-line-4"></div>
-            <div class="circuit-dot circuit-dot-1"></div>
-            <div class="circuit-dot circuit-dot-2"></div>
-            <div class="circuit-dot circuit-dot-3"></div>
-            <div class="circuit-dot circuit-dot-4"></div>
-            
-            <div class="footer-logo" style="font-weight: bold;">GEO-PROJECT</div>
-            <div class="footer-powered" style="font-weight: bold;">POWERED BY SECURE TECHNOLOGY</div>
-            <div class="footer-social">
-                <a href="https://t.me/sampiiiiu" class="social-link" target="_blank">
-                    <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
-                        <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
-                    </svg>
-                    @sampiiiiu
-                </a>
-                <a href="https://t.me/sampiiiiu" class="social-link" target="_blank">
-                    <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
-                        <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
-                    </svg>
-                    @auto_sc
-                </a>
-            </div>
-            <div class="footer-year">© 2025</div>
-        </footer>
-    </div>
-  </footer>
+     </div>
+  </div>
+<div class="spacer"></div>
+<footer>
+  <div class="circuit-line circuit-line-1"></div>
+  <div class="circuit-line circuit-line-2"></div>
+  <div class="circuit-line circuit-line-3"></div>
+  <div class="circuit-line circuit-line-4"></div>
+  <div class="circuit-dot circuit-dot-1"></div>
+  <div class="circuit-dot circuit-dot-2"></div>
+  <div class="circuit-dot circuit-dot-3"></div>
+  <div class="circuit-dot circuit-dot-4"></div>
+
+  <div class="footer-powered" style="font-weight: bold;">POWERED BY SECURE TECHNOLOGY</div>
+  <div class="footer-logo" style="font-weight: bold;">
+    <a href="https://t.me/sampiiiiu" target="_blank" style="color: inherit; text-decoration: none;">
+      GEO-PROJECT
+    </a>
+  </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.min.js"></script>
 <script>
@@ -1623,18 +1607,15 @@ function generateNekoboxConfig(name, uuid, domain, host, sni, proxyHost, proxyPo
 // Main Function
 async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls, validateProxies, formatType, country = null, limit = 9999) {
     try {
-        // Cache-busting fetch
         const response = await fetch(`${DEFAULT_PROXY_BANK_URL}?_=${Date.now()}`);
         if (!response.ok) {
             throw new Error(`Failed to fetch proxy data: ${response.status}`);
         }
 
-        // Split proxies
         const proxyList = (await response.text()).split('\n').filter(Boolean);
 
         let filteredProxies = proxyList;
 
-        // Filter by country if specified
         if (country) {
             filteredProxies = proxyList.filter(line => {
                 const parts = line.split(',');
@@ -1646,16 +1627,13 @@ async function generateV2raySub(type, uuid, bugType, mainDomain, customBugs, tls
             throw new Error("No proxies found matching your region criteria");
         }
 
-        // Shuffle proxies to always get random on refresh
         filteredProxies = filteredProxies.sort(() => Math.random() - 0.5);
 
-        // Apply limit after shuffle (limit besar default: 9999)
+        // Apply limit after shuffle (limit default: 9999)
         let limitedProxies = filteredProxies.slice(0, parseInt(limit));
 
-        // Get bug
         const firstBug = customBugs && customBugs.length > 0 ? customBugs[0] : null;
 
-        // Determine domain, host, and SNI based on bug type
         let domain, host, sni;
         
         switch (bugType) {
