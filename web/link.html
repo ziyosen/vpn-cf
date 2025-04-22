@@ -50,7 +50,19 @@ body {
     min-height: 100vh;
 }
 
+
     
+    .glass-card {
+    background: rgba(15, 23, 42, 0.5); /* lebih gelap dan transparan */
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(100, 116, 139, 0.2); /* abu gelap semi-transparan */
+    box-shadow: 
+        0 10px 20px -5px rgba(0, 0, 0, 0.2),
+        0 4px 10px -3px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(100, 116, 139, 0.1);
+    border-radius: 16px;
+}
+
     
     .glass-input {
         background: rgba(15, 23, 42, 0.6);
@@ -427,7 +439,7 @@ body {
 }
 
 /* Enhanced Responsive Styles */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .container {
         padding-left: 0.75rem;
         padding-right: 0.75rem;
@@ -474,7 +486,7 @@ body {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 680px) {
     .container {
         padding-left: 0.5rem;
         padding-right: 0.5rem;
@@ -677,23 +689,27 @@ footer {
 }
 
 .spacer {
-    margin-top: 60px;
+    margin-top: 70px;
   }
+
 </style>
 </head>
+    
 <body class="font-sans">
-  <div class="container mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-6 max-w-full">
-  <div class="animated-bg px-2">
-  <div class="flex items-center justify-center">
-    <div class="mr-2">
-      <i class="fas fa-network-wired text-4xl icon-glow text-indigo-400"></i>
-    </div>
-    <h1 class="text-3xl sm:text-3xl font-bold text-center glow-text bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-emerald-400">
-      GEO-PROJECT
-    </h1>
-  </div>
-</div>
-
+<div class="container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-[900px]">
+    <div class="glass-card overflow-hidden">
+        <!-- Animated header background -->
+        <div class="animated-bg">
+            <div class="flex items-center justify-center">
+                <div class="mr-3">
+                    <i class="fas fa-network-wired text-4xl icon-glow text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500"></i>
+                
+                </div>
+                <h1 class="text-3xl font-bold text-center glow-text bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-emerald-400">GEO-PROJECT</h1>
+             
+            </div>
+        </div>
+        
         <div class="p-6">
             <!-- Proxy List Section -->
             <div id="proxy-list-section">
@@ -738,7 +754,6 @@ footer {
                         </button>
                     </div>
                 </div>
-                
                 <div id="loading-indicator" class="text-center py-10 hidden">
                     <div class="loading-spinner mx-auto mb-4"></div>
                     <p class="text-indigo-300 text-sm">Loading proxy list...</p>
