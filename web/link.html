@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
     :root {
         --primary: #6366f1;
@@ -49,17 +50,7 @@ body {
     min-height: 100vh;
 }
 
-    .glass-card {
-    background: rgba(15, 23, 42, 0.5); /* lebih gelap dan transparan */
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(100, 116, 139, 0.2); /* abu gelap semi-transparan */
-    box-shadow: 
-        0 10px 20px -5px rgba(0, 0, 0, 0.2),
-        0 4px 10px -3px rgba(0, 0, 0, 0.1),
-        0 0 0 1px rgba(100, 116, 139, 0.1);
-    border-radius: 16px;
-}
-
+    
     
     .glass-input {
         background: rgba(15, 23, 42, 0.6);
@@ -99,6 +90,7 @@ body {
     }
     
     .primary-btn {
+    	font-family: 'Orbitron', sans-serif;
     background: linear-gradient(135deg, #1e3a8a, #9333ea); /* biru tua ke ungu neon */
     color: white;
     border-radius: 8px;
@@ -450,6 +442,7 @@ body {
     }
     
     h1.text-3xl {
+    	font-family: 'Orbitron', sans-serif;
         font-size: 1.75rem;
     }
     
@@ -669,32 +662,49 @@ body {
         flex-shrink: 0 !important;
     }
 }
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 25, 47, 0.9); 
+    color: #cbd5e1; 
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.spacer {
+    margin-top: 60px;
+  }
 </style>
 </head>
 <body class="font-sans">
-<div class="container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-xl">
-    <div class="glass-card overflow-hidden">
-        <!-- Animated header background -->
-        <div class="animated-bg">
-            <div class="flex items-center justify-center">
-                <div class="mr-3">
-                    <i class="fas fa-network-wired text-4xl icon-glow text-indigo-400"></i>
-                </div>
-                <h1 class="text-3xl font-bold text-center glow-text bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-emerald-400">GEO-PROJECT</h1>
-            </div>
-        </div>
-        
+  <div class="container mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-6 max-w-full">
+  <div class="animated-bg px-2">
+  <div class="flex items-center justify-center">
+    <div class="mr-2">
+      <i class="fas fa-network-wired text-4xl icon-glow text-indigo-400"></i>
+    </div>
+    <h1 class="text-3xl sm:text-3xl font-bold text-center glow-text bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-emerald-400">
+      GEO-PROJECT
+    </h1>
+  </div>
+</div>
+
         <div class="p-6">
             <!-- Proxy List Section -->
             <div id="proxy-list-section">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5">
                     <div class="flex items-center mb-3 sm:mb-0">
                         <i class="fas fa-server mr-2 text-indigo-400"></i>
-                        <h2 class="text-xl font-semibold">Proxy List</h2>
+                        <h2 style="font-family: 'Orbitron', sans-serif;" class="text-xl font-semibold">Proxy List</h2>
                     </div>
                     <div class="flex justify-between w-full gap-4">
-    <!-- Tombol Kiri -->
-    <div class="flex-1 max-w-[50%]">
+                  <!-- Tombol Kiri -->
+                 <div class="flex-1 max-w-[50%]">
         <button id="refresh-btn" class="primary-btn w-full py-2 px-4 rounded-lg flex items-center justify-center sm:justify-start text-sm truncate">
             <i class="fas fa-sync-alt mr-2"></i>Refresh
         </button>
@@ -707,14 +717,14 @@ body {
         </button>
     </div>
 </div>
-                </div>
+   </div>
                 
                 <div id="custom-url-input" class="mb-5 hidden">
                     <div class="flex">
                         <input type="text" id="proxy-url" class="flex-1 px-4 py-2.5 glass-input rounded-l-lg text-sm" 
                             placeholder="Enter custom proxy list URL" 
                             value="https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/cek/proxyList.txt">
-                        <button id="load-custom-url" class="primary-btn px-4 py-2.5 rounded-r-lg">
+                        <button id="load-custom-url" class="primary-btn px-4 py-2.5 rounded-r-lg text-xs">
                             Load
                         </button>
                     </div>
@@ -728,7 +738,7 @@ body {
                 <!-- Search input -->
                 <div class="mb-4">
                     <div class="relative">
-                        <input type="text" id="search-input" class="w-full pl-10 pr-4 py-2.5 glass-input rounded-lg text-sm" placeholder="Search by provider or country...">
+                        <input type="text" id="search-input" class="w-full pl-10 pr-4 py-2 rounded-lg text-xs glass-input" placeholder="Search by provider or country...">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
@@ -763,48 +773,50 @@ body {
                     <div class="flex justify-between items-center mb-5">
                         <div class="flex items-center">
                             <i class="fas fa-user-plus mr-2 text-indigo-400"></i>
-                            <h2 class="text-xl font-semibold">Create Account</h2>
-                        </div>
-                        <button id="back-to-list" class="flex items-center text-indigo-400 hover:text-indigo-300 transition-colors text-sm">
-                            <i class="fas fa-arrow-left mr-2"></i> Back to List
-                        </button>
-                    </div>
+                            <h2 style="font-family: 'Orbitron', sans-serif;" class="text-sm font-semibold text-indigo-400 drop-shadow-[0_0_4px_rgba(129,140,248,0.5)]">
+                          Create Account
+                          </h2>
+                          </div>
+                        <button id="back-to-list" style="font-family: 'Orbitron', sans-serif;" class="flex items-center text-indigo-400 hover:text-indigo-300 transition-colors text-sm gap-2">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </button>
+                 </div>
                     
                     <div class="glass-card p-5 mb-6 overflow-hidden relative">
     <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-indigo-500/5 to-transparent rounded-bl-full pointer-events-none"></div>
     
-    <h3 class="text-base font-medium text-indigo-400 mb-4 flex items-center">
-        <i class="fas fa-server mr-2"></i>
-        Selected Proxy
-    </h3>
-    
+    <h3 style="font-family: 'Orbitron', sans-serif;" class="text-sm font-medium text-indigo-400 mb-4 flex items-center gap-2">
+  <i class="fas fa-server text-indigo-300"></i>
+  Selected Proxy
+</h3>
+
     <div class="grid grid-cols-2 gap-3 mb-4">
         <div class="flex items-center space-x-2 bg-slate-800/40 p-3 rounded-lg border border-slate-700/30">
             <i class="fas fa-building text-indigo-400/70 w-5 text-center"></i>
             <div>
-                <div class="text-xs text-gray-400">Provider</div>
-                <div id="selected-provider" class="text-sm font-medium text-white">-</div>
+                <div class="text-[8px] text-gray-400">Provider</div>
+                <div id="selected-provider" class="text-xs font-medium text-white">-</div>
             </div>
         </div>
         <div class="flex items-center space-x-2 bg-slate-800/40 p-3 rounded-lg border border-slate-700/30">
             <i class="fas fa-globe-americas text-indigo-400/70 w-5 text-center"></i>
             <div>
                 <div class="text-xs text-gray-400">Country</div>
-                <div id="selected-country" class="text-sm font-medium text-white">-</div>
+                <div id="selected-country" class="text-xs font-medium text-white">-</div>
             </div>
         </div>
-        <div class="flex items-center space-x-2 bg-slate-800/40 p-3 rounded-lg border border-slate-700/30">
+        <div class="flex items-center space-x-1 bg-slate-800/40 p-3 rounded-lg border border-slate-700/30">
             <i class="fas fa-network-wired text-indigo-400/70 w-5 text-center"></i>
             <div>
                 <div class="text-xs text-gray-400">IP</div>
-                <div id="selected-ip" class="text-sm font-medium text-white">-</div>
+                <div id="selected-ip" class="text-xs font-medium text-white">-</div>
             </div>
         </div>
         <div class="flex items-center space-x-2 bg-slate-800/40 p-3 rounded-lg border border-slate-700/30">
             <i class="fas fa-plug text-indigo-400/70 w-5 text-center"></i>
             <div>
                 <div class="text-xs text-gray-400">Port</div>
-                <div id="selected-port" class="text-sm font-medium text-white">-</div>
+                <div id="selected-port" class="text-xs font-medium text-white">-</div>
             </div>
         </div>
     </div>
@@ -846,7 +858,6 @@ body {
             </div>
         </div>
         
-        
 <div id="proxy-status-loading" class="rounded-lg p-3 bg-gradient-to-r from-indigo-900/20 to-indigo-800/10 border border-indigo-500/20">
     <div class="flex items-center">
         <div class="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center mr-3 border border-indigo-500/30">
@@ -882,18 +893,17 @@ body {
                         <form id="vmess-account-form" class="space-y-5">
                             <div>
                                 <label for="vmess-name" class="block text-sm font-medium text-gray-300 mb-2">Account Name</label>
-                                <input type="text" id="vmess-name" name="name" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm" readonly>
+                                <input type="text" id="vmess-name" name="name" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs" readonly>
                             </div>
                             
                             <div>
-    <label for="vmess-uuid" class="block text-sm font-medium text-gray-300 mb-2">UUID</label>
-    <input type="text" id="vmess-uuid" name="uuid" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm" value="f282b878-8711-45a1-8c69-5564172123c1" required readonly>
-</div>
-
+                          <label for="vmess-uuid" class="block text-sm font-medium text-gray-300 mb-2">UUID</label>
+                        <input type="text" id="vmess-uuid" name="uuid" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs" value="f282b878-8711-45a1-8c69-5564172123c1" required readonly>
+                          </div>
                             
                             <div>
                                 <label for="vmess-path" class="block text-sm font-medium text-gray-300 mb-2">Path</label>
-                                <input type="text" id="vmess-path" name="path" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm" readonly>
+                                <input type="text" id="vmess-path" name="path" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs" readonly>
                             </div>
                             
                             <div>
@@ -916,9 +926,9 @@ body {
                                 <label for="vmess-bug" class="block text-sm font-medium text-gray-300 mb-2">Custom Bug <span class="text-xs text-gray-500">(opsional)</span></label>
                                 <select id="vmess-bug" name="bug" class="w-full px-4 py-2.5 glass-select rounded-lg text-sm">
     <!-- Options will be populated dynamically -->
-</select>
+                            </select>
                                 <div id="vmess-manual-bug-container" class="wildcard-container">
-                                    <input type="text" id="vmess-manual-bug" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm mt-2" placeholder="Enter custom bug domain">
+                                    <input type="text" id="vmess-manual-bug" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs mt-2" placeholder="Enter custom bug domain">
                                 </div>
                                 <div id="vmess-wildcard-container" class="wildcard-container">
                                     <div class="checkbox-container">
@@ -929,11 +939,11 @@ body {
                             </div>
                             
                             <div class="pt-2">
-                                <button type="submit" class="w-full primary-btn py-3 px-4 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-plus-circle mr-2"></i> Create VMess Account
-                                </button>
-                            </div>
-                        </form>
+                         <button type="submit" class="w-full primary-btn py-1.5 px-2 rounded-md flex items-center justify-center text-xs">
+                        <i class="fas fa-plus-circle mr-1 text-sm"></i> Create VMess Account
+                   </button>
+                       </div>
+                   </form>
                     </div>
                     
                     <!-- VLESS Form -->
@@ -941,7 +951,7 @@ body {
                         <form id="vless-account-form" class="space-y-5">
                             <div>
                                 <label for="vless-name" class="block text-sm font-medium text-gray-300 mb-2">Account Name</label>
-                                <input type="text" id="vless-name" name="name" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm" readonly>
+                                <input type="text" id="vless-name" name="name" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs" readonly>
                             </div>
                             
                             <div>
@@ -956,7 +966,7 @@ body {
                             
                             <div>
                                 <label for="vless-path" class="block text-sm font-medium text-gray-300 mb-2">Path</label>
-                                <input type="text" id="vless-path" name="path" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm" readonly>
+                                <input type="text" id="vless-path" name="path" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs" readonly>
                             </div>
                             
                             <div>
@@ -979,9 +989,9 @@ body {
                                 <label for="vless-bug" class="block text-sm font-medium text-gray-300 mb-2">Custom Bug <span class="text-xs text-gray-500">(opsional)</span></label>
                                 <select id="vless-bug" name="bug" class="w-full px-4 py-2.5 glass-select rounded-lg text-sm">
     <!-- Options will be populated dynamically -->
-</select>
+                                </select>
                                 <div id="vless-manual-bug-container" class="wildcard-container">
-                                    <input type="text" id="vless-manual-bug" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm mt-2" placeholder="Enter custom bug domain">
+                                    <input type="text" id="vless-manual-bug" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs mt-2" placeholder="Enter custom bug domain">
                                 </div>
                                 <div id="vless-wildcard-container" class="wildcard-container">
                                     <div class="checkbox-container">
@@ -992,9 +1002,9 @@ body {
                             </div>
                             
                             <div class="pt-2">
-                                <button type="submit" class="w-full primary-btn py-3 px-4 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-plus-circle mr-2"></i> Create VLESS Account
-                                </button>
+                           <button type="submit" class="w-full primary-btn py-1.5 px-2 rounded-md flex items-center justify-center text-xs">
+                          <i class="fas fa-plus-circle mr-1 text-sm"></i> Create VLESS Account
+                             </button>
                             </div>
                         </form>
                     </div>
@@ -1004,7 +1014,7 @@ body {
                         <form id="trojan-account-form" class="space-y-5">
                             <div>
                                 <label for="trojan-name" class="block text-sm font-medium text-gray-300 mb-2">Account Name</label>
-                                <input type="text" id="trojan-name" name="name" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm" readonly>
+                                <input type="text" id="trojan-name" name="name" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs" readonly>
                             </div>
                             
                             <div>
@@ -1019,7 +1029,7 @@ body {
                             
                             <div>
                                 <label for="trojan-path" class="block text-sm font-medium text-gray-300 mb-2">Path</label>
-                                <input type="text" id="trojan-path" name="path" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm" readonly>
+                                <input type="text" id="trojan-path" name="path" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs" readonly>
                             </div>
                             
                             <div>
@@ -1042,9 +1052,9 @@ body {
                                 <label for="trojan-bug" class="block text-sm font-medium text-gray-300 mb-2">Custom Bug <span class="text-xs text-gray-500">(opsional)</span></label>
                                 <select id="trojan-bug" name="bug" class="w-full px-4 py-2.5 glass-select rounded-lg text-sm">
     <!-- Options will be populated dynamically -->
-</select>
+                              </select>
                                 <div id="trojan-manual-bug-container" class="wildcard-container">
-                                    <input type="text" id="trojan-manual-bug" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm mt-2" placeholder="Enter custom bug domain">
+                                    <input type="text" id="trojan-manual-bug" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs mt-2" placeholder="Enter custom bug domain">
                                 </div>
                                 <div id="trojan-wildcard-container" class="wildcard-container">
                                     <div class="checkbox-container">
@@ -1055,11 +1065,11 @@ body {
                             </div>
                             
                             <div class="pt-2">
-                                <button type="submit" class="w-full primary-btn py-3 px-4 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-plus-circle mr-2"></i> Create Trojan Account
-                                </button>
-                            </div>
-                        </form>
+                            <button type="submit" class="w-full primary-btn py-1.5 px-2 rounded-md flex items-center justify-center text-xs">
+                           <i class="fas fa-plus-circle mr-1 text-sm"></i> Create Trojan Account
+                               </button>
+                         </div>
+                         </form>
                     </div>
                     
                     <!-- Shadowsocks Form -->
@@ -1067,7 +1077,7 @@ body {
                         <form id="ss-account-form" class="space-y-5">
                             <div>
                                 <label for="ss-name" class="block text-sm font-medium text-gray-300 mb-2">Account Name</label>
-                                <input type="text" id="ss-name" name="name" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm" readonly>
+                                <input type="text" id="ss-name" name="name" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs" readonly>
                             </div>
                             
                             <div>
@@ -1082,7 +1092,7 @@ body {
                             
                             <div>
                                 <label for="ss-path" class="block text-sm font-medium text-gray-300 mb-2">Path</label>
-                                <input type="text" id="ss-path" name="path" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm" readonly>
+                                <input type="text" id="ss-path" name="path" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs" readonly>
                             </div>
                             
                             <div>
@@ -1102,11 +1112,11 @@ body {
                             
                             <div>
                                 <label for="ss-bug" class="block text-sm font-medium text-gray-300 mb-2">Custom Bug <span class="text-xs text-gray-500">(opsional)</span></label>
-                                <select id="ss-bug" name="bug" class="w-full px-4 py-2.5 glass-select rounded-lg text-sm">
+                                <select id="ss-bug" name="bug" class="w-full px-4 py-2.5 glass-select rounded-lg text-sm">                                	
     <!-- Options will be populated dynamically -->
-</select>
+                             </select>
                                 <div id="ss-manual-bug-container" class="wildcard-container">
-                                    <input type="text" id="ss-manual-bug" class="w-full px-4 py-2.5 glass-input rounded-lg text-sm mt-2" placeholder="Enter custom bug domain">
+                                    <input type="text" id="ss-manual-bug" class="w-full px-4 py-2.5 glass-input rounded-lg text-xs mt-2" placeholder="Enter custom bug domain">
                                 </div>
                                 <div id="ss-wildcard-container" class="wildcard-container">
                                     <div class="checkbox-container">
@@ -1117,11 +1127,11 @@ body {
                             </div>
                             
                             <div class="pt-2">
-                                <button type="submit" class="w-full primary-btn py-3 px-4 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-plus-circle mr-2"></i> Create Shadowsocks Account
-                                </button>
-                            </div>
-                        </form>
+                         <button type="submit" class="w-full primary-btn py-1.5 px-2 rounded-md flex items-center justify-center text-xs">
+                           <i class="fas fa-plus-circle mr-1 text-sm"></i> Create Shadowsocks Account
+                              </button>
+                          </div>
+                     </form>
                     </div>
                 </div>
             </div>
@@ -1174,51 +1184,33 @@ body {
             </div>
         </div>
     </div>
-    <footer class="mt-8 pb-6">
-    <div class="divider mb-6"></div>
-    <div class="relative overflow-hidden rounded-xl p-6 bg-slate-800/30 backdrop-blur-sm border border-slate-700/30">
-        <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-500/5 rounded-bl-full pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-40 h-40 bg-emerald-500/5 rounded-tr-full pointer-events-none"></div>
-        
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center">
-                <div class="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center mr-3 border border-indigo-500/20">
-                    <i class="fas fa-network-wired text-lg icon-glow text-indigo-400"></i>
-                </div>
-                <span class="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-emerald-400">Geo-Project</span>
-            </div>
-            
-            
-            <div class="flex gap-4">
-    <a href="/" class="w-6 h-6 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-all">
+    <div class="spacer"></div>
+    <footer class="text-center py-4">
+  <div class="flex flex-col items-center gap-3">
+    <div class="flex items-center">
+      <div class="w-10 h-10 rounded-full bg-indigo-500/10 flex items-center justify-center mr-3 border border-indigo-500/20">
+        <i class="fas fa-network-wired text-lg icon-glow text-indigo-400"></i>
+      </div>
+      <span style="font-family: 'Orbitron', sans-serif;" class="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-emerald-400">
+        Geo - Project
+      </span>
+    </div>
+    <div class="flex gap-4">
+      <a href="/" class="w-6 h-6 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-all">
         <i class="fab fa-github" style="color: #000;"></i>
-    </a>
-    <a href="https://wa.me/6292339191527" class="w-6 h-6 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-all">
+      </a>
+      <a href="https://wa.me/6292339191527" class="w-6 h-6 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-all">
         <i class="fab fa-whatsapp" style="color: #25D366;"></i>
-    </a>
-    <a href="https://t.me/sampiiiiu" class="w-6 h-6 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-all">
+      </a>
+      <a href="https://t.me/sampiiiiu" class="w-6 h-6 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-all">
         <i class="fab fa-telegram" style="color: #0088cc;"></i>
-    </a>
-    <a href="https://t.me/testikuy_mang" class="w-6 h-6 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-all">
+      </a>
+      <a href="https://t.me/testikuy_mang" class="w-6 h-6 rounded-full bg-white flex items-center justify-center hover:scale-110 transition-all">
         <i class="fab fa-telegram" style="color: #0088cc;"></i>
-    </a>
-</div>
-        </div>
-        
-        <div class="h-px bg-gradient-to-r from-transparent via-slate-600/20 to-transparent my-5"></div>
-        
-        <div class="text-center text-gray-500 text-xs">
-            <p>© 2025 Geo-Project | Secure Connection Technology</p>
-            <p class="mt-1 flex items-center justify-center">
-                Dibuat dengan 
-                <i class="fas fa-heart text-rose-500 mx-1 animate-pulse"></i> 
-                untuk privasi online Anda
-            </p>
-        </div>
-    
-</div>
+      </a>
+    </div>
+  </div>
 </footer>
-</div>
 
 <div id="donation-button" class="fixed bottom-6 right-6 z-[1000]">
     <button class="w-14 h-14 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 pulse-animation">
