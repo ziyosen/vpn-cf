@@ -35,30 +35,31 @@
     }
     
     * {
-        font-family: 'Inter', sans-serif;
-    }
-    
-    body {
-        background-color: var(--dark);
-        background-image: 
-            radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 90% 10%, rgba(244, 63, 94, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 10% 90%, rgba(56, 189, 248, 0.05) 0%, transparent 50%);
-        color: var(--light);
-        min-height: 100vh;
-    }
-    
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #0a0a0a; /* lebih gelap dari var(--dark) umum */
+    background-image: 
+        radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.05) 0%, transparent 60%),
+        radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 60%),
+        radial-gradient(circle at 90% 10%, rgba(244, 63, 94, 0.03) 0%, transparent 60%),
+        radial-gradient(circle at 10% 90%, rgba(56, 189, 248, 0.03) 0%, transparent 60%);
+    color: var(--light);
+    min-height: 100vh;
+}
+
     .glass-card {
-        background: rgba(30, 41, 59, 0.7);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(99, 102, 241, 0.2);
-        box-shadow: 
-            0 10px 15px -3px rgba(0, 0, 0, 0.1),
-            0 4px 6px -2px rgba(0, 0, 0, 0.05),
-            0 0 0 1px rgba(99, 102, 241, 0.1);
-        border-radius: 16px;
-    }
+    background: rgba(15, 23, 42, 0.5); /* lebih gelap dan transparan */
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(100, 116, 139, 0.2); /* abu gelap semi-transparan */
+    box-shadow: 
+        0 10px 20px -5px rgba(0, 0, 0, 0.2),
+        0 4px 10px -3px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(100, 116, 139, 0.1);
+    border-radius: 16px;
+}
+
     
     .glass-input {
         background: rgba(15, 23, 42, 0.6);
@@ -98,35 +99,36 @@
     }
     
     .primary-btn {
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: white;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2), 0 2px 4px -1px rgba(99, 102, 241, 0.1);
-    }
-    
-    .primary-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-        transition: all 0.6s ease;
-    }
-    
-    .primary-btn:hover::before {
-        left: 100%;
-    }
-    
-    .primary-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 10px -1px rgba(99, 102, 241, 0.3), 0 2px 4px -1px rgba(99, 102, 241, 0.2);
-    }
+    background: linear-gradient(135deg, #1e3a8a, #9333ea); /* biru tua ke ungu neon */
+    color: white;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(147, 51, 234, 0.2), 0 2px 4px -1px rgba(30, 58, 138, 0.1);
+}
+
+.primary-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: all 0.6s ease;
+}
+
+.primary-btn:hover::before {
+    left: 100%;
+}
+
+.primary-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 10px -1px rgba(147, 51, 234, 0.3), 0 2px 4px -1px rgba(30, 58, 138, 0.2);
+}
+
     
     .secondary-btn {
         background: rgba(51, 65, 85, 0.6);
@@ -249,33 +251,40 @@
     
     /* Pagination styles */
     .pagination-btn {
-        min-width: 36px;
-        height: 36px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        transition: all 0.3s ease;
-        background: rgba(51, 65, 85, 0.4);
-        border: 1px solid rgba(99, 102, 241, 0.1);
-    }
+    min-width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    background: rgba(30, 41, 59, 0.3); /* lebih gelap & transparan */
+    border: 1px solid rgba(99, 102, 241, 0.15);
+    color: #cbd5e1;
+    box-shadow: 0 0 4px rgba(99, 102, 241, 0.2);
+}
 
-    .pagination-btn.active {
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: white;
-        border: none;
-    }
+.pagination-btn.active {
+    background: linear-gradient(135deg, #3b82f6, #10b981); /* biru to hijau gradasi */
+    color: white;
+    border: none;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.8), 0 0 12px rgba(16, 185, 129, 0.6);
+}
 
-    .pagination-btn:not(.active):not(.disabled):hover {
-        background: rgba(71, 85, 105, 0.5);
-        border-color: rgba(99, 102, 241, 0.3);
-    }
+.pagination-btn:not(.active):not(.disabled):hover {
+    background: rgba(51, 65, 85, 0.5);
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 0 6px rgba(99, 102, 241, 0.4);
+    color: white;
+}
 
-    .pagination-btn.disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
+.pagination-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
 
     /* QR Code container */
     .qrcode-container {
@@ -301,42 +310,45 @@
         padding: 0.75rem;
         border: 1px solid rgba(99, 102, 241, 0.1);
     }
-    
-    /* Animated background for header */
-    .animated-bg {
-        position: relative;
-        overflow: hidden;
-        border-radius: 12px 12px 0 0;
-        padding: 2rem 0;
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+
+
+.animated-bg {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px 12px 0 0;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(31, 41, 55, 0.7)); /* Biru tua dengan transparansi */
+    color: white;
+}
+
+.animated-bg::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(17, 24, 39, 0),
+        rgba(17, 24, 39, 0.1), /* Biru tua transparan */
+        rgba(31, 41, 55, 0.1), /* Biru lebih gelap transparan */
+        rgba(31, 41, 55, 0)
+    );
+    transform: rotate(30deg);
+    animation: shimmer 10s linear infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: rotate(30deg) translate(-50%, -50%);
     }
-    
-    .animated-bg::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-            to bottom right,
-            rgba(99, 102, 241, 0),
-            rgba(99, 102, 241, 0.1),
-            rgba(16, 185, 129, 0.1),
-            rgba(16, 185, 129, 0)
-        );
-        transform: rotate(30deg);
-        animation: shimmer 10s linear infinite;
+    100% {
+        transform: rotate(30deg) translate(50%, 50%);
     }
+}
+
     
-    @keyframes shimmer {
-        0% {
-            transform: rotate(30deg) translate(-50%, -50%);
-        }
-        100% {
-            transform: rotate(30deg) translate(50%, 50%);
-        }
-    }
     
     /* Icon styles */
     .icon-glow {
@@ -680,14 +692,21 @@
                         <i class="fas fa-server mr-2 text-indigo-400"></i>
                         <h2 class="text-xl font-semibold">Proxy List</h2>
                     </div>
-                    <div class="flex flex-col sm:flex-row w-full sm:w-auto space-y-2 sm:space-y-0 sm:space-x-3">
-                        <button id="refresh-btn" class="primary-btn py-2 px-4 rounded-lg flex items-center justify-center text-sm">
-                            <i class="fas fa-sync-alt mr-2"></i>Refresh
-                        </button>
-                        <button id="custom-url-btn" class="secondary-btn py-2 px-4 rounded-lg flex items-center justify-center text-sm">
-                            <i class="fas fa-link mr-2"></i>URL
-                        </button>
-                    </div>
+                    <div class="flex justify-between w-full gap-4">
+    <!-- Tombol Kiri -->
+    <div class="flex-1 max-w-[50%]">
+        <button id="refresh-btn" class="primary-btn w-full py-2 px-4 rounded-lg flex items-center justify-center sm:justify-start text-sm truncate">
+            <i class="fas fa-sync-alt mr-2"></i>Refresh
+        </button>
+    </div>
+    
+    <!-- Tombol Kanan -->
+    <div class="flex-1 max-w-[50%] flex justify-end">
+        <button id="custom-url-btn" class="primary-btn w-full py-2 px-4 rounded-lg flex items-center justify-center sm:justify-start text-sm truncate">
+            <i class="fas fa-link mr-2"></i>URL
+        </button>
+    </div>
+</div>
                 </div>
                 
                 <div id="custom-url-input" class="mb-5 hidden">
