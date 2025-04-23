@@ -30,7 +30,6 @@
     <link rel="icon" href="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg"/>
     
     <title>Geo Project</title>
-    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
         
@@ -47,357 +46,52 @@
             --success-color: #38ef7d;
         }
         
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #1e3c72, #2a5298);
-      color: #fff;
-      text-align: center;
-      padding: 3px;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-/* Navbar */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-    padding: 3px 2px; /* Mengurangi padding untuk navbar desktop */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+     html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Ini yang mencegah scroll */
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
     color: #fff;
-    position: sticky;
+    text-align: center;
+}
+
+/* Untuk memperindah link */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Efek radial latar belakang */
+body::before {
+    content: '';
+    position: absolute;
     top: 0;
-    z-index: 1000;
-    border-bottom: 2px solid #0ff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
-}
-
-.menu-toggle {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #fff;
-    cursor: pointer;
-    display: none;
-}
-
-.nav-links {
-    display: flex;
-    gap: 10px;
-    transition: all 0.3s ease-in-out;
-    background: rgba(255, 255, 255, 0.1); /* transparan */
-    backdrop-filter: blur(10px); /* efek kaca */
-    -webkit-backdrop-filter: blur(10px); /* untuk Safari */
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 5px 10px;
-}
-
-.nav-links a {
-    color: #fff;
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 8px;
-    transition: background 0.3s;
-}
-
-.nav-links a:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* Responsif untuk layar kecil */
-@media screen and (max-width: 768px) {
-    .navbar {
-        padding: 5px 15px;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    .nav-links {
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        width: 100%;
-        background: rgba(44, 83, 100, 0.6); /* transparan versi gelap */
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        display: none;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .nav-links.show {
-        display: flex;
-    }
-
-    .nav-links a {
-        padding: 10px 0;
-        text-align: center;
-        border-top: 1px solid rgba(0, 255, 255, 0.3);
-        width: 100%;
-    }
-
-    .nav-links a:first-child {
-        border-top: none;
-    }
-}
-
-    .protocol-icons {
-            display: flex;
-            justify-content: center;
-            gap: 18px;
-            margin: 25px 0;
-        }
-        
-        .protocol-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .protocol-icon:hover {
-            transform: translateY(-5px);
-        }
-        
-        .protocol-icon:hover .protocol-icon-circle {
-            background: linear-gradient(45deg, rgba(106, 17, 203, 0.3), rgba(37, 117, 252, 0.3));
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 
-                0 10px 20px rgba(0, 0, 0, 0.3),
-                0 0 15px rgba(106, 17, 203, 0.5);
-        }
-        
-        .protocol-icon:hover .protocol-icon-text {
-            color: var(--text-primary);
-        }
-        
-        .protocol-icon-circle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-size: 1.4rem;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .protocol-icon-circle::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(
-                circle at center,
-                rgba(255, 255, 255, 0.2) 0%,
-                transparent 70%
-            );
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .protocol-icon:hover .protocol-icon-circle::after {
-            opacity: 1;
-        }
-        
-        .protocol-icon-text {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-        }
-    
-    /* Footer & Social */
-    .footer-credit {
-      margin-top: 40px;
-      font-size: 14px;
-    }
-
-    .fab {
-      transition: transform 0.3s ease;
-    }
-
-    .fab:hover {
-      transform: scale(1.2);
-    }
-    
-            #logo-upload {
-      display: none;
-    }
-    
-    .camera-icon {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background: var(--primary-color);
-  border-radius: 50%;
-  padding: 10px;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0.7; /* transparan */
-}
-
-.camera-icon:hover {
-  background: var(--secondary-color);
-  opacity: 1; /* kembali solid saat hover */
-}
-
-.profile-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 35px;
-            position: relative;
-        }
-        
-        .profile-img-container {
-            position: relative;
-            width: 160px;
-            height: 160px;
-            margin-bottom: 30px;
-            transition: transform 0.5s ease;
-        }
-        
-        .profile-img-container:hover {
-            transform: scale(1.05);
-        }
-        
-        .profile-img-container {
-            position: relative;
-            width: 160px;
-            height: 160px;
-            margin-bottom: 30px;
-            transition: transform 0.5s ease;
-        }
-        
-        .profile-img-container:hover {
-            transform: scale(1.05);
-        }
-        
-        .profile-img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid transparent;
-            background: linear-gradient(145deg, var(--primary-color), var(--secondary-color)) border-box;
-            animation: pulse 4s infinite;
-            box-shadow: 
-                0 0 20px rgba(106, 17, 203, 0.5),
-                0 0 40px rgba(106, 17, 203, 0.3),
-                0 0 60px rgba(106, 17, 203, 0.1);
-            transition: all 0.5s ease;
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 
-                    0 0 20px rgba(106, 17, 203, 0.5),
-                    0 0 40px rgba(106, 17, 203, 0.3),
-                    0 0 60px rgba(106, 17, 203, 0.1);
-            }
-            50% {
-                box-shadow: 
-                    0 0 25px rgba(106, 17, 203, 0.7),
-                    0 0 50px rgba(106, 17, 203, 0.5),
-                    0 0 75px rgba(106, 17, 203, 0.3);
-            }
-            100% {
-                box-shadow: 
-                    0 0 20px rgba(106, 17, 203, 0.5),
-                    0 0 40px rgba(106, 17, 203, 0.3),
-                    0 0 60px rgba(106, 17, 203, 0.1);
-            }
-        }
-        
-        .profile-img-container::after {
-            content: '';
-            position: absolute;
-            top: -12px;
-            left: -12px;
-            right: -12px;
-            bottom: -12px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--primary-color));
-            z-index: -1;
-            opacity: 0.6;
-            animation: rotate 12s linear infinite;
-        }
-        
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        
-        .profile-img-container {
-                width: 140px;
-                height: 140px;
-            }
-            
-            .divider {
-            width: 80%;
-            height: 2px;
-            background: linear-gradient(to right, transparent, rgba(106, 17, 203, 0.5), transparent);
-            margin: 25px auto;
-            position: relative;
-        }
-        
-        .divider::before {
-            content: '';
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--secondary-color);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px var(--secondary-color);
-        }
-        
-        .footer-divider {
-        width: 40%;
-        height: 1px;
-        background: linear-gradient(to right, transparent, rgba(106, 17, 203, 0.3), transparent);
-        margin: 6px auto;
-    }
-
-        .container {
+    left: 0;
     width: 100%;
-    padding: 0 10px;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(106, 17, 203, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(37, 117, 252, 0.15) 0%, transparent 40%);
+    z-index: -1;
 }
 
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    margin: 40px auto 0; /* Tambahkan ini untuk mengatur jarak dari atas */
+    padding: 0 15px;
+}
+
+/* Desain card */
 .card {
     background: var(--card-bg);
     border-radius: 24px;
@@ -412,12 +106,9 @@
     position: relative;
     z-index: 1;
     transition: transform 0.5s ease, box-shadow 0.5s ease;
-    width: 100%;
-    max-width: 1200px;
-    box-sizing: border-box;
-    margin: 0 auto;
 }
 
+/* Hover effect */
 .card:hover {
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.5),
@@ -426,6 +117,7 @@
     transform: translateY(-5px);
 }
 
+/* Shine effect */
 .card::before {
     content: '';
     position: absolute;
@@ -455,27 +147,42 @@
     }
 }
 
-/* ✅ Mobile: Lebar penuh dengan padding minimal */
-@media (max-width: 768px) {
+/* ======================== */
+/* Responsive HP FULL WIDTH */
+@media (max-width: 767px) {
     .container {
-        padding: 0 5px;
+        max-width: 100%;
+        padding: 0 6px;
+        margin-top: 30px; /* Sedikit lebih kecil di HP */
     }
 
     .card {
-        padding: 20px 15px;
-        max-width: 100%;
-        width: 100%;
+        padding: 24px 18px;
+        border-radius: 16px;
+    }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .container {
+        max-width: 90%;
+        margin-top: 30px;
+    }
+
+    .card {
+        padding: 30px;
     }
 }
 
         .profile-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 35px;
-            position: relative;
-        }
-        
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 25px; /* tambahkan ini */
+    margin-bottom: 35px;
+    position: relative;
+}
+
         .profile-img-container {
             position: relative;
             width: 160px;
@@ -639,6 +346,81 @@
             box-shadow: 0 0 10px var(--secondary-color);
         }
         
+        .protocol-icons {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin: 25px 0;
+        }
+        
+        .protocol-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .protocol-icon:hover {
+            transform: translateY(-5px);
+        }
+        
+        .protocol-icon:hover .protocol-icon-circle {
+            background: linear-gradient(45deg, rgba(106, 17, 203, 0.3), rgba(37, 117, 252, 0.3));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 10px 20px rgba(0, 0, 0, 0.3),
+                0 0 15px rgba(106, 17, 203, 0.5);
+        }
+        
+        .protocol-icon:hover .protocol-icon-text {
+            color: var(--text-primary);
+        }
+        
+        .protocol-icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .protocol-icon-circle::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle at center,
+                rgba(255, 255, 255, 0.2) 0%,
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .protocol-icon:hover .protocol-icon-circle::after {
+            opacity: 1;
+        }
+        
+        .protocol-icon-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        
         .profile-links {
             display: flex;
             flex-direction: column;
@@ -712,59 +494,99 @@
             color: var(--text-primary);
         }
         
+        .action-button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 14px;
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            letter-spacing: 1.5px;
+            box-shadow: 0 10px 25px rgba(106, 17, 203, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+        
+        .action-button:hover::before {
+            left: 100%;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(106, 17, 203, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .action-button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+        
         .footer-credit {
-        max-width: 380px;
-        margin: 4px auto;
-        padding: 4px 8px;
-        background: rgba(135, 206, 250, 0.1);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        border-radius: 12px;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 0.75rem;
-        color: #ffffffcc;
-        text-align: center; /* Menyentuhkan ke tengah */
-        border: 1px solid rgba(135, 206, 250, 0.2);
-        line-height: 1.2;
-    }
-
-    .footer-credit a {
-        color: var(--text-secondary, #87cefa);
-        text-decoration: none;
-        transition: color 0.3s ease;
-        position: relative;
-    }
-
-    .footer-credit a::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: var(--secondary-color, #87cefa);
-        transition: width 0.3s ease;
-    }
-
-    .footer-credit a:hover {
-        color: var(--text-primary, #ffffff);
-    }
-
-    .footer-credit a:hover::after {
-        width: 100%;
-    }
-
-    .footer-divider {
-        width: 40%;
-        height: 1px;
-        background: linear-gradient(to right, transparent, rgba(106, 17, 203, 0.3), transparent);
-        margin: 6px auto;
-    }
-
-    .footer-credit p {
-        margin: 2px 0;
-    }
+            margin-top: 45px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        
+        .footer-credit a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .footer-credit a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .footer-credit a:hover {
+            color: var(--text-primary);
+        }
+        
+        .footer-credit a:hover::after {
+            width: 100%;
+        }
+        
+        .footer-divider {
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(106, 17, 203, 0.3), transparent);
+            margin: 18px auto;
+        }
+        
         .particles-container {
             position: fixed;
             top: 0;
@@ -821,28 +643,535 @@
                 font-size: 1.2rem;
             }
             
+            .action-button {
+                padding: 14px;
+                font-size: 1.1rem;
+            }
+        }
+ 
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    padding: 3px 2px; /* Mengurangi padding untuk navbar desktop */
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid #0ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    display: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+    transition: all 0.3s ease-in-out;
+    background: rgba(255, 255, 255, 0.1); /* transparan */
+    backdrop-filter: blur(10px); /* efek kaca */
+    -webkit-backdrop-filter: blur(10px); /* untuk Safari */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+}
+
+.nav-links a {
+    color: #fff;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.nav-links a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsif untuk layar kecil */
+@media screen and (max-width: 768px) {
+    .navbar {
+        padding: 5px 15px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: rgba(44, 83, 100, 0.6); /* transparan versi gelap */
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        display: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 10px 0;
+        text-align: center;
+        border-top: 1px solid rgba(0, 255, 255, 0.3);
+        width: 100%;
+    }
+
+    .nav-links a:first-child {
+        border-top: none;
+    }
+}
+
+            #logo-upload {
+      display: none;
+    }
+    
+    .camera-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--primary-color);
+  border-radius: 50%;
+  padding: 10px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 0.7; /* transparan */
+}
+
+.camera-icon:hover {
+  background: var(--secondary-color);
+  opacity: 1; /* kembali solid saat hover */
+}
+
+.profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+        
+        .profile-img-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 30px;
+            transition: transform 0.5s ease;
+        }
+        
+        .profile-img-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .profile-img-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 30px;
+            transition: transform 0.5s ease;
+        }
+        
+        .profile-img-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid transparent;
+            background: linear-gradient(145deg, var(--primary-color), var(--secondary-color)) border-box;
+            animation: pulse 4s infinite;
+            box-shadow: 
+                0 0 20px rgba(106, 17, 203, 0.5),
+                0 0 40px rgba(106, 17, 203, 0.3),
+                0 0 60px rgba(106, 17, 203, 0.1);
+            transition: all 0.5s ease;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 
+                    0 0 20px rgba(106, 17, 203, 0.5),
+                    0 0 40px rgba(106, 17, 203, 0.3),
+                    0 0 60px rgba(106, 17, 203, 0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 0 25px rgba(106, 17, 203, 0.7),
+                    0 0 50px rgba(106, 17, 203, 0.5),
+                    0 0 75px rgba(106, 17, 203, 0.3);
+            }
+            100% {
+                box-shadow: 
+                    0 0 20px rgba(106, 17, 203, 0.5),
+                    0 0 40px rgba(106, 17, 203, 0.3),
+                    0 0 60px rgba(106, 17, 203, 0.1);
+            }
+        }
+        
+        .profile-img-container::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+            z-index: -1;
+            opacity: 0.6;
+            animation: rotate 12s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .profile-img-container {
+                width: 140px;
+                height: 140px;
+            }
+            
+            
+    
+        .service-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            text-align: center;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.4;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-badge {
+            background: linear-gradient(45deg, #11998e, var(--success-color));
+            color: var(--text-primary);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(56, 239, 125, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .status-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(56, 239, 125, 0.4);
+        }
+        
+        .status-badge i {
+            font-size: 0.8rem;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .divider {
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(106, 17, 203, 0.5), transparent);
+            margin: 25px auto;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--secondary-color);
+        }
+        
+        .profile-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+        
+        .profile-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-primary);
+            border-left: 3px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .profile-link:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .profile-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        
+        .profile-link i {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        
+        .profile-link:hover i {
+            color: var(--secondary-color);
+            transform: scale(1.1);
+        }
+        
+        .profile-link span {
+            font-size: 1.05rem;
+            word-break: break-all;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-link:hover span {
+            color: var(--text-primary);
+        }
+        
+        
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .profile-img-container {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .profile-name {
+                font-size: 1.8rem;
+            }
+            
         #logo-upload {
       display: none;
     }
     
     
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  font-family: 'Poppins', sans-serif;
+}
+
+.modal-content {
+  background: #1c1c3c;
+  margin: 25% auto; /* Menambah margin-top untuk memindahkan modal lebih ke bawah */
+  padding: 25px 30px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  color: #fff;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+  text-align: left;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #0ff;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.modal-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+.modal-content a {
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.close {
+  color: #fff;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Animasi */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
     </style>
 </head>
 <body>
   <div class="container">
   	<div class="card">
   <header class="navbar">
-    <h2 class="profile-name" data-text="Geo Project" style="font-size: 1.3rem; font-weight: normal;">Geo Project</h2>
-    <button class="menu-toggle" onclick="toggleMenu()">
-      <i class="fas fa-bars"></i>
-    </button>
-    <nav class="nav-links" id="navLinks">
-      <a href="https://vpn.checker-ip.web.id/link" target="_blank">Create Account</a>
-      <a href="https://vpn.checker-ip.web.id/sub" target="_blank">Subscription</a>
-      
-    </nav>
-  </header>
-<br>
+  <h2 class="profile-name" data-text="Geo Project" style="font-size: 1.3rem; font-weight: normal;">
+    Geo Project
+  </h2>
+  <button class="menu-toggle" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i>
+  </button>
+  <nav class="nav-links" id="navLinks">
+    <a href="https://vpn.checker-ip.web.id/link" target="_blank">Create Account</a>
+    <a href="https://vpn.checker-ip.web.id/sub" target="_blank">Subscription</a>
+    <a href="#" onclick="toggleAbout()">About</a>
+    <a href="#" onclick="toggleFeatures()">Features VPN</a>
+  </nav>
+</header>
+
+<!-- Modal: About -->
+<div id="aboutModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="toggleAbout()">&times;</span>
+    <h2>About :</h2>
+    <br>
+    <p>
+      Geo Project adalah platform penyedia konfigurasi VPN gratis berbasis protokol 
+      <strong>VLESS</strong>, <strong>VMess</strong>, <strong>Trojan</strong>, dan <strong>Shadowsocks</strong>. 
+      Semua layanan 100% gratis, tidak diperjualbelikan, dan dibuat dengan semangat berbagi.
+    </p>
+    <p>
+      Kunjungi 
+      <a href="https://vpn.checker-ip.web.id" target="_blank" style="color: #0ff;">Halaman Utama</a> 
+      untuk info lebih lanjut.
+    </p>
+  </div>
+</div>
+
+<!-- Modal: Features -->
+<div id="featuresModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="toggleFeatures()">&times;</span>
+    <h2>Features :</h2>
+    <br>
+    <ul>
+      <li><strong>VLESS:</strong> Protokol ringan dan fleksibel untuk berbagai kondisi jaringan.</li>
+      <li><strong>VMess:</strong> Protokol terenkripsi untuk privasi tinggi dan bypass blokir.</li>
+      <li><strong>Trojan:</strong> VPN berbasis HTTPS yang sulit dideteksi oleh firewall.</li>
+      <li><strong>Shadowsocks:</strong> Proxy terenkripsi cepat untuk akses internet terbuka.</li>
+    </ul>
+    <p>Semua layanan bebas biaya dan dapat digunakan di berbagai platform.</p>
+  </div>
+</div>
+
 <div class="profile-header">
         <div class="profile-img-container">
           <img
@@ -921,6 +1250,18 @@
 </div>
 </div>
 </div>
+
+<script>
+  function toggleAbout() {
+    const modal = document.getElementById('aboutModal');
+    modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
+  }
+
+  function toggleFeatures() {
+    const modal = document.getElementById('featuresModal');
+    modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
+  }
+</script>
 
   	<script>
     const logoImg = document.getElementById("profile-img");
