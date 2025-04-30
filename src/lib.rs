@@ -38,6 +38,7 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
     Router::with_data(config)
         .on_async("/", fe)
         .on_async("/sub", sub)
+        .on_async("/check", check)
         .on_async("/link", link)  // Changed to on_async
         .on_async("/:proxyip", tunnel)
         .on_async("/Geo-Project/:proxyip", tunnel)
