@@ -25,7 +25,7 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
     let main_page_url = env.var("MAIN_PAGE_URL").map(|x|x.to_string()).unwrap();
     let sub_page_url = env.var("SUB_PAGE_URL").map(|x|x.to_string()).unwrap();
     let link_page_url = env.var("LINK_PAGE_URL").map(|x|x.to_string()).unwrap();
-    let check_page_url = env.var("LINK_CHECK_URL").map(|x|x.to_string()).unwrap();
+    let check_page_url = env.var("CHECK_PAGE_URL").map(|x|x.to_string()).unwrap();
     let config = Config { 
         uuid, 
         host: host.clone(), 
@@ -34,6 +34,7 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
         main_page_url, 
         sub_page_url,
         link_page_url
+        check_page_url
     };
 
     Router::with_data(config)
@@ -59,6 +60,10 @@ async fn fe(_: Request, cx: RouteContext<Config>) -> Result<Response> {
 
 async fn sub(_: Request, cx: RouteContext<Config>) -> Result<Response> {
     get_response_from_url(cx.data.sub_page_url).await
+}
+
+async fn check(_: Request, cx: RouteContext<Config>) -> Result<Response> {
+    get_response_from_url(cx.data.check_page_url).await
 }
 
 // Changed to fetch from URL like fe and sub
