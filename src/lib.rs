@@ -14,7 +14,7 @@ use once_cell::sync::Lazy;
 use regex::Regex;
 
 static PROXYIP_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^.+-\d+$").unwrap());
-static PROXYKV_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^([A-Z]{2})").unwrap());
+static PROXYKV_PATTERN: Lazy<Regex> = Lazy::new(|| Regex::new(r"^([A-Z]{2}(?:[,|][A-Z]{2})*)$").unwrap());
 
 #[event(fetch)]
 async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
@@ -25,7 +25,6 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
     let main_page_url = env.var("MAIN_PAGE_URL").map(|x|x.to_string()).unwrap();
     let sub_page_url = env.var("SUB_PAGE_URL").map(|x|x.to_string()).unwrap();
     let link_page_url = env.var("LINK_PAGE_URL").map(|x|x.to_string()).unwrap();
-    let check_page_url = env.var("CHECK_PAGE_URL").map(|x|x.to_string()).unwrap();
     let config = Config { 
         uuid, 
         host: host.clone(), 
@@ -34,14 +33,12 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
         main_page_url, 
         sub_page_url,
         link_page_url
-        check_page_url
     };
 
     Router::with_data(config)
         .on_async("/", fe)
         .on_async("/sub", sub)
-        .on_async("/check", check)
-        .on_async("/link", link)  // Changed to on_async
+        .on_async("/link", link)
         .on_async("/:proxyip", tunnel)
         .on_async("/Geo-Project/:proxyip", tunnel)
         .run(req, env)
@@ -62,45 +59,48 @@ async fn sub(_: Request, cx: RouteContext<Config>) -> Result<Response> {
     get_response_from_url(cx.data.sub_page_url).await
 }
 
-async fn check(_: Request, cx: RouteContext<Config>) -> Result<Response> {
-    get_response_from_url(cx.data.check_page_url).await
-}
-
-// Changed to fetch from URL like fe and sub
 async fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
     get_response_from_url(cx.data.link_page_url).await
 }
 
 async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> {
     let mut proxyip = cx.param("proxyip").unwrap().to_string();
+
+    // Jika format KV ID (multi separator support)
     if PROXYKV_PATTERN.is_match(&proxyip)  {
-        let kvid_list: Vec<String> = proxyip.split(",").map(|s|s.to_string()).collect();
+        // Support separator: , atau |
+        let kvid_list: Vec<String> = proxyip.split(|c| c == ',' || c == '|')
+                                             .map(|s| s.to_string())
+                                             .collect();
+
         let kv = cx.kv("SIREN")?;
         let mut proxy_kv_str = kv.get("proxy_kv").text().await?.unwrap_or("".to_string());
         let mut rand_buf = [0u8, 1];
         getrandom::getrandom(&mut rand_buf).expect("failed generating random number");
-        
-        if proxy_kv_str.len() == 0 {
+
+        if proxy_kv_str.is_empty() {
             console_log!("getting proxy kv from github...");
             let req = Fetch::Url(Url::parse("https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/kvProxyList.json")?);
             let mut res = req.send().await?;
             if res.status_code() == 200 {
                 proxy_kv_str = res.text().await?.to_string();
-                kv.put("proxy_kv", &proxy_kv_str)?.expiration_ttl(60 * 60 * 24).execute().await?; // 24 hours
+                kv.put("proxy_kv", &proxy_kv_str)?.expiration_ttl(60 * 60 * 24).execute().await?;
             } else {
                 return Err(Error::from(format!("error getting proxy kv: {}", res.status_code())));
             }
         }
-        
+
         let proxy_kv: HashMap<String, Vec<String>> = serde_json::from_str(&proxy_kv_str)?;
-        
-        // select random KV ID
+
         let kv_index = (rand_buf[0] as usize) % kvid_list.len();
         proxyip = kvid_list[kv_index].clone();
-        
-        // select random proxy ip
-        let proxyip_index = (rand_buf[0] as usize) % proxy_kv[&proxyip].len();
-        proxyip = proxy_kv[&proxyip][proxyip_index].clone().replace(":", "-");
+
+        if let Some(proxy_list) = proxy_kv.get(&proxyip) {
+            let proxyip_index = (rand_buf[0] as usize) % proxy_list.len();
+            proxyip = proxy_list[proxyip_index].clone().replace(":", "-");
+        } else {
+            return Err(Error::from("Selected KV ID not found in proxy_kv list"));
+        }
     }
 
     if PROXYIP_PATTERN.is_match(&proxyip) {
@@ -111,19 +111,19 @@ async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> 
             }
         }
     }
-    
+
     let upgrade = req.headers().get("Upgrade")?.unwrap_or("".to_string());
-    if upgrade == "websocket".to_string() {
+    if upgrade == "websocket" {
         let WebSocketPair { server, client } = WebSocketPair::new()?;
         server.accept()?;
-    
+
         wasm_bindgen_futures::spawn_local(async move {
             let events = server.events().unwrap();
             if let Err(e) = ProxyStream::new(cx.data, &server, events).process().await {
                 console_log!("[tunnel]: {}", e);
             }
         });
-    
+
         Response::from_websocket(client)
     } else {
         Response::from_html("hi from wasm!")
