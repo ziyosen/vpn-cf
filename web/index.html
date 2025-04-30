@@ -12,7 +12,7 @@
   </script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.24/dist/full.min.css" rel="stylesheet" />
 </head>
-<body class="bg-gray-100 dark:bg-gray-900">
+<body id="main-body" class="bg-gray-100 dark:bg-gray-900">
 
   <!-- Navbar -->
   <nav id="navbar" class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-lg">
@@ -33,9 +33,8 @@
           <a href="#protocols" class="navbar-link">Protocols</a>
           <a href="#performance" class="navbar-link">Performance</a>
           <a href="#freevpn" class="navbar-link">Create VPN</a>
+          <a href="#isp" class="navbar-link">ISP</a>
           <a href="#contact" class="navbar-link">Contact</a>
-
-          
         </div>
 
         <!-- Mobile Menu Button -->
@@ -59,12 +58,7 @@
     <div class="flex justify-center gap-2 flex-wrap">
       <a href="#freevpn" class="btn btn-outline-danger btn-sm font-weight-bold mobile-link">Create VPN</a>
       <a href="#contact" class="btn btn-outline-secondary btn-sm font-weight-bold mobile-link">Contact</a>
-      
-      <!-- Dark Mode Toggle -->
-          <button id="dark-mode-toggle" class="relative w-10 h-10 flex items-center justify-center bg-white dark:bg-gray-800 rounded-full shadow-lg transition-all duration-300 hover:scale-105 hover:ring-2 hover:ring-blue-400 dark:hover:ring-blue-600 text-gray-600 dark:text-gray-200">
-            <i id="icon-moon" class="bi bi-moon text-lg absolute transition-opacity duration-300 ease-in-out"></i>
-            <i id="icon-sun" class="bi bi-brightness-high text-lg absolute opacity-0 transition-opacity duration-300 ease-in-out"></i>
-          </button>
+      <a href="#isp" class="btn btn-outline-secondary btn-sm font-weight-bold mobile-link">ISP</a>
     </div>
   </div>
 
@@ -93,23 +87,20 @@
       Geo Project
     </h3>
 
-    <div id="home-desc-box" class="mt-12 mx-auto w-full sm:w-[90%] md:w-[80%] lg:w-[70%] xl:w-[60%] bg-gray-100 dark:bg-gray-800 rounded-xl shadow-lg p-6 md:p-8 text-center animate__animated animate__fadeIn animate__delay-1s">
-  
-  <h3 class="text-xl font-semibold mb-6 text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">
-    Solusi modern untuk koneksi aman dan cepat.
-  </h3>
-
-  <!-- Buttons -->
-  <div class="flex justify-center gap-4 md:gap-6 flex-wrap animate__animated animate__fadeInUp animate__delay-1.5s">
-    <a href="#features">
-      <button id="discover-btn" class="px-5 py-2.5 text-sm rounded-md text-white bg-indigo-700 hover:bg-indigo-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 transition-all duration-300 transform hover:scale-110 hover:shadow-xl w-full sm:w-auto">
-        Discover Features
-      </button>
-    </a>
-    <a href="#contact">
-      <button id="contact-btn" class="px-5 py-2.5 text-sm rounded-md text-indigo-700 dark:text-white bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 transition-all duration-300 transform hover:scale-110 hover:shadow-xl w-full sm:w-auto">
-        Contact Us
-      </button>
+    <div id="home-desc-box" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <i class="bi bi-house-up-fill text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
+        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Solusi modern untuk koneksi aman dan cepat.</h3>
+        
+        <div class="flex justify-between gap-4">
+          <a href="#features" class="w-1/2">
+            <button id="discover-btn" class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md px-3 py-1 text-xs font-semibold text-white hover:opacity-90 transition">
+              Discover Features
+            </button>
+          </a>
+          <a href="#contact" class="w-1/2">
+            <button id="contact-btn" class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md px-3 py-1 text-xs font-semibold text-white hover:opacity-90 transition">
+              Contact Us
+            </button>
     </a>
   </div>
 
@@ -117,195 +108,366 @@
 </div>
 </section>
 
+<section id="learnmore" class="mt-20 px-6">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-2xl font-semibold max-w-[70%] text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">
+      Explore Our Other Projects
+    </h3>
+    <div class="flex space-x-3">
+      <button id="prevButton" aria-label="Previous" class="w-8 h-8 rounded-full bg-black bg-opacity-40 flex items-center justify-center text-white text-xs hover:bg-opacity-60 transition">
+        <i class="bi bi-arrow-left"></i>
+      </button>
+      <button id="nextButton" aria-label="Next" class="w-8 h-8 rounded-full bg-black bg-opacity-40 flex items-center justify-center text-white text-xs hover:bg-opacity-60 transition">
+        <i class="bi bi-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="scrollContainer" class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth w-full space-x-4 pb-8">
+    
+    <!-- Card 1 -->
+    <section class="snap-center min-w-full flex flex-col md:grid md:grid-cols-2 gap-4 items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-colors">
+      <div>
+        <h4 class="text-base font-semibold mb-1 text-gray-800 dark:text-white">Verify Cloudflare Proxy Status</h4>
+        <p class="text-[11px] text-gray-700 dark:text-gray-300 mb-3 leading-tight">
+          Verify Cloudflare proxy status, IP, ISP, location, and speed to ensure everything is functioning.
+        </p>
+        <div class="flex items-center space-x-2 mb-3">
+          <img src="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/proxy-cf.jpeg" alt="Cloudflare Logo" class="w-12 h-12 rounded-full object-cover">
+          <span class="text-xs text-gray-700 dark:text-gray-300">Cloudflare Proxy</span>
+        </div>
+        <a href="https://geoproject.biz.id/" target="_blank">
+          <button class="bg-gradient-to-r from-[#E96B3B] to-[#B42E7E] rounded-md px-3 py-1 text-xs font-semibold text-white hover:opacity-90 transition">
+            Click Here
+          </button>
+        </a>
+      </div>
+      <div class="flex justify-center md:justify-end">
+      </div>
+    </section>
+
+    <!-- Card 2 -->
+    <section class="snap-center min-w-full flex flex-col md:grid md:grid-cols-2 gap-4 items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow-md transition-colors">
+      <div>
+        <h4 class="text-base font-semibold mb-1 text-gray-800 dark:text-white">Cek Paket XL</h4>
+        <p class="text-[11px] text-gray-700 dark:text-gray-300 mb-3 leading-tight">
+          Check XL packages, verify your SIM card status and browse available offers.
+        </p>
+        <div class="flex items-center space-x-2 mb-3">
+          <img src="https://raw.githubusercontent.com/jaka2m/project/main/social/Screenshot_20250317-114541.jpg" alt="Sidompul Logo" class="w-12 h-12 rounded-full object-cover">
+          <span class="text-xs text-gray-700 dark:text-gray-300">Cek Paket XL</span>
+        </div>
+        <a href="https://sidompul.geo-project.workers.dev/" target="_blank">
+          <button class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md px-3 py-1 text-xs font-semibold text-white hover:opacity-90 transition">
+            Click Here
+          </button>
+        </a>
+      </div>
+      <div class="flex justify-center md:justify-end">
+      </div>
+    </section>
+
+  </div>
+</section>
+
     <section id="features" class="py-16 md:py-20 bg-blue-100 dark:bg-gray-900">
   <div class="max-w-5xl md:max-w-6xl mx-auto px-4 md:px-6">
-    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">Our Features</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <!-- Card besar membungkus seluruh fitur -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">Our Features</h2>
       
-      <!-- Feature 1 -->
-      <div id="high-performance" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
-        <i class="bi bi-pc-display-horizontal text-3xl text-blue-600 dark:text-blue-400 mb-3"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">High Performance</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Experience blazing fast speeds with optimized configurations and minimal latency.</p>
-      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        
+        <!-- Feature 1 -->
+        <div id="high-performance" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
+          <i class="bi bi-pc-display-horizontal text-3xl text-blue-600 dark:text-blue-400 mb-3"></i>
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">High Performance</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300">Experience blazing fast speeds with optimized configurations and minimal latency.</p>
+        </div>
 
-      <!-- Feature 2 -->
-      <div id="secure-connections" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
-        <i class="bi bi-shield-lock text-3xl text-blue-600 dark:text-blue-400 mb-3"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Secure Connections</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">All connections are encrypted using state-of-the-art protocols to ensure your data is safe.</p>
-      </div>
+        <!-- Feature 2 -->
+        <div id="secure-connections" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
+          <i class="bi bi-shield-lock text-3xl text-blue-600 dark:text-blue-400 mb-3"></i>
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Secure Connections</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300">All connections are encrypted using state-of-the-art protocols to ensure your data is safe.</p>
+        </div>
 
-      <!-- Feature 3 -->
-      <div id="cloud-flexibility" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
-        <i class="bi bi-cloud-arrow-up text-3xl text-blue-600 dark:text-blue-400 mb-3"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Cloud-Based Flexibility</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Seamlessly scale your services and configurations on the cloud without interruption.</p>
-      </div>
+        <!-- Feature 3 -->
+        <div id="cloud-flexibility" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
+          <i class="bi bi-cloud-arrow-up text-3xl text-blue-600 dark:text-blue-400 mb-3"></i>
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Cloud-Based Flexibility</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300">Seamlessly scale your services and configurations on the cloud without interruption.</p>
+        </div>
 
-      <!-- Feature 4 -->
-      <div id="multi-protocol" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
-        <i class="bi bi-stack text-3xl text-yellow-500 dark:text-yellow-400 mb-3"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Multi-Protocol Support</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Compatible with popular protocols such as <strong class="dark:text-white">VMESS, VLESS, TROJAN, and SHADOWSOCKS</strong>.</p>
-      </div>
+        <!-- Feature 4 -->
+        <div id="multi-protocol" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
+          <i class="bi bi-stack text-3xl text-yellow-500 dark:text-yellow-400 mb-3"></i>
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Multi-Protocol Support</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300">Compatible with popular protocols such as <strong class="dark:text-white">VMESS, VLESS, TROJAN, and SHADOWSOCKS</strong>.</p>
+        </div>
 
-      <!-- Feature 5 -->
-      <div id="wildcard-support" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
-        <i class="bi bi-wifi text-3xl text-green-500 dark:text-green-400 mb-3"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Wildcard Support</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Supports the use of wildcard domains for flexible configuration options.</p>
-      </div>
+        <!-- Feature 5 -->
+        <div id="wildcard-support" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
+          <i class="bi bi-wifi text-3xl text-green-500 dark:text-green-400 mb-3"></i>
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Wildcard Support</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300">Supports the use of wildcard domains for flexible configuration options.</p>
+        </div>
 
-      <!-- Feature 6 -->
-      <div id="cloudflare-workers" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
-        <i class="bi bi-cloud text-3xl text-yellow-400 dark:text-yellow-500 mb-3"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Built on Cloudflare Workers</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Powered by Cloudflare Workers for optimal performance and scalability.</p>
-      </div>
+        <!-- Feature 6 -->
+        <div id="cloudflare-workers" class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-5 transition-transform duration-300 hover:-translate-y-1">
+          <i class="bi bi-cloud text-3xl text-yellow-400 dark:text-yellow-500 mb-3"></i>
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Built on Cloudflare Workers</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300">Powered by Cloudflare Workers for optimal performance and scalability.</p>
+        </div>
 
+      </div>
     </div>
   </div>
 </section>
 
 <section id="performance" class="py-16 md:py-20 bg-blue-100 dark:bg-gray-900">
   <div class="max-w-5xl md:max-w-6xl mx-auto px-4 md:px-6">
-    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">Performance Metrics</h2>
-    
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <!-- Card besar membungkus seluruh metrik -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">Performance Metrics</h2>
       
-      <!-- Metric 1 -->
-      <div id="metric-speed" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <i class="bi bi-speedometer2 text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Speed</h3>
-        <p class="text-3xl font-bold text-gray-900 dark:text-white">99.9%</p>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Latency optimized for minimal delays across services.</p>
-      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        
+        <!-- Metric 1 -->
+        <div id="metric-speed" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <i class="bi bi-speedometer2 text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Speed</h3>
+          <p class="text-3xl font-bold text-gray-900 dark:text-white">99.9%</p>
+          <p class="text-sm text-gray-700 dark:text-gray-300">Latency optimized for minimal delays across services.</p>
+        </div>
 
-      <!-- Metric 2 -->
-      <div id="metric-uptime" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Uptime</h3>
-        <p class="text-3xl font-bold text-gray-900 dark:text-white">99.99%</p>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Reliable and always available, ensuring your services run without interruptions.</p>
-      </div>
+        <!-- Metric 2 -->
+        <div id="metric-uptime" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Uptime</h3>
+          <p class="text-3xl font-bold text-gray-900 dark:text-white">99.99%</p>
+          <p class="text-sm text-gray-700 dark:text-gray-300">Reliable and always available, ensuring your services run without interruptions.</p>
+        </div>
 
-      <!-- Metric 3 -->
-      <div id="metric-security" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Security</h3>
-        <p class="text-3xl font-bold text-gray-900 dark:text-white">Top-Level</p>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Enhanced protection with advanced encryption and security protocols.</p>
-      </div>
+        <!-- Metric 3 -->
+        <div id="metric-security" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Security</h3>
+          <p class="text-3xl font-bold text-gray-900 dark:text-white">Top-Level</p>
+          <p class="text-sm text-gray-700 dark:text-gray-300">Enhanced protection with advanced encryption and security protocols.</p>
+        </div>
 
-      <!-- Metric 4 -->
-      <div id="metric-scalability" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Scalability</h3>
-        <p class="text-3xl font-bold text-gray-900 dark:text-white">Infinite</p>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Easily scale your infrastructure to meet growing demands without bottlenecks.</p>
-      </div>
+        <!-- Metric 4 -->
+        <div id="metric-scalability" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Scalability</h3>
+          <p class="text-3xl font-bold text-gray-900 dark:text-white">Infinite</p>
+          <p class="text-sm text-gray-700 dark:text-gray-300">Easily scale your infrastructure to meet growing demands without bottlenecks.</p>
+        </div>
 
+      </div>
     </div>
   </div>
 </section>
 
 <section id="protocols" class="py-16 md:py-20 bg-blue-100 dark:bg-gray-900">
-  <div class="max-w-5xl md:max-w-6xl mx-auto px-4 md:px-6">
-    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">Supported Protocols</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      
-      <!-- Protocol: VMess -->
-      <div id="protocol-vmess" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <i class="bi bi-recycle text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Vmess</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Fast and secure protocol for advanced routing and obfuscation.</p>
-      </div>
+  <div class="max-w-3xl mx-auto px-4 md:px-6">
+    <!-- Card besar membungkus seluruh konten -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">Supported VPN Protocols</h2>
 
-      <!-- Protocol: VLESS -->
-      <div id="protocol-vless" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <i class="bi bi-activity text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">VLESS</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Next-generation lightweight protocol designed for high performance.</p>
-      </div>
+      <div class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <!-- Grid 4 kolom dengan lebar lebih besar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6"> <!-- Perbanyak kolom menjadi 4 untuk lebih lebar -->
+          <!-- Vmess -->
+          <div id="card-vmess" class="bg-white dark:bg-gray-700 p-4 rounded-md shadow flex items-center space-x-3 justify-center"> <!-- Mengurangi padding -->
+            <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+              <i class="bi bi-recycle text-blue-600 dark:text-blue-400 text-xl"></i> <!-- Mengurangi ukuran ikon -->
+            </div>
+            <span class="text-sm font-medium text-gray-800 dark:text-white">Vmess</span>
+          </div>
 
-      <!-- Protocol: Trojan -->
-      <div id="protocol-trojan" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <i class="bi bi-virus2 text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Trojan</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Strong encryption using TLS to mimic normal HTTPS traffic.</p>
-      </div>
+          <!-- VLess -->
+          <div id="card-vless" class="bg-white dark:bg-gray-700 p-4 rounded-md shadow flex items-center space-x-3 justify-center"> <!-- Mengurangi padding -->
+            <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+              <i class="bi bi-activity text-blue-600 dark:text-blue-400 text-xl"></i> <!-- Mengurangi ukuran ikon -->
+            </div>
+            <span class="text-sm font-medium text-gray-800 dark:text-white">VLess</span>
+          </div>
 
-      <!-- Protocol: Shadowsocks -->
-      <div id="protocol-shadowsocks" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <i class="bi bi-strava text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Shadowsocks</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300">Lightweight proxy protocol focused on privacy and speed.</p>
-      </div>
+          <!-- Trojan -->
+          <div id="card-trojan" class="bg-white dark:bg-gray-700 p-4 rounded-md shadow flex items-center space-x-3 justify-center"> <!-- Mengurangi padding -->
+            <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+              <i class="bi bi-virus2 text-blue-600 dark:text-blue-400 text-xl"></i> <!-- Mengurangi ukuran ikon -->
+            </div>
+            <span class="text-sm font-medium text-gray-800 dark:text-white">Trojan</span>
+          </div>
 
+          <!-- Shadowsocks -->
+          <div id="card-shadowsocks" class="bg-white dark:bg-gray-700 p-4 rounded-md shadow flex items-center space-x-3 justify-center"> <!-- Mengurangi padding -->
+            <div class="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+              <i class="bi bi-strava text-blue-600 dark:text-blue-400 text-xl"></i> <!-- Mengurangi ukuran ikon -->
+            </div>
+            <span class="text-sm font-medium text-gray-800 dark:text-white">Shadow</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<section id="isp" class="py-16 md:py-20 bg-gray-100 dark:bg-gray-800">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">Supported ISPs</h2>
+
+    <div class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
+  <!-- Menggunakan grid dengan pengaturan 4 kolom pada semua ukuran layar -->
+  <div class="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 gap-6">
+  <div id="card-amazon" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/amazon.png" alt="Amazon" class="w-16 h-16 object-contain">
+  </div>
+  <div id="card-vultr" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/vultr.png" alt="Vultr" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-digitalocean" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/do.png" alt="DigitalOcean" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-alibaba" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/alibaba.png" alt="Alibaba" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-oracle" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/oracle.png" alt="Oracle" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-akamai" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/akamai.png" alt="Akamai" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-azure" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/azure.png" alt="Azure" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-tencent-cloud" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/tc.png" alt="Tencent Cloud" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-m247" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/m247.png" alt="M247" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-regxa" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/regxa.png" alt="Regxa" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-ovh" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/ovh.png" alt="OVH" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-leaseweb" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/leaseweb.png" alt="Leaseweb" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-aeza" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/aeza.png" alt="Aeza" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-aryaka" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/aryaka.png" alt="Aryaka" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-cloudcone" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/cc.png" alt="CloudCone" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-contabo" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/contabo.png" alt="Contabo" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-hurricane-electric" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/he.png" alt="Hurricane Electric" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-hp" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/hp.png" alt="HP" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-huawei" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/hw.png" alt="Huawei" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-latitude" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/latitude.png" alt="Latitude" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-rumahweb" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/rumahweb.png" alt="Rumahweb" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-xtom" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/xtom.png" alt="Xtom" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-krypt" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/kp.png" alt="Krypt" class="w-11 h-11 object-contain">
+  </div>
+  <div id="card-fccd" class="bg-gray-50 dark:bg-gray-800 p-1 rounded-md shadow flex justify-center items-center w-12 h-12">
+    <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/logo/fccd.png" alt="FCCD" class="w-11 h-11 object-contain">
+  </div>
+</div>
+</section>
+
 
 <section id="freevpn" class="py-16 md:py-20 bg-blue-100 dark:bg-gray-900">
   <div class="max-w-5xl md:max-w-6xl mx-auto px-4 md:px-6">
-    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">VPN Cloudflare</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-
-      <!-- Metric 1 -->
-      <div id="vpn-account" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <i class="bi bi-cloud text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Buat Akun VPN Cloudflare</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">Dapatkan konfigurasi VPN Cloudflare gratis melalui tombol di bawah:</p>
+    <!-- Card besar membungkus seluruh konten -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">VPN Cloudflare</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         
-        <div class="flex justify-between gap-4">
-          <a href="https://vpn.checker-ip.web.id/link" class="w-1/2">
-            <button id="vpn-accounts" class="w-full px-3 py-2 text-xs font-semibold rounded-md text-white bg-indigo-700 hover:bg-indigo-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
-              Accounts
-            </button>
-          </a>
-          <a href="https://vpn.checker-ip.web.id/sub" class="w-1/2">
-            <button id="vpn-subscriptions" class="w-full px-3 py-2 text-xs font-semibold rounded-md text-white bg-indigo-700 hover:bg-indigo-800 dark:bg-indigo-600 dark:hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
-              Subscriptions
-            </button>
-          </a>
+        <!-- VPN Account -->
+        <div id="vpn-account" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
+          <i class="bi bi-cloud text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Buat Akun VPN Cloudflare</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">Dapatkan konfigurasi VPN Cloudflare gratis melalui tombol di bawah:</p>
+          
+          <div class="flex justify-between gap-4">
+            <a href="https://vpn.checker-ip.web.id/link" class="w-1/2">
+              <button id="vpn-accounts" class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md px-3 py-1 text-xs font-semibold text-white hover:opacity-90 transition">
+               Accounts
+              </button>
+            </a>
+            <a href="https://vpn.checker-ip.web.id/sub" class="w-1/2">
+              <button id="vpn-subscriptions" class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-md px-3 py-1 text-xs font-semibold text-white hover:opacity-90 transition">
+                Subscriptions
+              </button>
+            </a>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
 </section>
 
-<section id="contact" class="py-16 md:py-20 bg-blue-100 dark:bg-gray-900">
+<section id="contact" class="py-12 md:py-16 bg-blue-100">
   <div class="max-w-5xl md:max-w-6xl mx-auto px-4 md:px-6">
-    <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">Contact Us</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-
-      <div id="admin-contact" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <i class="bi bi-person-vcard-fill text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
-        <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Hubungi kami melalui email:</h3>
-        <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">
-          <a href="mailto:support@geo-project.id" class="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
-            support@geo-project.id
-          </a>
-        </p>
+    <!-- Card besar membungkus seluruh konten -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8">
+      <h2 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white" style="font-family: 'Orbitron', sans-serif;">Contact Us</h2>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         
-        <div class="flex justify-center space-x-6 mt-6">
-          <!-- WhatsApp -->
-          <a id="contact-whatsapp" href="https://wa.me/6282339191527" target="_blank" rel="noopener noreferrer" title="WhatsApp">
-            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600 transition duration-300">
-              <i class="bi bi-whatsapp text-xl"></i>
-            </div>
-          </a>
-          <!-- Telegram -->
-          <a id="contact-telegram" href="https://t.me/sampiiiiu" target="_blank" rel="noopener noreferrer" title="Telegram">
-            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white hover:bg-blue-600 transition duration-300">
-              <i class="bi bi-telegram text-xl"></i>
-            </div>
-          </a>
-          <!-- GitHub -->
-          <a id="contact-github" href="https://github.com/" target="_blank" rel="noopener noreferrer" title="GitHub">
-            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 transition duration-300">
-              <i class="bi bi-github text-xl"></i>
-            </div>
-          </a>
+        <!-- Admin Contact -->
+        <div id="admin-contact" class="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6 transform -translate-y-4">
+          <i class="bi bi-person-check-fill text-3xl text-blue-600 dark:text-blue-400 mb-4"></i>
+          <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">Hubungi kami melalui email:</h3>
+          <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">
+            <a href="mailto:support@geo-project.id" class="text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 transition-colors">
+              support@geo-project.id
+            </a>
+          </p>
+
+          <div class="flex justify-center space-x-6 mt-6">
+            <!-- WhatsApp -->
+            <a id="contact-whatsapp" href="https://wa.me/6282339191527" target="_blank" rel="noopener noreferrer" title="WhatsApp">
+              <div class="w-12 h-12 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600 transition duration-300">
+                <i class="bi bi-whatsapp text-xl"></i>
+              </div>
+            </a>
+            <!-- Telegram -->
+            <a id="contact-telegram" href="https://t.me/sampiiiiu" target="_blank" rel="noopener noreferrer" title="Telegram">
+              <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white hover:bg-blue-600 transition duration-300">
+                <i class="bi bi-telegram text-xl"></i>
+              </div>
+            </a>
+            <!-- GitHub -->
+            <a id="contact-github" href="https://github.com/" target="_blank" rel="noopener noreferrer" title="GitHub">
+              <div class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-gray-700 transition duration-300">
+                <i class="bi bi-github text-xl"></i>
+              </div>
+            </a>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
@@ -372,35 +534,269 @@
 <!-- Modal -->
 <div id="color-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-40 overflow-hidden flex items-center justify-center transition-opacity duration-500 opacity-0">
   <div id="modal-content" class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-2xl w-80 flex flex-col items-center relative transform translate-x-full transition-all duration-500 ease-in-out">
-
     <button id="close-modal" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-3xl">
       &times;
     </button>
-
     <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Sesuaikan Warna</h2>
+
+    <!-- Pilihan Tema -->
+    <div class="mb-4 w-full">
+      <h3 class="font-semibold text-black dark:text-gray-300">Pilih Tema</h3>
+      <select id="theme-selector" class="w-full bg-gray-200 dark:bg-gray-700 text-black dark:text-gray-100 rounded-lg p-2">
+        <option value="defaultBlue">Default Blue</option>
+        <option value="darkCyberpunk">Dark Cyberpunk</option>
+        <option value="midnightBlue">Midnight Blue</option>
+        <option value="forest">Forest</option>
+        <option value="sunset">Sunset</option>
+      </select>
+    </div>
+
     <label for="color-picker" class="text-black dark:text-gray-300 font-semibold text-xs">
       Pilih Warna
     </label>
-
-    <input 
-      id="color-picker" 
-      type="color" 
+    <input
+      id="color-picker"
+      type="color"
       class="w-16 h-10 rounded-lg border-2 border-gray-300 dark:border-gray-700 shadow-md cursor-pointer mb-4"
     >
 
-    <input 
-      id="brightness-slider" 
-      type="range" 
-      min="50" max="150" value="100" 
+    <input
+      id="brightness-slider"
+      type="range"
+      min="50" max="150" value="100"
       class="w-52 accent-blue-500 cursor-pointer mb-2"
     >
-
     <span id="brightness-value" class="text-xs text-gray-600 dark:text-gray-400 mt-1">
       Brightness: 100%
     </span>
 
+    <!-- Dark Mode Toggle -->
+    <div class="mt-4 flex items-center justify-between w-full">
+      <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Dark Mode</span>
+      <label class="relative inline-flex items-center cursor-pointer">
+        <input type="checkbox" value="" class="sr-only peer" id="dark-mode-toggle">
+        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600"></div>
+      </label>
+    </div>
+
+    <!-- Reset Theme Button -->
+    <button id="reset-theme" class="mt-4 px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 text-black dark:text-gray-100 font-medium hover:bg-gray-400 dark:hover:bg-gray-600 transition-colors duration-200 ease-in-out">
+      Reset Tema
+    </button>
+
   </div>
 </div>
+<script>
+  const scrollContainer = document.getElementById('scrollContainer');
+  const nextButton = document.getElementById('nextButton');
+  const prevButton = document.getElementById('prevButton');
+
+  nextButton.addEventListener('click', () => {
+    scrollContainer.scrollBy({
+      left: scrollContainer.offsetWidth,
+      behavior: 'smooth'
+    });
+  });
+
+  prevButton.addEventListener('click', () => {
+    scrollContainer.scrollBy({
+      left: -scrollContainer.offsetWidth,
+      behavior: 'smooth'
+    });
+  });
+</script>
+
+<script>
+  // Modal elements
+  const openModal = document.getElementById('open-modal');
+  const closeModal = document.getElementById('close-modal');
+  const colorModal = document.getElementById('color-modal');
+  const modalContent = document.getElementById('modal-content');
+  const colorPicker = document.getElementById('color-picker');
+  const brightnessSlider = document.getElementById('brightness-slider');
+  const brightnessValue = document.getElementById('brightness-value');
+  const themeSelector = document.getElementById('theme-selector');
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  const resetThemeButton = document.getElementById('reset-theme');
+
+  // Section IDs
+  const sectionIds = [
+    'prevButton', 'nextButton', 'home', 'home-desc-box', 'features', 'protocols', 'learnmore', 'performance', 'protocols', 'freevpn', 
+    'contact', 'navbar', 'discover-btn', 'contact-btn', 'isp', 'scrollToTopBtn', 'vpn-subscriptions', 'vpn-accounts', 'vpn-account', 
+    'vpn-buttons', 'freevpn', 'protocols', 'protocol-vmess', 'protocol-vless', 'protocol-trojan', 'protocol-shadowsocks', 
+    'card-vmess', 'card-vless', 'card-trojan', 'card-shadowsocks', 'performance', 'high-performance', 'secure-connections', 
+    'cloud-flexibility', 'multi-protocol', 'wildcard-support', 'cloudflare-workers', 'metric-speed', 'metric-uptime', 'metric-security', 
+    'metric-scalability', 'contact', 'contact-card', 'contact-icon', 'contact-title', 'contact-desc', 'donate-btn', 'qris-popup', 
+    'close-popup', 'qris-container', 'donation-content', 'donation-backdrop', 'profile-picture', 'open-modal', 'upload-input', 
+    'admin-contact', // ISP Cards
+    'card-amazon', 'card-vultr', 'card-digitalocean', 'card-alibaba', 'card-oracle', 'card-akamai', 'card-azure', 'card-tencent-cloud', 
+    'card-m247', 'card-regxa', 'card-ovh', 'card-leaseweb', 'card-aeza', 'card-aryaka', 'card-cloudcone', 'card-contabo', 
+    'card-hurricane-electric', 'card-hp', 'card-huawei', 'card-latitude', 'card-rumahweb', 'card-xtom', 'card-krypt', 'card-fccd'
+  ];
+
+  // Add transition effect to all sections
+  function addTransitionEffect() {
+    sectionIds.forEach(id => {
+      const section = document.getElementById(id);
+      if (section) section.style.transition = 'all 0.8s ease';
+    });
+  }
+
+  // Adjust brightness of a hex color
+  function adjustBrightness(hex, percent) {
+    let r = parseInt(hex.substr(1, 2), 16);
+    let g = parseInt(hex.substr(3, 2), 16);
+    let b = parseInt(hex.substr(5, 2), 16);
+    r = Math.min(255, Math.floor(r * (percent / 100)));
+    g = Math.min(255, Math.floor(g * (percent / 100)));
+    b = Math.min(255, Math.floor(b * (percent / 100)));
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  // Apply color to sections with brightness adjustment
+  function applyColor(color, brightness = 100) {
+    sectionIds.forEach(id => {
+      const section = document.getElementById(id);
+      if (section) {
+        section.style.background = `linear-gradient(135deg, ${adjustBrightness(color, brightness)}, #ffffff)`;
+      }
+    });
+  }
+
+  // Apply a predefined theme and its respective blur effect
+  function applyTheme(theme) {
+    let themeColor;
+    let blurValue = '0px'; // Default blur value
+
+    switch (theme) {
+      case 'defaultBlue':
+        themeColor = '#007bff';
+        blurValue = '4px';
+        break;
+      case 'darkCyberpunk':
+        themeColor = '#1e1e2f';
+        blurValue = '6px';
+        break;
+      case 'midnightBlue':
+        themeColor = '#191970';
+        blurValue = '5px';
+        break;
+      case 'forest':
+        themeColor = '#228B22';
+        blurValue = '4px';
+        break;
+      case 'sunset':
+        themeColor = '#FF4500';
+        blurValue = '3px';
+        break;
+      default:
+        themeColor = '#007bff';
+        blurValue = '0px';
+    }
+
+    // Set color picker value and save to localStorage
+    colorPicker.value = themeColor;
+    localStorage.setItem('selectedColor', themeColor);
+
+    // Apply color and brightness
+    applyColor(themeColor, brightnessSlider.value);
+
+    // Apply blur effect if container exists
+    const blurredContainer = document.getElementById('background-container');
+    if (blurredContainer) {
+      blurredContainer.style.backdropFilter = `blur(${blurValue})`;
+      blurredContainer.style.webkitBackdropFilter = `blur(${blurValue})`;
+    }
+  }
+
+  // Load theme from localStorage
+  const savedTheme = localStorage.getItem('selectedTheme');
+  const savedColor = localStorage.getItem('selectedColor');
+  const savedBrightness = localStorage.getItem('selectedBrightness') || 100;
+
+  if (savedTheme) {
+    themeSelector.value = savedTheme;
+    applyTheme(savedTheme);
+  } else if (savedColor) {
+    colorPicker.value = savedColor;
+    applyColor(savedColor, savedBrightness);
+  }
+
+  brightnessSlider.value = savedBrightness;
+  brightnessValue.textContent = `Brightness: ${savedBrightness}%`;
+
+  // Apply dark mode from localStorage
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.documentElement.classList.add('dark');
+    darkModeToggle.checked = true;
+  }
+
+  // Add transition effect to all sections
+  addTransitionEffect();
+
+  // Event listeners for user interactions
+  themeSelector.addEventListener('change', function() {
+    const selectedTheme = this.value;
+    localStorage.setItem('selectedTheme', selectedTheme);
+    applyTheme(selectedTheme);
+  });
+
+  colorPicker.addEventListener('input', function() {
+    const selectedColor = this.value;
+    const brightness = brightnessSlider.value;
+    localStorage.setItem('selectedColor', selectedColor);
+    localStorage.removeItem('selectedTheme'); // Clear theme when custom color picked
+    applyColor(selectedColor, brightness);
+  });
+
+  brightnessSlider.addEventListener('input', function() {
+    const brightness = this.value;
+    brightnessValue.textContent = `Brightness: ${brightness}%`;
+    localStorage.setItem('selectedBrightness', brightness);
+    const color = colorPicker.value;
+    applyColor(color, brightness);
+  });
+
+  darkModeToggle.addEventListener('change', function () {
+    const isDark = this.checked;
+    document.documentElement.classList.toggle('dark', isDark);
+    localStorage.setItem('darkMode', isDark.toString());
+  });
+
+  openModal.addEventListener('click', () => {
+    colorModal.classList.remove('hidden');
+    colorModal.classList.add('flex');
+    setTimeout(() => {
+      colorModal.classList.remove('opacity-0');
+      colorModal.classList.add('opacity-100');
+      modalContent.classList.remove('translate-x-full', '-translate-x-full');
+      modalContent.classList.add('translate-x-0');
+    }, 10);
+  });
+
+  closeModal.addEventListener('click', () => {
+    colorModal.classList.remove('opacity-100');
+    colorModal.classList.add('opacity-0');
+    modalContent.classList.remove('translate-x-0');
+    modalContent.classList.add('-translate-x-full');
+    setTimeout(() => {
+      colorModal.classList.remove('flex');
+      colorModal.classList.add('hidden');
+      modalContent.classList.remove('-translate-x-full');
+      modalContent.classList.add('translate-x-full');
+    }, 500);
+  });
+
+  // Reset theme button event
+  resetThemeButton.addEventListener('click', () => {
+    // Remove saved theme and color from localStorage
+    localStorage.removeItem('selectedTheme');
+    localStorage.removeItem('selectedColor');
+    applyTheme('defaultBlue'); // Apply default theme
+    colorPicker.value = '#007bff'; // Set default blue color
+    closeModal.click(); // Close modal
+  });
+</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -471,18 +867,6 @@
     menuIcon.classList.toggle('bi-list');
     menuIcon.classList.toggle('bi-x');
   }
-
-  // Dark mode toggle
-  const darkModeToggle = document.getElementById('dark-mode-toggle');
-  const body = document.body;
-
-  darkModeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark');
-    const iconMoon = document.getElementById('icon-moon');
-    const iconSun = document.getElementById('icon-sun');
-    iconMoon.classList.toggle('opacity-0');
-    iconSun.classList.toggle('opacity-100');
-  });
 </script>
 
 <!-- Bootstrap JS Bundle -->
@@ -528,126 +912,5 @@
     reader.readAsDataURL(file);
   });
 </script>
-<script>
-  const openModal = document.getElementById('open-modal');
-  const closeModal = document.getElementById('close-modal');
-  const colorModal = document.getElementById('color-modal');
-  const modalContent = document.getElementById('modal-content');
-
-  const colorPicker = document.getElementById('color-picker');
-  const brightnessSlider = document.getElementById('brightness-slider');
-  const brightnessValue = document.getElementById('brightness-value');
-
-  const sectionIds = [
-    'home', 'features', 'home-title', 'home-desc-box', 'home-desc-title', 'discover-btn', 'contact-btn',
-    'navbar', 'scrollToTopBtn',
-    'vpn-subscriptions', 'vpn-accounts', 'vpn-account', 'vpn-buttons', 'freevpn',
-    'protocols', 'protocol-vmess', 'protocol-vless', 'protocol-trojan', 'protocol-shadowsocks',
-    'performance', 'high-performance', 'secure-connections', 'cloud-flexibility', 
-    'multi-protocol', 'wildcard-support', 'cloudflare-workers',
-    'metric-speed', 'metric-uptime', 'metric-security', 'metric-scalability',
-    'contact', 'contact-card', 'contact-icon', 'contact-title', 'contact-desc',
-    'donate-btn', 'qris-popup', 'close-popup', 'qris-container', 'donation-content', 'donation-backdrop',
-    'profile-picture', 'open-modal', 'upload-input', 'admin-contact'
-  ];
-
-  function addTransitionEffect() {
-    sectionIds.forEach(id => {
-      const section = document.getElementById(id);
-      if (section) {
-        section.style.transition = 'all 0.8s ease';
-      }
-    });
-  }
-
-  function applyColor(color, brightness = 100) {
-    sectionIds.forEach(id => {
-      const section = document.getElementById(id);
-      if (section) {
-        section.style.background = `linear-gradient(135deg, ${adjustBrightness(color, brightness)}, #ffffff)`;
-      }
-    });
-
-    const discoverBtn = document.getElementById('discover-btn');
-    const contactBtn = document.getElementById('contact-btn');
-    if (discoverBtn) discoverBtn.style.backgroundColor = adjustBrightness(color, brightness);
-    if (contactBtn) contactBtn.style.color = adjustBrightness(color, brightness);
-  }
-
-  function adjustBrightness(hex, percent) {
-    let r = parseInt(hex.substr(1,2),16);
-    let g = parseInt(hex.substr(3,2),16);
-    let b = parseInt(hex.substr(5,2),16);
-
-    r = Math.min(255, Math.floor(r * (percent/100)));
-    g = Math.min(255, Math.floor(g * (percent/100)));
-    b = Math.min(255, Math.floor(b * (percent/100)));
-
-    return `rgb(${r},${g},${b})`;
-  }
-
-  // Load yang tersimpan
-  const savedColor = localStorage.getItem('selectedColor');
-  const savedBrightness = localStorage.getItem('selectedBrightness');
-
-  if (savedColor) {
-    colorPicker.value = savedColor;
-  }
-  if (savedBrightness) {
-    brightnessSlider.value = savedBrightness;
-    brightnessValue.textContent = `Brightness: ${savedBrightness}%`;
-  }
-
-  addTransitionEffect();
-  applyColor(colorPicker.value, brightnessSlider.value);
-
-  // Event Modal
-  openModal.addEventListener('click', () => {
-    colorModal.classList.remove('hidden');
-    colorModal.classList.add('flex');
-
-    // Untuk animasi masuk dari kanan
-    setTimeout(() => {
-      colorModal.classList.remove('opacity-0');
-      colorModal.classList.add('opacity-100');
-      modalContent.classList.remove('translate-x-full', '-translate-x-full');
-      modalContent.classList.add('translate-x-0');
-    }, 10);
-  });
-
-  closeModal.addEventListener('click', () => {
-    // Untuk animasi keluar ke kiri
-    colorModal.classList.remove('opacity-100');
-    colorModal.classList.add('opacity-0');
-    modalContent.classList.remove('translate-x-0');
-    modalContent.classList.add('-translate-x-full');
-
-    setTimeout(() => {
-      colorModal.classList.remove('flex');
-      colorModal.classList.add('hidden');
-      modalContent.classList.remove('-translate-x-full');
-      modalContent.classList.add('translate-x-full');
-    }, 500); // waktu animasi selesai
-  });
-
-  // Event ganti warna
-  colorPicker.addEventListener('input', function() {
-    const selectedColor = this.value;
-    const currentBrightness = brightnessSlider.value;
-    localStorage.setItem('selectedColor', selectedColor);
-
-    applyColor(selectedColor, currentBrightness);
-  });
-
-  // Event ganti brightness
-  brightnessSlider.addEventListener('input', function() {
-    const brightness = this.value;
-    brightnessValue.textContent = `Brightness: ${brightness}%`;
-    localStorage.setItem('selectedBrightness', brightness);
-
-    applyColor(colorPicker.value, brightness);
-  });
-</script>
-
 </body>
 </html>
