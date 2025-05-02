@@ -692,25 +692,130 @@ footer {
     margin-top: 100px;
   }
 
+.title-container {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4a90e2;
+    margin: 0;
+}
+
+.subtitle {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+.nav-button {
+  background: rgba(106, 17, 203, 0.1);
+  border: 1px solid rgba(106, 17, 203, 0.2);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem; 
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-button:hover {
+  background: rgba(106, 17, 203, 0.2);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--glow-primary);
+}
+
+.nav-button.active {
+  background: linear-gradient(90deg, #4c6ef5, #9b4de0); /* Gradien biru-ungu */
+  color: white;
+  border: none;
+  box-shadow: 0 0 10px rgba(106, 17, 203, 0.3);
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Tombol akan wrap (pindah baris) */
+  padding: 15px 0;
+}
+
+@media (max-width: 480px) {
+  .nav-buttons {
+    gap: 8px;
+  }
+}
+
+.title {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  margin: 0;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  display: inline-block;
+}
+
+.title::after {
+  content: "LINK";
+  position: absolute;
+  top: -8px;
+  right: -30px;
+  font-size: 0.7rem;
+  font-weight: 400;
+  background: var(--accent);
+  color: var(--dark);
+  padding: 2px 5px;
+  border-radius: 3px;
+  -webkit-text-fill-color: var(--dark);
+  transform: rotate(15deg);
+}
+
 </style>
 </head>
     
 <body class="font-sans">
 <div class="container mx-auto px-2 sm:px-4 py-4 sm:py-6 max-w-[900px]">
     <div class="glass-card overflow-hidden">
-        <!-- Animated header background -->
-        <div class="animated-bg">
-            <div class="flex items-center justify-center">
-                <div class="mr-3">
-                    <i class="fas fa-network-wired text-4xl icon-glow text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500"></i>
-                
-                </div>
-                <h1 class="text-3xl font-bold text-center glow-text bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-emerald-400">GEO-PROJECT</h1>
-             
+        <div class="tech-detail tech-detail-1"></div>
+            <div class="tech-detail tech-detail-2"></div>
+            <div class="tech-detail tech-detail-3"></div>
+            
+            <div class="title-container">
+                <h1 class="title">GEO - PROJECT</h1>
+                <p class="subtitle">Advanced Link Generator</p>
             </div>
-        </div>
-        
-        <div class="p-6">
+
+            <div class="nav-buttons">
+                <a href="/" class="nav-button">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="sub" class="nav-button">
+                    <i class="fas fa-rss"></i> Subscription
+                </a>
+                <a href="link" class="nav-button active">
+                    <i class="fas fa-link"></i> Link Generator
+                </a>
+                <a href="converter" class="nav-button">
+                    <i class="fas fa-exchange-alt"></i> Converter
+                </a>
+            </div>
+            
+            <div class="p-4">
             <!-- Proxy List Section -->
             <div id="proxy-list-section">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 mx-2">
@@ -719,14 +824,7 @@ footer {
         <i class="fas fa-server mr-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500"></i>
         <h2 style="font-family: 'Orbitron', sans-serif;" class="text-xl font-semibold">Proxy List</h2>
     </div>
-    <div class="flex items-center space-x-2 ml-auto mr-4">
-        <span>
-            <a href="https://vpn.checker-ip.web.id/sub" target="_self" rel="noopener noreferrer" style="font-family: 'Rajdhani', sans-serif;">
-                <img src="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/circle-flags/sublink.png" alt="menu" width="40" style="margin-top: 5px;">
-            </a>
-        </span>
     </div>
-</div>
                     <div class="flex justify-between w-full gap-4">
     <!-- Tombol Kiri -->
     <div class="flex-1 max-w-[50%]">
