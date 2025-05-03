@@ -1,118 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy IP Checker</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.0.8/countUp.min.js"></script>
-    <style>
-    	@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-    
-    	:root {
-        --primary: #00ff88;
-        --secondary: #00ffff;
-        --accent: #ff00ff;
-        --dark: #080c14;
-        --darker: #040608;
-        --light: #e0ffff;
-        --card-bg: rgba(8, 12, 20, 0.99);
-        --glow: 0 0 20px rgba(0, 255, 136, 0.9);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxy Checker</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="icon" href="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+          :root {
+    --color-bg: #050a18;
+    --color-bg-card: #0a1128;
+    --color-primary: #00ddff;
+    --color-secondary: #7700ff;
+    --color-accent: #ff00aa;
+    --color-text: #e0f7ff;
+    --color-text-dim: #8ba3b8;
+    --color-success: #00ffaa;
+    --color-error: #ff2266;
+    --color-input-bg: rgba(0, 221, 255, 0.05);
+    --color-input-border: rgba(0, 221, 255, 0.2);
+    --glow-primary: 0 0 10px rgba(0, 221, 255, 0.5), 0 0 20px rgba(0, 221, 255, 0.2);
+    --glow-secondary: 0 0 10px rgba(119, 0, 255, 0.5), 0 0 20px rgba(119, 0, 255, 0.2);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --card-width: 100%;
+    --card-max-width: 480px;
+    --card-padding: 1.5rem;
+    --card-border-radius: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(0, 221, 255, 0.03) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(119, 0, 255, 0.03) 0%, transparent 20%),
+        linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.2) 100%);
+    background-attachment: fixed;
+    position: relative;
+    overflow-x: hidden;
+    padding: 1rem 0;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(90deg, var(--color-bg) 21px, transparent 1%) center,
+        linear-gradient(var(--color-bg) 21px, transparent 1%) center;
+    background-size: 22px 22px;
+    background-color: transparent;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+.container {
+    width: var(--card-width);
+    max-width: var(--card-max-width);
+    padding: 0 0.75rem;
+    margin-bottom: 1rem;
+}
+
+      @keyframes rainbow {
+      0% { color: red; }
+      14% { color: black; }
+      28% { color: black; }
+      42% { color: green; }
+      57% { color: blue; }
+      71% { color: indigo; }
+      85% { color: violet; }
+      100% { color: red; }
+    }
+    @keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Space Grotesk', sans-serif;
       }
-      
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: url('https://telegra.ph/file/0b9a4c97f231c8bc33aa9.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: #f5f5f5;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow: scroll;
-        }
+      body {
+      	
+      font-family: monospace;
+    background: black;
+    color: #0f0;
+    text-align: center;
+    background-size: cover;
+        justify-content: center;
+        align-items: center;
+  animation: rainbowBackground 10s infinite; 
+}
 
-        .glassmorphism {
-            background: rgba(17, 25, 40, 0.75);
-            backdrop-filter: blur(12px);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.125);
-        }
-        .animated-gradient {
-            background: linear-gradient(-45deg, #8b5cf6, #6366f1, #4338ca, #3b0764);
-            background-size: 400% 400%;
-        }
-        .shine {
-            position: relative;
-            overflow: hidden;
-        }
-        .shine::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.1) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            transform: rotate(30deg);
-            transition: 0.6s;
-            opacity: 0;
-        }
-        .shine:hover::after {
-            opacity: 1;
-            transition: 0s;
-        }
-        .loading-dots span {
-            background-color: currentColor;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 3px;
-        }
-        .credits {
-      text-align: center;
-      font-size: 14px;
-      color: #fff;
-      margin-top: 20px;
-    }
 
-    .credits a {
-      color: #00a8ff;
-      text-decoration: none;
-    }
-
-    .credits a:hover {
-      text-decoration: underline;
-    }
-    
-.header h1 {
-      font-size: 25px;
-      color: #00a8ff;
-      margin: 0;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      animation: slideInDown 1s ease-out;
-    }
-    
-    h1 {
+     h1 {
       font-family: 'Rajdhani', sans-serif;
-      padding-top: 10px; /* To avoid content being hidden under the header */
+      padding-top: 10px;
       margin-top: 10px;
       color: black;
             text-align: center;
@@ -132,103 +143,12 @@
         position: relative;
         animation: titlePulse 3s ease-in-out infinite;
     }
+
+      @keyframes titlePulse {
+        0%, 100% { transform: scale(1); filter: brightness(1); }
+        50% { transform: scale(1.02); filter: brightness(1.2); }
+      }
     
-    /* Custom styles for SweetAlert2 */
-.swal2-popup-custom {
-    background: rgba(135, 206, 250, 0.7); /* Light blue sky color with transparency */
-    border-radius: 15px; /* Rounded corners */
-    backdrop-filter: blur(10px); /* Glass effect */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    padding: 20px;
-    width: 300px; /* Small width */
-}
-
-.swal2-popup-show-custom {
-    animation: popup-show 0.3s ease-out;
-}
-
-.swal2-popup-hide-custom {
-    animation: popup-hide 0.3s ease-in;
-}
-
-@keyframes popup-show {
-    from {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes popup-hide {
-    from {
-        opacity: 1;
-        transform: scale(1);
-    }
-    to {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-}
-
-.toggle-container {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 60px;  /* Ukuran lebih kecil */
-            height: 30px; /* Ukuran lebih kecil */
-            background: #cbd5e1; /* Warna lebih terang */
-            border-radius: 25px;
-            box-shadow: inset -3px -3px 6px #f8fafc, inset 3px 3px 6px #94a3b8;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            padding: 5px;
-        }
-
-        .toggle-circle {
-            width: 22px;  /* Ukuran lebih kecil */
-            height: 22px; /* Ukuran lebih kecil */
-            background: #ffffff;
-            border-radius: 50%;
-            box-shadow: 3px 3px 6px #94a3b8, -3px -3px 6px #f8fafc;
-            transition: all 0.3s ease;
-        }
-
-        .toggle-container.active {
-            background: #4CAF50;
-            box-shadow: inset -3px -3px 6px #5ed560, inset 3px 3px 6px #3a9d40;
-        }
-
-        .toggle-container.active .toggle-circle {
-            transform: translateX(30px); /* Menyesuaikan dengan ukuran lebih kecil */
-            background: #ffffff;
-            box-shadow: inset 3px 3px 6px #b0b0b0, inset -3px -3px 6px #ffffff;
-        }
-
-        /* Efek blur ke seluruh halaman kecuali tombol */
-        .blurred {
-            filter: blur(8px);
-        }
-        .animated-gradient {
-            background: linear-gradient(-45deg, #8b5cf6, #6366f1, #4338ca, #3b0764);
-            background-size: 400% 400%;
-        }
-        
-        .divider {
-      border: none;
-            height: 3px;
-            background: linear-gradient(to right, transparent, #fff, transparent);
-            margin: 5px 0;
-        }
-
-
-
-     
     h2 {
       color: black;
             text-align: center;
@@ -241,7 +161,7 @@
                 0 0 30px rgba(0, 123, 255, 0.8),
                 0 0 40px rgba(0, 123, 255, 0.8);
     }
-    header, footer {
+    header,  footer {
       box-sizing: border-box; /* Pastikan padding dihitung dalam lebar elemen */
       background-color: ;
       color: white;
@@ -265,53 +185,99 @@
       bottom: 0;
     }
     
-      .quantum-title { 
-      font-family: 'Rajdhani', sans-serif;
-      padding-top: 10px; /* To avoid content being hidden under the header */
-      margin-top: 10px;
-      color: black;
-            text-align: center;
-            font-size: 10vw;
-            font-weight: bold;
-            text-shadow: 
-                0 0 5px rgba(0, 123, 255, 0.8),
-                0 0 10px rgba(0, 123, 255, 0.8),
-                0 0 20px rgba(0, 123, 255, 0.8),
-                0 0 30px rgba(0, 123, 255, 0.8),
-                0 0 40px rgba(0, 123, 255, 0.8);
-    
-         background: linear-gradient(45deg, var(--accent), var(--secondary), var(--dark));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 0 0 30px #000;
-        position: relative;
-        animation: titlePulse 3s ease-in-out infinite;
+      .swal-popup-extra-small-text {
+    font-size: 12px; /* Ukuran font untuk seluruh pop-up */
+}
+
+.swal-title-extra-small-text {
+    font-size: 12px; /* Ukuran font untuk judul */
+    font-weight: bold;
+}
+
+.swal-content-extra-small-text {
+    font-size: 12px; /* Ukuran font untuk teks konten */
+}
+
+
+
+    .rainbow-text {
+      font-size: 15px;
+      font-weight: bold;
+      animation: rainbow 2s infinite;
     }
 
-      @keyframes titlePulse {
-        0%, 100% { transform: scale(1); filter: brightness(1); }
-        50% { transform: scale(1.02); filter: brightness(1.2); }
-     }
 
-      .quantum-title1 {
-        color: black;
-            text-align: center;
-            font-size: 5vw;
-            font-weight: bold;
-            text-shadow: 
-                0 0 5px rgba(0, 123, 255, 0.8),
-                0 0 10px rgba(0, 123, 255, 0.8),
-                0 0 20px rgba(0, 123, 255, 0.8),
-                0 0 30px rgba(0, 123, 255, 0.8),
-                0 0 40px rgba(0, 123, 255, 0.8);
-      }
+      /* Reset dasar */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+    /* Animasi Loading */
 
-.quantum-title {
-          font-size: 2rem;
-          margin-bottom: 1rem;
-        }
-        
-    .navbarconten {
+
+.loading-text {
+    font-size: 18px;
+    color: #FF5722; /* Warna untuk teks 'Loading...' */
+    margin-left: 10px;
+    font-weight: bold; /* Menambahkan ketebalan pada teks */
+}
+    
+
+        #loading { display: none; font-size: 18px; font-weight: bold; }
+    
+    @keyframes moveColors {
+  100% {
+    background-position: -200%; /* Mulai dari luar kiri */
+  }
+  0% {
+    background-position: 200%; /* Bergerak ke kanan */
+  }
+}
+
+  #loading {
+  display: none; font-size: 20px; font-weight: bold;
+  
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, purple);
+  background-size: 200%;
+  color: transparent;
+  -webkit-background-clip: text;
+  animation: moveColors 5s linear infinite;
+}
+  
+  
+    .container {
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #0f0;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        margin: 20px auto;
+        padding: 15px;
+        box-shadow: 0 0 10px #0f0;
+    }
+}
+
+/* Tampilan lebih lebar di laptop */
+@media (min-width: 1024px) {
+    .container {
+        width: 98%; /* Hampir penuh */
+        max-width: 1600px; /* Menyesuaikan dengan layar besar */
+        padding: 40px;
+        box-shadow: 0 0 25px #0f0;
+    }
+}
+
+
+       .navbarconten {
     width: 100%;
     overflow-x: auto; /* Mengaktifkan scroll horizontal */
     margin-bottom: 0px;
@@ -325,7 +291,7 @@
     }
       .navbar {
             position: fixed;
-            top: 60%;
+            top: 50%;
             left: -80px; /* Awalnya disembunyikan */
             transform: translateY(-50%);
             width: 80px;
@@ -363,7 +329,7 @@
         /* Tombol Toggle */
         .toggle-btn {
             position: absolute;
-            top: 60%;
+            top: 50%;
             right: -30px; /* Posisi tombol di tengah kanan navbar */
             transform: translateY(-50%);
             background: ;
@@ -385,349 +351,550 @@
             right: -29px;
         }
         
-</style>
-    
-</head>
-<body class="min-h-screen text-gray-100 py-8 px-4 sm:px-6">
-	<br>
-		<br>
-		<header>
-        <h1 class="quantum-title">GEO PROJECT</h1>
-    </header>
-	<div class="max-w-4xl mx-auto">
-        <div class="glassmorphism p-6 mb-8">
-            <div class="flex items-center mb-4">
-                <i class="fas fa-terminal text-purple-400 mr-2"></i>
-                <h2 class="text-sm font-semibold text-white">Enter Proxy Details</h2>
-            </div>
-            
-           <div class="relative">
-                <textarea id="ipinput" rows="3" 
-                    class="w-full px-4 py-3 bg-gray-900/50 text-gray-100 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all resize-none shadow-inner"
-                    placeholder="Format: IP or IP:PORT separate with enter"></textarea>
-                <div class="absolute right-3 bottom-3 flex gap-1 text-xs text-gray-400">
-                    <span id="proxy-count">0</span>/<span>20</span>
-                </div>
-            </div>
-            
-            <div class="mt-4 flex flex-col sm:flex-row justify-between items-center gap-3">
-                <div class="flex gap-2">
-                    <button id="example-btn" class="text-sm px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors flex items-center">
-                        <i class="far fa-lightbulb mr-1"></i> Examples
-                    </button>
-                    <button id="clear-btn" class="text-sm px-2 py-1 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors flex items-center">
-                        <i class="fas fa-eraser mr-1"></i> Clear
-                    </button>
-                </div>
-                
-    <button id="check-button" onclick="checkIPs()" 
-            class="shine w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-2 px-6 rounded-lg transition-all hover:shadow-lg hover:from-purple-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50">
-        <i class="fas fa-search-location"></i>
-        <span>Check Proxies</span>
-    </button>
-</div>
-</div>
-<div class="navbar" id="navbar">
-    <div class="toggle-btn" id="menu-btn" onclick="toggleNavbar()">
-        <img src="https://geoproject.biz.id/social/buka.png" alt="Toggle Menu">
-    </div>
-    <div class="navbarconten text-center">
-        <span>
-            <a href="https://wa.me/6282339191527" target="_blank" rel="noopener noreferrer">
-                <img src="https://geoproject.biz.id/social/mobile.png" alt="menu" width="40" class="mt-1">
-            </a>
-        </span>
-        <span>
-            <a href="https://t.me/sampiiiiu" target="_blank" rel="noopener noreferrer">
-                <img src="https://geoproject.biz.id/social/tele.png" alt="menu" width="40" class="mt-1">
-            </a>
-        </span>
-        <span>
-            <a href="https://t.me/VLTRSSbot" target="_blank" rel="noopener noreferrer">
-                <img src="https://geoproject.biz.id/social/bot.png" alt="menu" width="40" class="mt-1">
-            </a>
-        </span>
-        <span>
-            <a href="https://vpn.checker-ip.web.id" target="_self" rel="noopener noreferrer">
-                <img src="https://geoproject.biz.id/social/home.png" alt="menu" width="40" class="mt-1">
-            </a>
-        </span>
-    </div>
-</div>
-
-<div id="notification"></div>
-
-<div id="loading-indicator" class="hidden glassmorphism p-3 mb-2 text-center">
-    <div class="flex justify-center items-center mb-1">
-        <span class="inline-block w-2 h-2 bg-purple-500 rounded-full mr-0.5"></span>
-        <span class="inline-block w-2 h-2 bg-indigo-500 rounded-full mr-0.5"></span>
-        <span class="inline-block w-2 h-2 bg-blue-500 rounded-full"></span>
-    </div>
-    <p class="text-gray-300 text-sm">Checking proxy IP...</p>
-    <div class="w-full bg-gray-700 h-0.5 rounded-full mt-1 overflow-hidden">
-        <div id="progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full" style="width: 0%"></div>
-    </div>
-</div>
-
-<div id="results-container" class="hidden space-y-1"></div>
-<div class="mt-2 text-center text-gray-400 text-xxs"></div>
-
-<div id="ipData"></div>
-
-<footer class="footer bg-transparent backdrop-blur-lg bg-blue-500/30">
-    <div class="container mx-auto px-8 flex flex-col justify-center items-center">
-        <h2 class="quantum-title1 text-center">
-            <p>&copy; PROXY IP CHECKER</p>
-        </h2>
+        @keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.3; }
+  }
+  .input-container {
+            margin-bottom: 20px;
+        }
+        .input-container input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
         
-    </div>
-</footer>
-
-    <div class="toggle-container" onclick="toggleSwitch()">
-        <div class="toggle-circle"></div>
-    </div>
-<script>
-    function toggleNavbar() {
-        const navbar = document.getElementById("navbar");
-        const menuBtn = document.getElementById("menu-btn").querySelector('img');
-
-        if (navbar.classList.contains("show")) {
-            navbar.classList.remove("show");
-            menuBtn.src = "https://geoproject.biz.id/social/buka.png";
-        } else {
-            navbar.classList.add("show");
-            menuBtn.src = "https://geoproject.biz.id/social/tutup.png";
-        }
-    }
-</script>
-<script>
-        const ipinput = document.getElementById("ipinput");
-        const proxyCount = document.getElementById("proxy-count");
-        const exampleBtn = document.getElementById("example-btn");
-        const clearBtn = document.getElementById("clear-btn");
-        const maxCount = 50;
-
-        function updateProxyCount() {
-            const ipList = ipinput.value.split("\n").filter(ip => ip.trim() !== "");
-            proxyCount.textContent = ipList.length > maxCount ? maxCount : ipList.length;
-        }
-
-        ipinput.addEventListener("input", updateProxyCount);
-
-        exampleBtn.addEventListener("click", () => {
-            ipinput.value = `38.76.145.162\n38.76.145.162:443\n38.76.145.162,443\n38.76.145.162-443\n38.76.145.162=443\n38.76.145.162,443,US,NetLab`; 
-            updateProxyCount();
-        });
-
-        clearBtn.addEventListener("click", () => {
-            ipinput.value = "";
-            updateProxyCount();
-        });
-    </script>
-    <script>
-        // Event untuk tombol Clear
-        document.getElementById("clear-btn").addEventListener("click", function() {
-            document.getElementById("ipinput").value = "";
-        });
-
-        const checkIPs = async () => {
-            const ipinput = document.getElementById('ipinput').value;
-            const ipAddresses = ipinput.split(/[\n,]+/).map(ip => ip.trim()).filter(ip => ip);
-
-            if (ipAddresses.length === 0) {
-    Swal.fire({
-        title: 'No IP addresses entered',
-        text: 'Please enter at least one IP address.',
-        icon: 'warning',
-        confirmButtonText: 'OK',
-        customClass: {
-            popup: 'swal2-popup-custom'
-        },
-        showClass: {
-            popup: 'swal2-popup-show-custom'
-        },
-        hideClass: {
-            popup: 'swal2-popup-hide-custom'
-        },
-        backdrop: true,
-        allowOutsideClick: false
-    });
+        #map {
+  height: 350px;
+  width: 100%;
+  margin-top: 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+          
 
-            document.getElementById('loading-indicator').classList.remove('hidden');
-            document.getElementById('results-container').classList.add('hidden');
-            document.getElementById('progress-bar').style.width = '0%';
+  /* Reset dasar */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-            let checked = 0;
 
-            for (const ip of ipAddresses) {
+  /* Canvas Matrix */
+  canvas, #matrix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  /* Input dan tombol */
+  input, button {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+  }
+
+  input {
+    background: #2d3748;
+    color: #00FF00;
+  }
+
+  button {
+    background: #0f0;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  button:hover:enabled {
+    background: #0d0;
+  }
+
+  button:disabled {
+    background: #555;
+    cursor: not-allowed;
+  }
+
+  
+  /* Tabel */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: left;
+  }
+
+  th {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  
+  
+  /* Efek fade-in */
+  .fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .fade-in.show {
+    opacity: 1;
+  }
+
+  /* Efek teks ala hacker */
+  .matrix-alert {
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 5px #00FF00, 0 0 10px #00FF00;
+  }
+
+.tech-detail {
+    position: absolute;
+    background: var(--color-primary);
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.tech-detail-1 {
+    width: 40px;
+    height: 40px;
+    top: 20px;
+    right: 20px;
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--color-primary);
+}
+
+.tech-detail-2 {
+    width: 80px;
+    height: 2px;
+    bottom: 40px;
+    left: -20px;
+    transform: rotate(45deg);
+}
+
+.tech-detail-3 {
+    width: 15px;
+    height: 15px;
+    bottom: 20px;
+    right: 40px;
+    transform: rotate(45deg);
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Tombol akan wrap (pindah baris) */
+  padding: 15px 0;
+}
+
+.nav-button {
+  background: rgba(106, 17, 203, 0.4);  /* Lebih terang */
+  border: 1px solid rgba(106, 17, 203, 0.5);  /* Meningkatkan kecerahan border */
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem; 
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-button:hover {
+  background: rgba(106, 17, 203, 0.5);  /* Meningkatkan kecerahan saat hover */
+  color: var(--text-primary);
+  transform: translateY(-3px);  /* Memberikan efek gerakan lebih tajam */
+  box-shadow: 0 0 15px rgba(106, 17, 203, 0.7); /* Bayangan lebih terang */
+  border-color: rgba(106, 17, 203, 0.6); /* Border lebih cerah saat hover */
+}
+
+.nav-button.active {
+  background: linear-gradient(90deg, #00ff00, #00cc33, #009900); /* Gradien hijau dengan nuansa Matrix */
+  color: white;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Efek glow hijau */
+}
+
+.title-container {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+    margin-top: 0.3rem;
+}
+
+.title {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    margin: 0;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    display: inline-block;
+}
+
+.title::after {
+    content: "CHECKER";
+    position: absolute;
+    top: -8px;
+    right: -30px;
+    font-size: 0.7rem;
+    font-weight: 400;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    padding: 2px 5px;
+    border-radius: 3px;
+    -webkit-text-fill-color: var(--color-bg);
+    transform: rotate(15deg);
+}
+
+.title {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .geo-btn {
+  background: rgba(106, 17, 203, 0.4);  /* Lebih terang */
+  border: 1px solid rgba(106, 17, 203, 0.5);  /* Meningkatkan kecerahan border */
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem; 
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  justify-content: center; /* Pastikan teks rata tengah secara horizontal */
+  align-items: center; /* Rata tengah secara vertikal */
+  gap: 5px;
+}
+
+.geo-btn:hover {
+  background: rgba(106, 17, 203, 0.5);  /* Meningkatkan kecerahan saat hover */
+  color: var(--text-primary);
+  transform: translateY(-3px);  /* Memberikan efek gerakan lebih tajam */
+  box-shadow: 0 0 15px rgba(106, 17, 203, 0.7); /* Bayangan lebih terang */
+  border-color: rgba(106, 17, 203, 0.6); /* Border lebih cerah saat hover */
+}
+
+.geo-btn.active {
+  background: linear-gradient(90deg, #00ff00, #00cc33, #009900); /* Gradien hijau dengan nuansa Matrix */
+  color: white;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Efek glow hijau */
+}
+
+</style>
+</head>
+<body>
+<canvas id="matrix"></canvas>
+<div class="tech-detail tech-detail-1"></div>
+            <div class="tech-detail tech-detail-2"></div>
+            <div class="tech-detail tech-detail-3"></div>
+
+            <div class="title-container">
+                <h1 class="title">GEO - PROJECT</h1>
+                <p class="subtitle">Check Proxyip Cloudflare</p>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="/" class="nav-button">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="sub" class="nav-button">
+                    <i class="fas fa-rss"></i> Subscription
+                </a>
+                <a href="link" class="nav-button">
+                    <i class="fas fa-link"></i> Link Generator
+                </a>
+                <a href="converter" class="nav-button">
+                    <i class="fas fa-exchange-alt"></i> Converter
+                </a>
+                <a href="check" class="geo-btn active">
+                    <i class="fas fa-exchange-alt"></i> Check IP CF
+                </a>
+            </div>
+
+<div class="container">
+    <div class="input-container">
+            <input type="text" id="ipInput" placeholder="Input IP:Port (192.168.1.1:443)">
+        </div>
+        <button class="geo-btn active" onclick="checkProxy()">Check</button>
+
+    <p id="loading" style="display: none; text-align: center;">Loading...</p>
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <br>
+      <tbody>
+        <tr><td>Proxy</td><td>-</td></tr>
+        <tr><td>ISP</td><td>-</td></tr>
+        <tr><td>IP</td><td>-</td></tr>
+        <tr><td>Port</td><td>-</td></tr>
+        <tr><td>ASN</td><td>-</td></tr>
+        <tr><td>Country</td><td>-</td></tr>
+        <tr><td>City</td><td>-</td></tr>
+        <tr><td>Flag</td><td>-</td></tr>
+        <tr><td>Timezone</td><td>-</td></tr>
+        <tr><td>Latitude</td><td>-</td></tr>
+        <tr><td>Longitude</td><td>-</td></tr>
+        <tr><td>Delay</td><td style="color: cyan; font-weight: bold;">-</td></tr>
+        <tr><td>Status</td><td style="font-weight: bold;">-</td></tr>
+      </tbody>
+    </table>
+
+    <div id="map"></div>
+  </div>
+
+  <footer>
+  <h2>&copy; 2025 Proxy Checker. All rights reserved.</h2>
+</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    // Efek Matrix di background
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const letters = "GEO@PROJECT";
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0f0";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 35);
+  </script>
+
+<script>
+let map;
+
+window.onload = function () {
+    loadStoredData();
+    initializeMap();
+};
+
+function loadStoredData() {
+    const storedData = localStorage.getItem("proxyData");
+    if (storedData) {
+        updateTable(JSON.parse(storedData));
+    }
+}
+
+function initializeMap() {
+    const storedMap = localStorage.getItem("mapData");
+
+    if (storedMap) {
+        const mapData = JSON.parse(storedMap);
+        initMap(mapData.latitude, mapData.longitude, mapData.zoom);
+        loadStoredMarker();
+    } else {
+        initMap(-6.200000, 106.816666, 5);
+    }
+}
+
+function loadStoredMarker() {
+    const storedMarker = localStorage.getItem("markerData");
+    if (storedMarker) {
+        const markerData = JSON.parse(storedMarker);
+        addMarkerToMap(markerData.latitude, markerData.longitude, markerData.data);
+    }
+}
+
+async function checkProxy() {
+    const ipPort = document.getElementById("ipInput").value.trim();
+
+    if (!ipPort) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Peringatan!',
+            text: 'Masukkan IP:Port terlebih dahulu!',
+            confirmButtonText: 'OK',
+            background: '#000',
+            color: '#00FF00',
+            iconColor: '#00FF00',
+            confirmButtonColor: '#4CAF50'
+        });
+        return;
+    }
+
+    document.getElementById("loading").style.display = "block";
+
     try {
-        let ipPart, portPart;
-        let apiUrl;
+        const apiUrl = `https://cors.geo-project.workers.dev/?url=https://api.checker-ip.web.id/check?ip=${encodeURIComponent(ipPort)}`;
+        const response = await fetch(apiUrl);
 
-         if (ip.includes(',')) {
-            
-            [ipPart, portPart] = ip.split(',');
-        } else if (ip.includes('=')) {
-            
-            [ipPart, portPart] = ip.split('=');
-        } else {
-            ipPart = ip;
-            portPart = null;  
+        if (!response.ok) {
+            throw new Error(`API response not ok: ${response.status}`);
         }
 
-        apiUrl = portPart ? 
-            `https://api.checker-ip.web.id/check?ip=${ipPart}:${portPart}` : 
-            `https://api.checker-ip.web.id/check?ip=${ipPart}`;
-        
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
-        
-        const response = await fetch(proxyUrl);
         const data = await response.json();
-        const ipInfo = JSON.parse(data.contents);
 
-                    const infoRow = `
-                <div class="container mx-auto px-4">
-    <div class="w-full max-w-7xl bg-gray-900 text-white rounded-lg shadow-lg p-3 border-l-4 border-green-500">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center">
-
-                <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                    <span class="text-xl">${ipInfo.flag}</span>
-                </div>
-                <span class="text-lg font-bold text-[17px] text-blue-200">${ipInfo.ip}</span>
-            </div>
-            <span class="bg-green-700 text-[10px] font-semibold text-white px-3 py-1 rounded">
-    ${ipInfo.status === "ACTIVE" ? "✅ ACTIVE" : ipInfo.status === "DEAD" ? "❌ DEAD" : ipInfo.status || 'N/A'}
-</span>
-        </div>
-
-        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- Port -->
-            <div class="flex items-center">
-                <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                    <i class="fas fa-plug text-indigo-400"></i>
-                </div>
-                <div>
-                    <div class="text-xs text-gray-400">Port</div>
-                    <div class="text-[10px] font-medium">${ipInfo.port || 'N/A'}</div>
-                </div>
-            </div>
-
-            <!-- ASN -->
-            <div class="flex items-center">
-                <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                    <i class="fas fa-network-wired text-blue-400"></i>
-                </div>
-                <div>
-                    <div class="text-xs text-gray-400">ASN</div>
-                    <div class="text-[10px] font-medium">${ipInfo.asn || 'N/A'}</div>
-                </div>
-            </div>
-
-            <!-- Organization -->
-            <div class="flex items-center">
-                <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                    <i class="fas fa-building text-indigo-400"></i>
-                </div>
-                <div>
-                    <div class="text-xs text-gray-400">Organization</div>
-                    <div class="text-[10px] font-medium">${ipInfo.isp || 'N/A'}</div>
-                </div>
-            </div>
-
-            <!-- Colocation -->
-            <div class="flex items-center">
-                <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                    <i class="fas fa-database text-blue-400"></i>
-                </div>
-                <div>
-                    <div class="text-xs text-gray-400">Colocation</div>
-                    <div class="text-[10px] font-medium">${ipInfo.colo || 'N/A'}</div>
-                </div>
-            </div>
-
-            <!-- Country -->
-            <div class="flex items-center">
-                <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                    <i class="fas fa-map-marker-alt text-red-400"></i>
-                </div>
-                <div>
-                    <div class="text-xs text-gray-400">Country</div>
-                    <div class="text-[10px] font-medium">${ipInfo.country || 'N/A'}</div>
-                </div>
-            </div>
-
-            <!-- Region -->
-            <div class="flex items-center">
-                <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                    <i class="fas fa-globe-asia text-green-400"></i>
-                </div>
-                <div>
-                    <div class="text-xs text-gray-400">Region</div>
-                    <div class="text-[10px] font-medium">${ipInfo.region || 'N/A'}</div>
-                </div>
-            </div>
-
-            <!-- Coordinates -->
-            <div class="flex items-center">
-                <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center mr-3">
-                    <i class="fas fa-map-pin text-yellow-400"></i>
-                </div>
-                <div>
-                    <div class="text-xs text-gray-400">Coordinates</div>
-                    <div class="text-[10px] font-medium">
-                        ${ipInfo.latitude}, ${ipInfo.longitude} 
-                        <a href="https://www.google.com/maps?q=${ipInfo.latitude},${ipInfo.longitude}" 
-                            target="_blank" 
-                            class="text-blue-400 hover:text-blue-300 ml-2">
-                            <i class="fas fa-external-link-alt"></i> View Google Maps
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-</div>
-<div class="divider"></div>
-                    `;
-
-                    document.getElementById('ipData').innerHTML += infoRow;
-                } catch (error) {
-                    console.error('Error fetching IP data:', error);
-                }
-
-                checked++;
-                let progress = (checked / ipAddresses.length) * 100;
-                document.getElementById('progress-bar').style.width = progress + "%";
-            }
-
-            document.getElementById('loading-indicator').classList.add('hidden');
-            document.getElementById('results-container').classList.remove('hidden');
-        };
-
-        const toggleBlur = () => {
-            document.body.classList.toggle('blur-mode');
-        };
-    </script>
-    <script>
-        function toggleSwitch() {
-            let toggle = document.querySelector('.toggle-container');
-            let body = document.body;
-            
-            toggle.classList.toggle('active');
-            
-            if (toggle.classList.contains('active')) {
-                body.classList.add('blurred');
-            } else {
-                body.classList.remove('blurred');
-            }
+        if (data.error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: `Terjadi kesalahan saat mengambil data dari API: ${data.error}`,
+                confirmButtonText: 'OK',
+                background: '#000',
+                color: '#FF0000',
+                iconColor: '#FF0000',
+                confirmButtonColor: '#FF0000'
+            });
+            return;
         }
-    </script>
+
+        localStorage.setItem("proxyData", JSON.stringify(data));
+        updateTable(data);
+
+        // Update the map only with new marker
+        if (data.latitude && data.longitude) {
+            updateMap(data.latitude, data.longitude, data);
+        }
+    } catch (error) {
+        console.error("Error fetching proxy data:", error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Terjadi kesalahan saat mengambil data dari API.',
+            confirmButtonText: 'OK',
+            background: '#000',
+            color: '#FF0000',
+            iconColor: '#FF0000',
+            confirmButtonColor: '#FF0000'
+        });
+    } finally {
+        document.getElementById("loading").style.display = "none";
+    }
+}
+
+function initMap(lat, lon, zoom) {
+    // Cek jika peta belum diinisialisasi
+    if (!map) {
+        map = L.map('map').setView([lat, lon], zoom);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">Geo Project</a> IP CF Checker'
+        }).addTo(map);
+    }
+}
+
+function updateMap(lat, lon, data) {
+    if (!map) {
+        initMap(lat, lon, 7);
+    } else {
+        map.setView([lat, lon], 7);
+
+        // Hapus marker sebelumnya
+        map.eachLayer(function (layer) {
+            if (layer instanceof L.Marker) map.removeLayer(layer);
+        });
+    }
+
+    addMarkerToMap(lat, lon, data);
+    saveMapData(lat, lon, 7, data.proxy, data.isp, data.asn);
+}
+
+function addMarkerToMap(lat, lon, data) {
+    var icon1 = L.icon({
+        iconUrl: 'https://cdn-icons-png.flaticon.com/512/252/252025.png',
+        iconSize: [35, 35],
+        iconAnchor: [15, 35],
+        popupAnchor: [0, -30]
+    });
+
+    var marker = L.marker([lat, lon], { icon: icon1 }).addTo(map)
+        .bindPopup("<b>📍 Lokasi</b><br>" +
+            "<b>Proxy:</b> " + (data.proxy || '-') + "<br>" +
+            "<b>ISP:</b> " + (data.isp || '-') + "<br>" +
+            "<b>ASN:</b> " + (data.asn || '-') + "<br>" +
+            "<b>Latitude:</b> " + lat + "<br>" +
+            "<b>Longitude:</b> " + lon)
+        .openPopup();
+}
+
+function saveMapData(lat, lon, zoom, proxy = null, isp = null, asn = null) {
+    localStorage.setItem("mapData", JSON.stringify({
+        latitude: lat,
+        longitude: lon,
+        zoom: zoom
+    }));
+
+    const markerData = { latitude: lat, longitude: lon };
+    if (proxy || isp || asn) {
+        markerData.data = { proxy, isp, asn };
+    }
+
+    localStorage.setItem("markerData", JSON.stringify(markerData));
+}
+
+function updateTable(data) {
+    const tbody = document.getElementById("resultTable").querySelector("tbody");
+
+    tbody.querySelectorAll("tr").forEach(function (row) {
+        const key = row.querySelector("td").textContent.toLowerCase();
+        row.querySelectorAll("td")[1].textContent = data[key] || "-";
+    });
+}
+</script>
 
 </body>
-
 </html>
