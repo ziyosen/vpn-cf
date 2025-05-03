@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proxy Checker</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="icon" href="https://raw.githubusercontent.com/jaka2m/project/refs/heads/main/social/geo.jpg"/>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy IP Checker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
           :root {
     --color-bg: #050a18;
     --color-bg-card: #0a1128;
@@ -41,74 +40,6 @@
 }
 
 body {
-    font-family: 'Rajdhani', sans-serif;
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    line-height: 1.6;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-image: 
-        radial-gradient(circle at 10% 20%, rgba(0, 221, 255, 0.03) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(119, 0, 255, 0.03) 0%, transparent 20%),
-        linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.2) 100%);
-    background-attachment: fixed;
-    position: relative;
-    overflow-x: hidden;
-    padding: 1rem 0;
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        linear-gradient(90deg, var(--color-bg) 21px, transparent 1%) center,
-        linear-gradient(var(--color-bg) 21px, transparent 1%) center;
-    background-size: 22px 22px;
-    background-color: transparent;
-    opacity: 0.2;
-    z-index: -1;
-}
-
-.container {
-    width: var(--card-width);
-    max-width: var(--card-max-width);
-    padding: 0 0.75rem;
-    margin-bottom: 1rem;
-}
-
-      @keyframes rainbow {
-      0% { color: red; }
-      14% { color: black; }
-      28% { color: black; }
-      42% { color: green; }
-      57% { color: blue; }
-      71% { color: indigo; }
-      85% { color: violet; }
-      100% { color: red; }
-    }
-    @keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Space Grotesk', sans-serif;
-      }
-
-      body {
       	
       font-family: monospace;
     background: black;
@@ -247,35 +178,34 @@ body::before {
   
   
     .container {
-    width: 90%;
-    max-width: 600px;
+    width: 80%;  /* Menurunkan lebar */
+    max-width: 500px;  /* Mengurangi lebar maksimum */
     margin: 50px auto;
     background: rgba(0, 0, 0, 0.8);
-    padding: 20px;
+    padding: 15px;  /* Mengurangi padding */
     border-radius: 10px;
-    box-shadow: 0 0 15px #0f0;
+    box-shadow: 0 0 10px #0f0;
 }
 
 /* Responsif untuk layar kecil */
 @media (max-width: 768px) {
     .container {
-        width: 95%;
+        width: 90%;
         margin: 20px auto;
-        padding: 15px;
-        box-shadow: 0 0 10px #0f0;
+        padding: 10px;  /* Padding lebih kecil */
+        box-shadow: 0 0 8px #0f0;
     }
 }
 
 /* Tampilan lebih lebar di laptop */
 @media (min-width: 1024px) {
     .container {
-        width: 98%; /* Hampir penuh */
-        max-width: 1600px; /* Menyesuaikan dengan layar besar */
-        padding: 40px;
-        box-shadow: 0 0 25px #0f0;
+        width: 90%;  /* Menurunkan lebar sedikit */
+        max-width: 1200px;  /* Menurunkan lebar maksimum */
+        padding: 20px;  /* Padding lebih kecil */
+        box-shadow: 0 0 15px #0f0;
     }
 }
-
 
        .navbarconten {
     width: 100%;
@@ -355,18 +285,27 @@ body::before {
     0% { opacity: 1; }
     100% { opacity: 0.3; }
   }
+  
   .input-container {
-            margin-bottom: 20px;
-        }
-        .input-container input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            text-align: center;
-        }
-        
+    margin-bottom: 20px;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #9b4de0; /* Ganti warna border menjadi ungu */
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    background-color: rgba(155, 77, 224, 0.1); /* Ganti background input menjadi ungu muda */
+    color: #9b4de0; /* Ganti warna teks menjadi ungu */
+}
+
+.input-container input:focus {
+    border-color: #9b4de0; /* Warna border lebih terang saat fokus */
+    background-color: rgba(155, 77, 224, 0.2); /* Warna background saat input fokus */
+}
+
         #map {
   height: 350px;
   width: 100%;
@@ -551,11 +490,31 @@ body::before {
 }
 
 .subtitle {
-    font-size: 0.9rem;
-    color: var(--color-text-dim);
-    margin-top: 0.3rem;
-}
+            font-size: 24px;
+            font-family: 'Courier New', monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid #0f0; /* Membuat efek kursor */
+            animation: typing 4s steps(30) infinite, blink 0.75s step-end infinite;
+        }
 
+        /* Animasi mengetik */
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        /* Animasi kursor berkedip */
+        @keyframes blink {
+            50% {
+                border-color: transparent;
+            }
+        }
+        
 .title {
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
@@ -623,11 +582,99 @@ body::before {
   box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Efek glow hijau */
 }
 
-</style>
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+
+        .form-container {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-container textarea,
+.form-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: rgba(51, 51, 51, 0.8); /* Transparan 80% dengan latar belakang abu-abu gelap */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.form-container button {
+    background-color: rgba(106, 90, 173, 0.9); /* Transparan 90% dengan warna ungu */
+}
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed; /* Memastikan tabel memiliki ukuran tetap */
+        }
+
+        .result-table th, .result-table td {
+            padding: 12px;
+            border: 1px solid #444;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        /* Responsif untuk mobile */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 15px;
+            }
+
+            .form-container textarea,
+            .form-container button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .result-table th, .result-table td {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            #map {
+                height: 300px;
+            }
+        }
+
+        /* Untuk tampilan di mobile dan tablet */
+        @media (max-width: 480px) {
+            .form-container textarea,
+            .form-container button {
+                font-size: 13px;
+                padding: 8px;
+            }
+
+            .result-table th, .result-table td {
+                font-size: 10px;
+                padding: 6px;
+            }
+
+            #map {
+                height: 250px;
+            }
+        }
+    </style>
 </head>
 <body>
 <canvas id="matrix"></canvas>
-<div class="tech-detail tech-detail-1"></div>
+<div class="container">
+    <div class="form-container">
+    	<div class="input-container">
+         <div class="tech-detail tech-detail-1"></div>
             <div class="tech-detail tech-detail-2"></div>
             <div class="tech-detail tech-detail-3"></div>
 
@@ -650,79 +697,39 @@ body::before {
                     <i class="fas fa-exchange-alt"></i> Converter
                 </a>
                 <a href="check" class="geo-btn active">
-                    <i class="fas fa-exchange-alt"></i> Check IP CF
+                    <i class="fas fa-exchange-alt"></i> Checker IP CF
                 </a>
             </div>
+          </div>
+           
+        <h2>Check Multiple Proxy IPs</h2>
+        <textarea id="ipInput" rows="5" placeholder="Enter IP:Port list, one per line..."></textarea>
+        <button class="geo-btn active" onclick="checkMultipleProxies()">Check</button>
+        <div id="loading">Loading...</div>
+    </div>
 
-<div class="container">
-    <div class="input-container">
-            <input type="text" id="ipInput" placeholder="Input IP:Port (192.168.1.1:443)">
-        </div>
-        <button class="geo-btn active" onclick="checkProxy()">Check</button>
-
-    <p id="loading" style="display: none; text-align: center;">Loading...</p>
-    <table id="resultTable">
-      <thead>
-        <tr>
-          <th>Key</th>
-          <th>Value</th>
-        </tr>
-      </thead>
-      <br>
-      <tbody>
-        <tr><td>Proxy</td><td>-</td></tr>
-        <tr><td>ISP</td><td>-</td></tr>
-        <tr><td>IP</td><td>-</td></tr>
-        <tr><td>Port</td><td>-</td></tr>
-        <tr><td>ASN</td><td>-</td></tr>
-        <tr><td>Country</td><td>-</td></tr>
-        <tr><td>City</td><td>-</td></tr>
-        <tr><td>Flag</td><td>-</td></tr>
-        <tr><td>Timezone</td><td>-</td></tr>
-        <tr><td>Latitude</td><td>-</td></tr>
-        <tr><td>Longitude</td><td>-</td></tr>
-        <tr><td>Delay</td><td style="color: cyan; font-weight: bold;">-</td></tr>
-        <tr><td>Status</td><td style="font-weight: bold;">-</td></tr>
-      </tbody>
-    </table>
+    <!-- Wrapper untuk tabel -->
+    <div class="table-wrapper">
+        <table class="result-table" id="resultTable">
+            <thead>
+                <tr>
+                    <th>IP</th>
+                    <th>STATUS</th>
+                    <th>PORT</th>
+                    <th>ISP</th>
+                    <th>DELAY</th>
+                    
+                </tr>
+            </thead>
+            <tbody id="resultBody">
+                
+            </tbody>
+        </table>
+    </div>
 
     <div id="map"></div>
-  </div>
+</div>
 
-  <footer>
-  <h2>&copy; 2025 Proxy Checker. All rights reserved.</h2>
-</footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script>
-    // Efek Matrix di background
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const letters = "GEO@PROJECT";
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0f0";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters.charAt(Math.floor(Math.random() * letters.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-    setInterval(drawMatrix, 35);
-  </script>
 
 <script>
 let map;
@@ -759,10 +766,10 @@ function loadStoredMarker() {
     }
 }
 
-async function checkProxy() {
-    const ipPort = document.getElementById("ipInput").value.trim();
+async function checkMultipleProxies() {
+    const ipPorts = document.getElementById("ipInput").value.trim().split('\n').map(ip => ip.trim());
 
-    if (!ipPort) {
+    if (ipPorts.length === 0) {
         Swal.fire({
             icon: 'warning',
             title: 'Peringatan!',
@@ -778,56 +785,59 @@ async function checkProxy() {
 
     document.getElementById("loading").style.display = "block";
 
-    try {
-        const apiUrl = `https://cors.geo-project.workers.dev/?url=https://api.checker-ip.web.id/check?ip=${encodeURIComponent(ipPort)}`;
-        const response = await fetch(apiUrl);
+    // Iterate through the list of IP:Port and fetch data for each
+    for (let ipPort of ipPorts) {
+        try {
+            const apiUrl = `https://cors.geo-project.workers.dev/?url=https://api.checker-ip.web.id/check?ip=${encodeURIComponent(ipPort)}`;
+            const response = await fetch(apiUrl);
 
-        if (!response.ok) {
-            throw new Error(`API response not ok: ${response.status}`);
-        }
+            if (!response.ok) {
+                throw new Error(`API response not ok: ${response.status}`);
+            }
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (data.error) {
+            if (data.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: `Terjadi kesalahan saat mengambil data dari API: ${data.error}`,
+                    confirmButtonText: 'OK',
+                    background: '#000',
+                    color: '#FF0000',
+                    iconColor: '#FF0000',
+                    confirmButtonColor: '#FF0000'
+                });
+                return;
+            }
+
+            // Simpan data dan update tabel
+            updateTable(data);
+            localStorage.setItem("proxyData", JSON.stringify(data));
+
+            // Update the map with new marker
+            if (data.latitude && data.longitude) {
+                updateMap(data.latitude, data.longitude, data);
+            }
+        } catch (error) {
+            console.error("Error fetching proxy data:", error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: `Terjadi kesalahan saat mengambil data dari API: ${data.error}`,
+                text: 'Terjadi kesalahan saat mengambil data dari API.',
                 confirmButtonText: 'OK',
                 background: '#000',
                 color: '#FF0000',
                 iconColor: '#FF0000',
                 confirmButtonColor: '#FF0000'
             });
-            return;
         }
-
-        localStorage.setItem("proxyData", JSON.stringify(data));
-        updateTable(data);
-
-        // Update the map only with new marker
-        if (data.latitude && data.longitude) {
-            updateMap(data.latitude, data.longitude, data);
-        }
-    } catch (error) {
-        console.error("Error fetching proxy data:", error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Terjadi kesalahan saat mengambil data dari API.',
-            confirmButtonText: 'OK',
-            background: '#000',
-            color: '#FF0000',
-            iconColor: '#FF0000',
-            confirmButtonColor: '#FF0000'
-        });
-    } finally {
-        document.getElementById("loading").style.display = "none";
     }
+
+    document.getElementById("loading").style.display = "none";
 }
 
 function initMap(lat, lon, zoom) {
-    // Cek jika peta belum diinisialisasi
     if (!map) {
         map = L.map('map').setView([lat, lon], zoom);
 
@@ -843,7 +853,6 @@ function updateMap(lat, lon, data) {
     } else {
         map.setView([lat, lon], 7);
 
-        // Hapus marker sebelumnya
         map.eachLayer(function (layer) {
             if (layer instanceof L.Marker) map.removeLayer(layer);
         });
@@ -851,6 +860,17 @@ function updateMap(lat, lon, data) {
 
     addMarkerToMap(lat, lon, data);
     saveMapData(lat, lon, 7, data.proxy, data.isp, data.asn);
+}
+
+function saveMapData(lat, lon, zoom, proxy = null, isp = null, asn = null) {
+    localStorage.setItem("mapData", JSON.stringify({ latitude: lat, longitude: lon, zoom: zoom }));
+
+    const markerData = { latitude: lat, longitude: lon };
+    if (proxy || isp || asn) {
+        markerData.data = { proxy, isp, asn };
+    }
+
+    localStorage.setItem("markerData", JSON.stringify(markerData));
 }
 
 function addMarkerToMap(lat, lon, data) {
@@ -862,39 +882,33 @@ function addMarkerToMap(lat, lon, data) {
     });
 
     var marker = L.marker([lat, lon], { icon: icon1 }).addTo(map)
-        .bindPopup("<b>📍 Lokasi</b><br>" +
-            "<b>Proxy:</b> " + (data.proxy || '-') + "<br>" +
-            "<b>ISP:</b> " + (data.isp || '-') + "<br>" +
-            "<b>ASN:</b> " + (data.asn || '-') + "<br>" +
-            "<b>Latitude:</b> " + lat + "<br>" +
-            "<b>Longitude:</b> " + lon)
+        .bindPopup(`<b>📍 Lokasi</b><br>
+            <b>Proxy:</b> ${data.proxy || '-'}<br>
+            <b>ISP:</b> ${data.isp || '-'}<br>
+            <b>ASN:</b> ${data.asn || '-'}<br>
+            <b>Latitude:</b> ${lat}<br>
+            <b>Longitude:</b> ${lon}`)
         .openPopup();
 }
 
-function saveMapData(lat, lon, zoom, proxy = null, isp = null, asn = null) {
-    localStorage.setItem("mapData", JSON.stringify({
-        latitude: lat,
-        longitude: lon,
-        zoom: zoom
-    }));
-
-    const markerData = { latitude: lat, longitude: lon };
-    if (proxy || isp || asn) {
-        markerData.data = { proxy, isp, asn };
-    }
-
-    localStorage.setItem("markerData", JSON.stringify(markerData));
-}
-
 function updateTable(data) {
-    const tbody = document.getElementById("resultTable").querySelector("tbody");
+    const tbody = document.getElementById("resultBody");
 
-    tbody.querySelectorAll("tr").forEach(function (row) {
-        const key = row.querySelector("td").textContent.toLowerCase();
-        row.querySelectorAll("td")[1].textContent = data[key] || "-";
-    });
+    // Tambahkan data IP baru ke tabel setiap kali
+    const row = document.createElement('tr');
+    row.innerHTML = `
+    <td>${data.ip || '-'}</td>
+    <td style="text-align: center;">
+        ${data.status === "ACTIVE" 
+            ? '<i class="fas fa-check-circle" style="color: #00FF00; font-size: 24px;"></i>' 
+            : '<i class="fas fa-times-circle" style="color: red; font-size: 24px;"></i>'}
+    </td>
+    <td>${data.port || '-'}</td>
+    <td>${data.isp || '-'}</td>
+    <td>${data.delay || '-'}</td>
+`;
+    tbody.appendChild(row);
 }
 </script>
-
 </body>
 </html>
