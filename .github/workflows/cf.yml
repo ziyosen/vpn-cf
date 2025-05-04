@@ -16,14 +16,7 @@ jobs:
     environment: cf
     steps:
       - uses: actions/checkout@v4
-
-      # Langkah untuk menginstal wrangler versi 4
-      - name: Install Wrangler
-        run: |
-          npm install --save-dev wrangler@4
-
-      # Langkah untuk deploy menggunakan wrangler-action
-      - name: Deploy
+      - name: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
