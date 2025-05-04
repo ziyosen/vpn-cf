@@ -5,7 +5,7 @@ minify = true
 workers_dev = true
 
 routes = [
-  { pattern = "vpn-cf.xyz", custom_domain = true },
+  { pattern = "joss.vpn-cf.xyz", custom_domain = true },
   { pattern = "ava.game.naver.com.free.vpn-cf.xyz", custom_domain = true },
   { pattern = "df.game.naver.com.free.vpn-cf.xyz", custom_domain = true },
   { pattern = "graph.instagram.com.free.vpn-cf.xyz", custom_domain = true },
