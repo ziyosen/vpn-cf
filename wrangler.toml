@@ -4,19 +4,9 @@ compatibility_date = "2024-05-23"
 minify = true
 workers_dev = true
 
-routes = [
-  { pattern = "joss.vpn-cf.xyz", custom_domain = true },
-  { pattern = "ava.game.naver.com.free.vpn-cf.xyz", custom_domain = true },
-  { pattern = "df.game.naver.com.free.vpn-cf.xyz", custom_domain = true },
-  { pattern = "graph.instagram.com.free.vpn-cf.xyz", custom_domain = true },
-  { pattern = "zaintest.vuclip.com.free.vpn-cf.xyz", custom_domain = true },
-  { pattern = "support.zoom.us.free.vpn-cf.xyz", custom_domain = true },
-  { pattern = "cache.netflix.com.free.vpn-cf.xyz", custom_domain = true }
-]
-
 [[kv_namespaces]]
 binding = "SIREN"
-id = "31e0673f59a74088b3c677189944dd80"
+id = "95e9eaa60a754efd95dbb6cc6dce4d28"
 
 [build]
 command = "cargo install -q worker-build && worker-build --release"
