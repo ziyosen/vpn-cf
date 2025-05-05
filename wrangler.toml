@@ -1,21 +1,22 @@
 name = "siren"
 main = "build/worker/shim.mjs"
 compatibility_date = "2024-05-23"
+minify = true
 workers_dev = true
 
 routes = [
-  { pattern = "checker-ip.xyz", custom_domain = true },
-  { pattern = "ava.game.naver.com.checker-ip.xyz", custom_domain = true },
-  { pattern = "df.game.naver.com.checker-ip.xyz", custom_domain = true },
-  { pattern = "graph.instagram.com.checker-ip.xyz", custom_domain = true },
-  { pattern = "zaintest.vuclip.com.checker-ip.xyz", custom_domain = true },
-  { pattern = "support.zoom.us.checker-ip.xyz", custom_domain = true },
-  { pattern = "cache.netflix.com.checker-ip.xyz", custom_domain = true }
+  { pattern = "joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "ava.game.naver.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "df.game.naver.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "graph.instagram.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "zaintest.vuclip.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "support.zoom.us.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "cache.netflix.com.joss.checker-ip.xyz", custom_domain = true }
 ]
 
 [[kv_namespaces]]
 binding = "SIREN"
-id = "df200ed81e564e04ab873f65733bd5a5"
+id = "86850fea3b424ad0b4cedcdbb292969b"
 
 [build]
 command = "cargo install -q worker-build && worker-build --release"
