@@ -2,21 +2,10 @@ name = "siren"
 main = "build/worker/shim.mjs"
 compatibility_date = "2024-05-23"
 minify = true
-workers_dev = true
-
-routes = [
-  { pattern = "joss.vpn-cf.xyz", custom_domain = true },
-  { pattern = "ava.game.naver.com.joss.vpn-cf.xyz", custom_domain = true },
-  { pattern = "df.game.naver.com.joss.vpn-cf.xyz", custom_domain = true },
-  { pattern = "graph.instagram.com.joss.vpn-cf.xyz", custom_domain = true },
-  { pattern = "zaintest.vuclip.com.joss.vpn-cf.xyz", custom_domain = true },
-  { pattern = "support.zoom.us.joss.vpn-cf.xyz", custom_domain = true },
-  { pattern = "cache.netflix.com.joss.vpn-cf.xyz", custom_domain = true }
-]
 
 [[kv_namespaces]]
 binding = "SIREN"
-id = "31e0673f59a74088b3c677189944dd80"
+id = "df200ed81e564e04ab873f65733bd5a5"
 
 [build]
 command = "cargo install -q worker-build && worker-build --release"
