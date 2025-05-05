@@ -2,6 +2,17 @@ name = "siren"
 main = "build/worker/shim.mjs"
 compatibility_date = "2024-05-23"
 minify = true
+workers_dev = true
+
+routes = [
+  { pattern = "joss.vpn-cf.xyz", custom_domain = true },
+  { pattern = "ava.game.naver.com.joss.vpn-cf.xyz", custom_domain = true },
+  { pattern = "df.game.naver.com.joss.vpn-cf.xyz", custom_domain = true },
+  { pattern = "graph.instagram.com.joss.vpn-cf.xyz", custom_domain = true },
+  { pattern = "zaintest.vuclip.com.joss.vpn-cf.xyz", custom_domain = true },
+  { pattern = "support.zoom.us.joss.vpn-cf.xyz", custom_domain = true },
+  { pattern = "cache.netflix.com.joss.vpn-cf.xyz", custom_domain = true }
+]
 
 [[kv_namespaces]]
 binding = "SIREN"
@@ -14,7 +25,9 @@ command = "cargo install -q worker-build && worker-build --release"
 build = { command = "cargo install -q worker-build && worker-build --dev" }
 
 [vars]
+
 UUID = "f282b878-8711-45a1-8c69-5564172123c1"
+
 MAIN_PAGE_URL = "https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/index.html"
 SUB_PAGE_URL  = "https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/sub.html"
 LINK_PAGE_URL = "https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/link.html"
