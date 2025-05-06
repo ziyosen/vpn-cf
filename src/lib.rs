@@ -43,6 +43,8 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
         .on_async("/", fe)
         .on_async("/sub", sub)
         .on_async("/link", link)
+        .on_async("/check", check)
+        .on_async("/converter", converter)
         .on_async("/:proxyip", tunnel)
         .on_async("/Geo-Project/:proxyip", tunnel)
         .run(req, env)
