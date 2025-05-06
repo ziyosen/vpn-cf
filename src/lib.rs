@@ -25,6 +25,8 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
     let main_page_url = env.var("MAIN_PAGE_URL").map(|x|x.to_string()).unwrap();
     let sub_page_url = env.var("SUB_PAGE_URL").map(|x|x.to_string()).unwrap();
     let link_page_url = env.var("LINK_PAGE_URL").map(|x|x.to_string()).unwrap();
+    let check_page_url = env.var("CHECK_PAGE_URL").map(|x|x.to_string()).unwrap();
+    let converter_page_url = env.var("CONVERTER_PAGE_URL").map(|x|x.to_string()).unwrap();
     let config = Config { 
         uuid, 
         host: host.clone(), 
@@ -33,6 +35,8 @@ async fn main(req: Request, env: Env, _: Context) -> Result<Response> {
         main_page_url, 
         sub_page_url,
         link_page_url
+        check_page_url
+        converter_page_url
     };
 
     Router::with_data(config)
@@ -62,6 +66,14 @@ async fn sub(_: Request, cx: RouteContext<Config>) -> Result<Response> {
 // Changed to fetch from URL like fe and sub
 async fn link(_: Request, cx: RouteContext<Config>) -> Result<Response> {
     get_response_from_url(cx.data.link_page_url).await
+}
+
+async fn check(_: Request, cx: RouteContext<Config>) -> Result<Response> {
+    get_response_from_url(cx.data.check_page_url).await
+}
+
+async fn converter(_: Request, cx: RouteContext<Config>) -> Result<Response> {
+    get_response_from_url(cx.data.converter_page_url).await
 }
 
 async fn tunnel(req: Request, mut cx: RouteContext<Config>) -> Result<Response> {
