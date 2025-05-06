@@ -1073,6 +1073,53 @@ select.form-control {
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.min.js"></script>
 <script>
+document.getElementById('downloadConfig').addEventListener('click', function () {
+    const configContent = document.getElementById('output').value;
+    const format = document.getElementById('formatType').value;
+
+    let extension = '';
+    let prefix = '';
+    let mimeType = '';
+    
+    switch (format) {
+        case 'clash':
+            extension = 'yaml';
+            prefix = 'clash';
+            mimeType = 'application/x-yaml';
+            break;
+        case 'singbox':
+            extension = 'bpf';
+            prefix = 'singbox';
+            mimeType = 'application/octet-stream';
+            break;
+        case 'nekobox':
+            extension = 'json';
+            prefix = 'nekobox';
+            mimeType = 'application/json';
+            break;
+        case 'v2ray':
+            extension = 'txt';
+            prefix = 'v2ray';
+            mimeType = 'text/plain';
+            break;
+        default:
+            alert('Format tidak dikenali!');
+            return;
+    }
+
+    const randomNum = Math.floor(1000 + Math.random() * 9000); // 4 digit random
+    const filename = `${prefix}-${randomNum}.${extension}`;
+
+    const blob = new Blob([configContent], { type: mimeType });
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = filename;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+});
+</script>
+<script>
     document.getElementById('generateQR').addEventListener('click', function () {
         const input = document.getElementById('output').value.trim();
         const urls = input.split('\n').filter(url =>
