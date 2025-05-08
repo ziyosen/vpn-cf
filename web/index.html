@@ -17,77 +17,70 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Common CSS styles shared across all pages */
-:root {
-  /* Color variables */
-  --primary: #6a11cb;
-  --primary-dark: #4f46e5;
-  --primary-light: #a0a0ff;
-  --secondary: #2575fc;
-  --secondary-dark: #1e40af;
-  --accent: #ff6b6b;
-  --dark: #0f0c29;
-  --dark-light: #302b63;
-  --light: #ffffff;
-  --gray: #64748b;
-  --gray-light: #a0a0ff;
+    :root {
+  /* Light mode variables */
   --gray-dark: #334155;
-  --primary-color: #6a11cb;
-  --secondary-color: #2575fc;
   --accent-color: #ff6b6b;
   --dark-bg: #0f0c29;
   --dark-bg-gradient-1: #302b63;
   --dark-bg-gradient-2: #24243e;
-  --card-bg: rgba(15, 14, 32, 0.8);
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0ff;
-  --text-muted: rgba(255, 255, 255, 0.5);
-  --border-color: rgba(255, 255, 255, 0.1);
+
+  --background-color: #ffffff;
+  --card-background: rgba(255, 255, 255, 0.9);
+  --card-border: rgba(106, 17, 203, 0.1);
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-muted: rgba(0, 0, 0, 0.5);
+  --text-color: #111;
+
+  --footer-background: rgba(255, 255, 255, 0.9);
+  --footer-border: rgba(106, 17, 203, 0.1);
+  --footer-shadow: rgba(0, 0, 0, 0.1);
+
+  --primary-color: #32CD32; /* Green for light mode */
+  --secondary-color: #00C853;
+  --icon-background: rgba(255, 255, 255, 0.05);
+
   --success-color: #38ef7d;
 
-  /* Common UI elements */
+  /* UI elements */
   --border-radius-sm: 8px;
   --border-radius-md: 12px;
   --border-radius-lg: 16px;
   --border-radius-full: 9999px;
 
-  /* Shadows and effects */
+  /* Effects */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --glow-primary: 0 0 10px rgba(106, 17, 203, 0.5), 0 0 20px rgba(106, 17, 203, 0.2);
   --glow-secondary: 0 0 15px rgba(37, 117, 252, 0.5);
-   --primary-color: #6a11cb;
-    --secondary-color: #2575fc;
-    --accent-color: #ff6b6b;
-
-    --background-color: #ffffff;
-    --footer-background: rgba(255, 255, 255, 0.9);
-    --text-color: #111;
-    --footer-border: rgba(106, 17, 203, 0.1);
-    --footer-shadow: rgba(0, 0, 0, 0.1);
-    --text-secondary: #999;
-    --primary-color: #6a11cb;
-    --secondary-color: #2575fc;
-    --accent-color: #ff6b6b;
-
-    --background-color: #ffffff;
-    --card-background: rgba(255, 255, 255, 0.9);
-    --text-color: #111;
-    --card-border: rgba(106, 17, 203, 0.1);
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    
-    --primary-color: #32CD32; /* LimeGreen */
-  --secondary-color: #00C853; /* GreenAccent */
-  
-  --primary-color: #32CD32; /* warna hijau untuk mode terang */
-  --secondary-color: #00C853; /* warna hijau accent untuk mode terang */
-  --icon-background: rgba(255, 255, 255, 0.05); /* latar belakang ikon */
-  --border-color: rgba(255, 255, 255, 0.1);  
+  --shadow-color: rgba(0, 0, 0, 0.1);
 
   /* Animations */
   --transition-normal: all 0.3s ease;
   --transition-slow: all 0.5s ease;
+}
+
+body.dark-mode {
+  /* Dark mode overrides */
+  --background-color: #0f0e20;
+  --card-background: rgba(15, 14, 32, 0.8);
+  --card-border: rgba(106, 17, 203, 0.1);
+  --text-primary: #ffffff;
+  --text-secondary: #dddddd;
+  --text-muted: rgba(255, 255, 255, 0.5);
+  --text-color: #fff;
+
+  --footer-background: rgba(15, 14, 32, 0.8);
+  --footer-border: rgba(106, 17, 203, 0.1);
+  --footer-shadow: rgba(0, 0, 0, 0.3);
+
+  --primary-color: #6a11cb; /* Purple for dark mode */
+  --secondary-color: #2575fc;
+  --icon-background: rgba(0, 0, 0, 0.1);
+
+  --shadow-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Reset and base styles */
@@ -96,25 +89,6 @@
   padding: 0;
   box-sizing: border-box;
 }
-
-body.dark-mode {
-    --background-color: #0f0e20;
-    --card-background: rgba(15, 14, 32, 0.8);
-    --text-color: #fff;
-    --card-border: rgba(106, 17, 203, 0.1);
-    --shadow-color: rgba(0, 0, 0, 0.5);
-    
-    --background-color: #0f0e20;
-    --footer-background: rgba(15, 14, 32, 0.8);
-    --text-color: #fff;
-    --footer-border: rgba(106, 17, 203, 0.1);
-    --footer-shadow: rgba(0, 0, 0, 0.3);
-    --text-secondary: #bbb;
-    
-    --primary-color: #6a11cb;
-    --secondary-color: #2575fc;
-  
-    }
 
 body {
   font-family: "Rajdhani", sans-serif;
@@ -155,15 +129,6 @@ ol {
   list-style: none;
 }
 
-/* Common components */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
-
-
 /* Navigation buttons */
 .nav-buttons {
   display: flex;
@@ -177,6 +142,7 @@ ol {
   background: rgba(106, 17, 203, 0.1);
   border: 1px solid rgba(106, 17, 203, 0.2);
   color: var(--text-secondary);
+  font-weight: 500; /* Tambahkan ini */
   padding: 8px 15px;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -190,6 +156,7 @@ ol {
 .nav-button:hover {
   background: rgba(106, 17, 203, 0.2);
   color: var(--text-primary);
+  font-weight: 600; /* Opsional, lebih tebal saat hover */
   transform: translateY(-2px);
   box-shadow: var(--glow-primary);
 }
@@ -701,40 +668,38 @@ ol {
             50% { opacity: 0.5; }
         }
         
-      .protocols {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 1.5rem 0;
-            flex-wrap: wrap;
-        }
-        
-        .protocol {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .protocol-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            font-size: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .protocol-name {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-          
+        .protocols {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.protocol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.protocol-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--icon-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+
+    /* Lingkaran biru tipis */
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
+}
+
         .action-buttons {
             display: flex;
             flex-direction: column;
