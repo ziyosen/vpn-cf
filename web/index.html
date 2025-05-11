@@ -424,7 +424,7 @@ ol {
   display: inline;
 }
 
-/* Floating Donation Button */
+/* Floating Donation Button - Matrix Style */
 .donate-btn {
   position: fixed;
   bottom: 30px;
@@ -432,27 +432,28 @@ ol {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(45deg, #00ff00, #00cc00); /* Neon Green Gradient */
+  background: linear-gradient(135deg, #00ff00, #00cc66);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #000;
   font-size: 1.5rem;
-  box-shadow: 0 5px 20px rgba(0, 255, 0, 0.5); /* Neon glow shadow */
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.7), 0 0 30px rgba(0, 255, 0, 0.5);
   cursor: pointer;
   z-index: 100;
   transition: all 0.3s ease;
-  animation: pulse-donate 2s infinite;
+  animation: pulse-donate-green 2s infinite;
+  text-shadow: 0 0 5px #00ff00;
 }
 
-@keyframes pulse-donate {
+@keyframes pulse-donate-green {
   0% {
-    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.6);
     transform: scale(1);
   }
   70% {
     box-shadow: 0 0 0 15px rgba(0, 255, 0, 0);
-    transform: scale(1.05);
+    transform: scale(1.1);
   }
   100% {
     box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
@@ -461,8 +462,8 @@ ol {
 }
 
 .donate-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 25px rgba(0, 255, 0, 1); /* Enhanced neon glow on hover */
+  transform: scale(1.15);
+  box-shadow: 0 0 20px #00ff00, 0 0 40px #00ff00;
 }
 
 @media (max-width: 768px) {
@@ -471,7 +472,7 @@ ol {
     right: 20px;
     width: 50px;
     height: 50px;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 }
 
@@ -535,8 +536,7 @@ ol {
   }
 }
 
-        /* Page-specific styles - Hacker / Matrix Style */
-body {
+        html, body {
   font-family: "Courier New", monospace;
   background: linear-gradient(135deg, #000000, #0f0c29, #1a1a1a);
   background-attachment: fixed;
@@ -546,7 +546,7 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden; /* Disabling scroll */
   padding: 1rem 0;
   text-shadow: 0 0 2px #00ff00, 0 0 5px #00ff00;
 }
