@@ -397,23 +397,6 @@ button:disabled {
       </div>
     </div>
   </div>
-  <div id="notification" style="
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: rgba(0, 0, 255, 0.4); /* Biru transparan */
-  color: white;
-  padding: 12px 18px;
-  border-radius: 10px;
-  display: none;
-  z-index: 9999;
-  font-family: sans-serif;
-  box-shadow: 0 0 10px #00000088;
-  backdrop-filter: blur(3px);
-  max-width: 90%;
-  word-break: break-all;
-"></div>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -467,44 +450,34 @@ button:disabled {
     }
 
     function copyConfig(tlsType) {
-  const { ip, port, country, isp, protocol } = currentConfigType;
-  const uuid = 'f282b878-8711-45a1-8c69-5564172123c1';
-  const host = 'joss.checker-ip.xyz';
-  const path = `/Geo-Project/${ip}-${port}`;
-  const tag = `${country} - ${isp}`.replace(/ /g, '%20');
+      const { ip, port, country, isp, protocol } = currentConfigType;
+      const uuid = 'f282b878-8711-45a1-8c69-5564172123c1';
+      const host = 'joss.checker-ip.xyz';
+      const path = `/Geo-Project/${ip}-${port}`;
+      const tag = `${country} - ${isp}`.replace(/ /g, '%20');
 
-  let config = '';
-  if (protocol === 'vmess') {
-    const vmessJSON = {
-      v: "2", ps: `${country} - ${isp} [VMess-${tlsType.toUpperCase()}]`,
-      add: host, port: parseInt(port), id: uuid, aid: "0", net: "ws",
-      type: "none", host: host, path: path, tls: tlsType === 'tls' ? "tls" : "none",
-      sni: host, scy: "zero"
-    };
-    config = "vmess://" + btoa(JSON.stringify(vmessJSON));
-  } else if (protocol === 'vless') {
-    config = `vless://${uuid}@${host}:443?encryption=none&security=${tlsType}&type=ws&host=${host}&path=${encodeURIComponent(path)}&sni=${host}#${tag}%20[VLESS-${tlsType.toUpperCase()}]`;
-  } else if (protocol === 'trojan') {
-    config = `trojan://${uuid}@${host}:443?security=${tlsType}&type=ws&host=${host}&path=${encodeURIComponent(path)}&sni=${host}#${tag}%20[Trojan-${tlsType.toUpperCase()}]`;
-  } else if (protocol === 'ss') {
-    config = `ss://bm9uZTpmMjgyYjg3OC04NzExLTQ1YTEtOGM2OS01NTY0MTcyMTIzYzE=@${host}:443?encryption=none&type=ws&host=${host}&path=${encodeURIComponent(path)}&security=${tlsType}&sni=${host}#${tag}%20[SS-${tlsType.toUpperCase()}]`;
-  }
-
-  navigator.clipboard.writeText(config).then(() => {
-    showNotification(`Disalin (${protocol.toUpperCase()}-${tlsType.toUpperCase()}): ${config}`);
-  });
-
-  closeModal('tlsModal');
-}
-
-function showNotification(message) {
-  const notif = document.getElementById('notification');
-  notif.textContent = message;
-  notif.style.display = 'block';
-  setTimeout(() => {
-    notif.style.display = 'none';
-  }, 3000);
-}
+      let config = '';
+      if (protocol === 'vmess') {
+        const vmessJSON = {
+          v: "2", ps: `${country} - ${isp} [VMess-${tlsType.toUpperCase()}]`,
+          add: host, port: parseInt(port), id: uuid, aid: "0", net: "ws",
+          type: "none", host: host, path: path, tls: tlsType === 'tls' ? "tls" : "none",
+          sni: host, scy: "zero"
+        };
+        config = "vmess://" + btoa(JSON.stringify(vmessJSON));
+      } else if (protocol === 'vless') {
+        config = `vless://${uuid}@${host}:443?encryption=none&security=${tlsType}&type=ws&host=${host}&path=${encodeURIComponent(path)}&sni=${host}#${tag}%20[VLESS-${tlsType.toUpperCase()}]`;
+      } else if (protocol === 'trojan') {
+        config = `trojan://${uuid}@${host}:443?security=${tlsType}&type=ws&host=${host}&path=${encodeURIComponent(path)}&sni=${host}#${tag}%20[Trojan-${tlsType.toUpperCase()}]`;
+      } else if (protocol === 'ss') {
+        config = `ss://bm9uZTpmMjgyYjg3OC04NzExLTQ1YTEtOGM2OS01NTY0MTcyMTIzYzE=@${host}:443?encryption=none&type=ws&host=${host}&path=${encodeURIComponent(path)}&security=${tlsType}&sni=${host}#${tag}%20[SS-${tlsType.toUpperCase()}]`;
+      }
+      
+    navigator.clipboard.writeText(config).then(() =>
+        alert(`Disalin (${protocol.toUpperCase()}-${tlsType.toUpperCase()}):\n${config}`)
+      );
+      closeModal('tlsModal');
+    }
 
     async function checkStatus(ip, port, buttonElement) {
   // Menyembunyikan tombol dan menampilkan spinner
