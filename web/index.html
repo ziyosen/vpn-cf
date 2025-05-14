@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GEO - PROJECT | WEB</title>
+
+  <!-- Font & CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Open Graph Meta Tags (Telegram, Facebook, dll) -->
+  <meta property="og:title" content="Desbar Browser - Daftar Proxy Aman & Cepat" />
+  <meta property="og:description" content="Akses berbagai proxy VLESS, VMess, Trojan, dan Shadowsocks dengan mudah dan cepat." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/jaka2m/mau/refs/heads/kepo/a.png" />
+  <meta property="og:url" content="https://joss.checker-ip.xyz/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Desbar Browser - Daftar Proxy Aman & Cepat">
+  <meta name="twitter:description" content="Akses berbagai proxy VLESS, VMess, Trojan, dan Shadowsocks dengan mudah dan cepat.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/jaka2m/mau/refs/heads/kepo/a.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://raw.githubusercontent.com/jaka2m/mau/refs/heads/kepo/G.png" type="image/x-icon" />
+  <style>
+    :root {
+    --primary: #00ff88;
+    --secondary: #00ffff;
+    --accent: #ff00ff;
+    --dark: #080c14;
+    --darker: #040608;
+    --light: #e0ffff;
+    --card-bg: rgba(8, 12, 20, 0.95);
+    --glow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+body {
+    background: var(--darker);
+    color: var(--light);
+    min-height: 85vh;
+    background-image: 
+        radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.1) 0, transparent 50%),
+        radial-gradient(circle at 100% 100%, rgba(0, 255, 255, 0.1) 0, transparent 50%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='86.6' viewBox='0 0 100 86.6'%3E%3Cg fill='%2300ff88' fill-opacity='0.04'%3E%3Cpath d='M50 0l50 28.87v57.73l-50 28.87-50-28.87V28.87L50 0zM50 8.66L8.66 33v38.6L50 95.94l41.34-24.34V33L50 8.66z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 120px auto;
+}
+
+h2 {
+    font-family: "Orbitron", sans-serif;
+    color: #00ff9f;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    background: rgba(10, 10, 10, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(6px);
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 35px;
+}
+
+table.dataTable {
+    background-color: rgba(20, 40, 60, 0.2);
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    color: #e0f7ff;
+}
+
+table.dataTable thead th {
+    background-color: rgba(50, 80, 120, 0.4);
+    color: #aeeeff;
+    text-align: ;
+    padding: 12px;
+    backdrop-filter: blur(5px);
+}
+
+table.dataTable tbody td {
+    background-color: rgba(30, 60, 90, 0.2);
+    color: #eaf6ff;
+    text-align: center;
+    padding: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.status {
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+}
+
+.status.active {
+    color: #00ff66;
+}
+
+.status.inactive {
+    color: #ff4d4d;
+}
+
+.status.error {
+    color: #ffcc00;
+}
+
+.status i {
+    font-size: 24px;
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.delay {
+    font-size: 12px;
+    color: #ccc;
+    text-align: center;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 99;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 10px;
+    animation: slideIn 0.3s ease forwards;
+}
+
+.modal-content.hide {
+    animation: slideOut 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+}
+
+.modal-header {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.config-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.config-buttons button {
+    padding: 8px 16px;
+    background-color: #0ff;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.config-buttons button:hover {
+    background-color: #00e6e6;
+}
+
+.close {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+button {
+    padding: 6px 12px;
+    margin: 4px;
+    border: none;
+    border-radius: 6px;
+    background-color: #00ff9f;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #00e68a;
+}
+
+button:disabled {
+    opacity: 0.6;
+    background-color: #888;
+    cursor: not-allowed;
+}
+
+.swal2-dark.compact-popup {
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.swal2-small-title {
+    font-size: 14px !important;
+}
+
+.quantum-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    perspective: 1000px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .quantum-container {
+        padding: 0.5rem;
+        margin: 0.5rem;
+    }
+
+    .quantum-table {
+        width: 100%;
+        min-width: 800px;
+        border-collapse: separate;
+        border-spacing: 0 8px;
+    }
+
+    .quantum-table th {
+        background: rgba(0, 255, 136, 0.1);
+        color: var(--primary);
+        padding: 1.2rem;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-bottom: 2px solid var(--primary);
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .quantum-table td {
+        padding: 1rem;
+        background: rgba(0, 255, 136, 0.03);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .quantum-table tr {
+        transition: all 0.3s ease;
+    }
+
+    .quantum-table tr:hover td {
+        background: rgba(0, 255, 136, 0.08);
+        transform: scale(1.01);
+        box-shadow: 0 5px 15px rgba(0, 255, 136, 0.1);
+    }
+
+    .check-btn {
+        padding: 6px 12px;
+        background-color: #00ff9f;
+        color: #000;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #00ff9f;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        transform: translate(-50%, -50%);
+        display: none;
+    }
+
+    @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .status {
+        position: relative;
+    }
+
+    .status button.check-btn {
+        display: inline-block;
+    }
+
+    .status .spinner {
+        display: none;
+    }
+}
+
+.delay {
+  font-size: 10px;
+  color: yellow;
+}
+
+  </style>
+</head>
+<body>
+	<div class="quantum-container">
+  <h2>GEO PROJECT</h2>
+  <div class="table-container">
+    <table id="proxyTable" class="display">
+      <thead>
+        <tr>
+          <th>IP PORT</th>
+          <th>COUNTRY</th>
+          <th>ISP</th>
+          <th>STATUS</th>
+          <th>ACTION</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Modal Protokol -->
+  <div id="protocolModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('protocolModal')">&times;</span>
+      <div class="modal-header">Pilih Protokol</div>
+      <div class="config-buttons">
+  <button onclick="selectProtocol('vmess')">VMESS</button>
+  <button onclick="selectProtocol('vless')">VLESS</button>
+  <button onclick="selectProtocol('trojan')">TROJAN</button>
+  <button onclick="selectProtocol('ss')">SHADOW</button>
+</div>
+</div>
+  </div>
+
+  <!-- Modal TLS -->
+  <div id="tlsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('tlsModal')">&times;</span>
+      <div class="modal-header">Pilih TLS / Non-TLS</div>
+      <div class="config-buttons">
+        <button onclick="copyConfig('tls')">Copy TLS</button>
+        <button onclick="copyConfig('nontls')">Copy NTLS</button>
+      </div>
+    </div>
+  </div>
+  <div id="notification" style="
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 255, 0.4); /* Biru transparan */
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  display: none;
+  z-index: 9999;
+  font-family: sans-serif;
+  box-shadow: 0 0 10px #00000088;
+  backdrop-filter: blur(3px);
+  max-width: 90%;
+  word-break: break-all;
+"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script>
+    let currentConfigType = '';
+
+    async function loadProxies() {
+  const url = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/cek/proxyList.txt';
+  const res = await fetch(url);
+  const text = await res.text();
+  const lines = text.trim().split('\n');
+
+  const rows = lines.map(line => {
+    const [ip, port, country, isp] = line.split(',');
+    const countryCode = (country || '').trim().toLowerCase(); // kode negara 2 huruf
+
+    const flagIcon = countryCode
+      ? `<img src="https://flagcdn.com/w40/${countryCode}.png" alt="${country}" style="height: 16px; margin-right: 5px; vertical-align: middle;">`
+      : '';
+
+    return [
+      `${ip}:${port || '-'}`,
+      `${flagIcon} ${country || '-'}`,
+      isp || '-',
+      `<div class="status-block">
+         <div class="status">
+           <button class="check-btn" onclick="checkStatus('${ip}', '${port}', this)">
+             Check
+           </button>
+           <div class="spinner" style="display: none;"></div> <!-- Spinner -->
+         </div>
+       </div>`,
+      `<button class="config-btn" onclick="openProtocolModal('${ip}', '${port}', '${country}', '${isp}')">Config</button>`
+    ];
+  });
+  
+  const table = $('#proxyTable').DataTable();
+  table.clear();
+  table.rows.add(rows).draw();
+}
+
+    function openProtocolModal(ip, port, country, isp) {
+      currentConfigType = { ip, port, country, isp };
+      openModal('protocolModal');
+    }
+
+    function selectProtocol(protocol) {
+      closeModal('protocolModal');
+      currentConfigType.protocol = protocol;
+      openModal('tlsModal');
+    }
+
+    function copyConfig(tlsType) {
+  const { ip, port, country, isp, protocol } = currentConfigType;
+  const uuid = 'f282b878-8711-45a1-8c69-5564172123c1';
+  const host = 'joss.checker-ip.xyz';
+  const path = `/Geo-Project/${ip}-${port}`;
+  const tag = `${country} - ${isp}`.replace(/ /g, '%20');
+
+  let config = '';
+  if (protocol === 'vmess') {
+    const vmessJSON = {
+      v: "2", ps: `${country} - ${isp} [VMess-${tlsType.toUpperCase()}]`,
+      add: host, port: parseInt(port), id: uuid, aid: "0", net: "ws",
+      type: "none", host: host, path: path, tls: tlsType === 'tls' ? "tls" : "none",
+      sni: host, scy: "zero"
+    };
+    config = "vmess://" + btoa(JSON.stringify(vmessJSON));
+  } else if (protocol === 'vless') {
+    config = `vless://${uuid}@${host}:443?encryption=none&security=${tlsType}&type=ws&host=${host}&path=${encodeURIComponent(path)}&sni=${host}#${tag}%20[VLESS-${tlsType.toUpperCase()}]`;
+  } else if (protocol === 'trojan') {
+    config = `trojan://${uuid}@${host}:443?security=${tlsType}&type=ws&host=${host}&path=${encodeURIComponent(path)}&sni=${host}#${tag}%20[Trojan-${tlsType.toUpperCase()}]`;
+  } else if (protocol === 'ss') {
+    config = `ss://bm9uZTpmMjgyYjg3OC04NzExLTQ1YTEtOGM2OS01NTY0MTcyMTIzYzE=@${host}:443?encryption=none&type=ws&host=${host}&path=${encodeURIComponent(path)}&security=${tlsType}&sni=${host}#${tag}%20[SS-${tlsType.toUpperCase()}]`;
+  }
+
+  navigator.clipboard.writeText(config).then(() => {
+    showNotification(`Disalin (${protocol.toUpperCase()}-${tlsType.toUpperCase()}): ${config}`);
+  });
+
+  closeModal('tlsModal');
+}
+
+function showNotification(message) {
+  const notif = document.getElementById('notification');
+  notif.textContent = message;
+  notif.style.display = 'block';
+  setTimeout(() => {
+    notif.style.display = 'none';
+  }, 3000);
+}
+
+    async function checkStatus(ip, port, buttonElement) {
+  // Menyembunyikan tombol dan menampilkan spinner
+  const spinner = buttonElement.nextElementSibling; // Spinner ada setelah tombol
+  buttonElement.style.display = 'none'; // Menyembunyikan tombol
+  spinner.style.display = 'inline-block'; // Menampilkan spinner
+
+  const corsProxy = 'https://cors.checker-ip.web.id/?url=';
+  const url = `${corsProxy}https://api.checker-ip.web.id/check?ip=${ip}:${port}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Gagal ambil data');
+    const data = await response.json();
+
+    const status = data.status === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE';
+    const statusClass = status === 'ACTIVE' ? 'active' : 'inactive';
+    const icon = status === 'ACTIVE'
+      ? '<i class="fas fa-check-circle"></i>'
+      : '<i class="fas fa-times-circle"></i>';
+
+    const delay = data.delay || 0;
+
+    const statusHtml = `<div class="status ${statusClass}">${icon}</div>`;
+const delayHtml = `<span class="delay">(${delay})</span>`;
+const finalHtml = `<div class="status-block">${statusHtml} ${delayHtml}</div>`;
+
+    $(buttonElement).closest('tr').find('.status-block').replaceWith(finalHtml);
+    $(buttonElement).prop('disabled', true);
+  } catch (error) {
+    console.error(error);
+    const errorHtml = `<div class="status-block"><div class="status error"><i class="fas fa-exclamation-circle"></i> DEAD</div></div>`;
+    $(buttonElement).closest('tr').find('.status-block').replaceWith(errorHtml);
+    $(buttonElement).prop('disabled', true);
+  } finally {
+    // Menghilangkan spinner setelah proses selesai
+    spinner.style.display = 'none';
+  }
+}
+
+    function openModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    window.onclick = function (event) {
+      ['protocolModal', 'tlsModal'].forEach(id => {
+        const modal = document.getElementById(id);
+        if (event.target === modal) closeModal(id);
+      });
+    }
+
+    $(document).ready(function () {
+      $('#proxyTable').DataTable();
+      loadProxies();
+    });
+  </script>
+  <script>
+  	function openModal(id) {
+  document.getElementById(id).classList.add('show');
+}
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  const content = modal.querySelector('.modal-content');
+  content.classList.add('hide');
+  setTimeout(() => {
+    modal.classList.remove('show');
+    content.classList.remove('hide');
+  }, 300);
+}
+  </script>
+</body>
+</html>
