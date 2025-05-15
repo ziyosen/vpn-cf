@@ -6,12 +6,20 @@ workers_dev = true
 
 routes = [
   { pattern = "joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "business.blibli.com.joss.checker-ip.xyz", custom_domain = true },
   { pattern = "ava.game.naver.com.joss.checker-ip.xyz", custom_domain = true },
-  { pattern = "df.game.naver.com.joss.checker-ip.xyz", custom_domain = true },
   { pattern = "graph.instagram.com.joss.checker-ip.xyz", custom_domain = true },
-  { pattern = "zaintest.vuclip.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "quiz.int.vidio.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "live.iflix.com.joss.checker-ip.xyz", custom_domain = true },
   { pattern = "support.zoom.us.joss.checker-ip.xyz", custom_domain = true },
-  { pattern = "cache.netflix.com.joss.checker-ip.xyz", custom_domain = true }
+  { pattern = "blog.webex.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "investors.spotify.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "cache.netflix.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "zaintest.vuclip.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "io.ruangguru.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "api.midtrans.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "investor.fb.com.joss.checker-ip.xyz", custom_domain = true },
+  { pattern = "bakrie.ac.id.joss.checker-ip.xyz", custom_domain = true }
 ]
 
 [[kv_namespaces]]
