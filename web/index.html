@@ -45,7 +45,7 @@
 }
 
 body {
-  background: url('https://raw.githubusercontent.com/jaka2m/mau/refs/heads/kepo/backround.jpg') no-repeat center center fixed;
+  background: url('https://raw.githubusercontent.com/jaka2m/mau/refs/heads/kepo/backround.png') no-repeat center center fixed;
   background-size: cover;
   justify-content: center;
   align-items: center;
@@ -427,8 +427,6 @@ button:disabled {
   border-top: 4px solid #00ff9f;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 12px #00ff9f88;
 }
 
 @keyframes spin {
@@ -472,78 +470,123 @@ button:disabled {
   animation: pulse 1s infinite;
 }
 
+#bugSelect {
+  background-color: #2b2b3d;
+  border: 1px solid #555;
+  color: #fff;
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+#bugSelect option {
+  background-color: #2b2b3d;
+  color: #fff;
+}
   </style>
 </head>
 <body>  
-	<footer class="footer">
+  <footer class="footer">
     <h1>&copy; 2025 FREE VPN CF</h1>
   </footer>
-	<div class="quantum-container">
-  <h2>GEO PROJECT</h2>
-  <div class="table-container">
-    <table id="proxyTable" class="display">
-      <thead>
-        <tr>
-          <th>IP PORT</th>
-          <th>STATUS</th>
-          <th>COUNTRY</th>
-          <th>ISP</th>
-          <th>ACTION</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  <br>
 
-  <!-- Modal Protokol -->
-  <div id="protocolModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('protocolModal')">&times;</span>
-      <div class="modal-header">Pilih Protokol</div>
-      <div class="config-buttons">
-  <button onclick="selectProtocol('vmess')">VMESS</button>
-  <button onclick="selectProtocol('vless')">VLESS</button>
-  <button onclick="selectProtocol('trojan')">TROJAN</button>
-  <button onclick="selectProtocol('ss')">SHADOW</button>
-</div>
-</div>
-  </div>
+  <div class="quantum-container">
+    <h2>GEO PROJECT</h2>
 
-  <!-- Modal TLS -->
-  <div id="tlsModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('tlsModal')">&times;</span>
-      <div class="modal-header">Pilih TLS / Non-TLS</div>
-      <div class="config-buttons">
-        <button onclick="copyConfig('tls')">Copy TLS</button>
-        <button onclick="copyConfig('nontls')">Copy NTLS</button>
+    <div class="table-container">
+      <table id="proxyTable" class="display">
+        <thead>
+          <tr>
+            <th>IP PORT</th>
+            <th>STATUS</th>
+            <th>COUNTRY</th>
+            <th>ISP</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <br>
+
+    <!-- Modal Protokol -->
+    <div id="protocolModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('protocolModal')">&times;</span>
+        <div class="modal-header">Pilih Protokol</div>
+        <div class="config-buttons">
+          <button onclick="selectProtocol('vmess')">VMESS</button>
+          <button onclick="selectProtocol('vless')">VLESS</button>
+          <button onclick="selectProtocol('trojan')">TROJAN</button>
+          <button onclick="selectProtocol('ss')">SHADOW</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal TLS dan Bug -->
+    <div id="tlsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('tlsModal')">&times;</span>
+        <div class="modal-header">Pilih TLS / Non-TLS & Bug Mode</div>
+
+        <div style="margin-bottom: 10px;">
+          <strong>Pilih Mode:</strong><br>
+          <label><input type="radio" name="bugMode" value="biasa" checked> No Wildcard</label><br>
+          <label><input type="radio" name="bugMode" value="wildcard"> Wildcard</label>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <strong>Pilih Bug Domain:</strong><br>
+          <select id="bugSelect" style="width: 100%; padding: 5px;">
+              <option value="business.blibli.com">business.blibli.com</option>
+                    <option value="ava.game.naver.com">ava.game.naver.com</option>
+                    <option value="graph.instagram.com">graph.instagram.com</option>
+                    <option value="quiz.int.vidio.com">quiz.int.vidio.com</option>
+                    <option value="live.iflix.com">live.iflix.com</option>
+                    <option value="support.zoom.us">support.zoom.us</option>
+                    <option value="blog.webex.com">blog.webex.com</option>
+                    <option value="investors.spotify.com">investors.spotify.com</option>
+                    <option value="cache.netflix.com">cache.netflix.com</option>
+                    <option value="zaintest.vuclip.com">zaintest.vuclip.com</option>
+                    <option value="ads.ruangguru.com">io.ruangguru.com</option>
+                    <option value="api.midtrans.com">api.midtrans.com</option>
+                    <option value="investor.fb.com">investor.fb.com</option>
+                    <option value="bakrie.ac.id">bakrie.ac.id</option>
+          </select>
+        </div>
+
+        <div class="config-buttons">
+          <button onclick="copyConfig('tls')">Copy TLS</button>
+          <button onclick="copyConfig('nontls')">Copy NTLS</button>
+        </div>
       </div>
     </div>
   </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script>
     let currentConfigType = {};
 
     async function loadProxies() {
-  const url = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/cek/proxyList.txt';
-  const res = await fetch(url);
-  const text = await res.text();
-  const lines = text.trim().split('\n');
+      const url = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/cek/proxyList.txt';
+      const res = await fetch(url);
+      const text = await res.text();
+      const lines = text.trim().split('\n');
 
-  const rows = lines.map(line => {
-    const [ip, port, country, isp] = line.split(',');
-    const flag = country ? `<img src="https://flagcdn.com/w40/${country.trim().toLowerCase()}.png" style="height:16px; margin-right:5px;">` : '';
-    return [
-      `${ip}:${port}`,
-      `<div class="status-block" data-checked="false"><div class="spinner"></div></div>`,
-      `${flag} ${country || '-'}`,
-      isp || '-',
-      `<button class="config-btn" onclick="openProtocolModal('${ip}', '${port}', '${country}', '${isp}')">Config</button>`
-    ];
-  });
+      const rows = lines.map(line => {
+        const [ip, port, country, isp] = line.split(',');
+        const flag = country ? `<img src="https://flagcdn.com/w40/${country.trim().toLowerCase()}.png" style="height:16px; margin-right:5px;">` : '';
+        return [
+          `${ip}:${port}`,
+          `<div class="status-block" data-checked="false"><div class="spinner"></div></div>`,
+          `${flag} ${country || '-'}`,
+          isp || '-',
+          `<button class="config-btn" onclick="openProtocolModal('${ip}', '${port}', '${country}', '${isp}')">Config</button>`
+        ];
+      });
 
       const table = $('#proxyTable').DataTable();
       table.clear().rows.add(rows).draw();
@@ -563,25 +606,63 @@ button:disabled {
     function copyConfig(tlsType) {
       const { ip, port, country, isp, protocol } = currentConfigType;
       const uuid = 'f282b878-8711-45a1-8c69-5564172123c1';
-      const host = 'joss.checker-ip.xyz';
+      const baseDomain = 'joss.checker-ip.xyz';
+
+      // Ambil mode bug dan bug domain
+      const bugMode = document.querySelector('input[name="bugMode"]:checked').value;
+      const selectedBug = document.getElementById('bugSelect').value;
+
+      let host, sni;
+      if (bugMode === 'wildcard') {
+        host = `${selectedBug}.${baseDomain}.${baseDomain}`;
+        sni = host;
+      } else {
+        host = baseDomain;
+        sni = baseDomain;
+      }
+
+      const standardPort = tlsType === 'tls' ? 443 : 80;
+      const displayPort = standardPort;
       const path = `/Geo-Project/${ip}-${port}`;
+
       const tag = `${country} - ${isp}`.replace(/ /g, '%20');
+      const tlsLabel = tlsType === 'tls' ? 'TLS' : 'NTLS';
+      const tlsValue = tlsType === 'tls' ? 'tls' : 'none';
 
       let config = '';
-      if (protocol === 'vmess') {
-        const vmessJSON = {
-          v: "2", ps: `${country} - ${isp} [VMess-${tlsType.toUpperCase()}]`,
-          add: host, port: parseInt(port), id: uuid, aid: "0", net: "ws",
-          type: "none", host: host, path: path, tls: tlsType === 'tls' ? "tls" : "none",
-          sni: host, scy: "zero"
-        };
-        config = "vmess://" + btoa(JSON.stringify(vmessJSON));
-      } else if (protocol === 'vless') {
-        config = `vless://${uuid}@${host}:443?encryption=none&security=${tlsType}&type=ws&host=${host}&path=${encodeURIComponent(path)}&sni=${host}#${tag}%20[VLESS-${tlsType.toUpperCase()}]`;
-      } else if (protocol === 'trojan') {
-        config = `trojan://${uuid}@${host}:443?security=${tlsType}&type=ws&host=${host}&path=${encodeURIComponent(path)}&sni=${host}#${tag}%20[Trojan-${tlsType.toUpperCase()}]`;
-      } else if (protocol === 'ss') {
-        config = `ss://bm9uZTpmMjgyYjg3OC04NzExLTQ1YTEtOGM2OS01NTY0MTcyMTIzYzE=@${host}:443?encryption=none&type=ws&host=${host}&path=${encodeURIComponent(path)}&security=${tlsType}&sni=${host}#${tag}%20[SS-${tlsType.toUpperCase()}]`;
+
+      switch (protocol) {
+        case 'vmess':
+          const vmessJSON = {
+            v: "2",
+            ps: `${country} - ${isp} [VMess-${tlsLabel}]`,
+            add: host,
+            port: displayPort,
+            id: uuid,
+            aid: "0",
+            net: "ws",
+            type: "none",
+            host: host,
+            path: path,
+            tls: tlsValue,
+            sni: sni,
+            scy: "zero"
+          };
+          config = "vmess://" + btoa(JSON.stringify(vmessJSON));
+          break;
+
+        case 'vless':
+          config = `vless://${uuid}@${host}:${displayPort}?encryption=none&security=${tlsValue}&type=ws&host=${encodeURIComponent(host)}&path=${encodeURIComponent(path)}&sni=${encodeURIComponent(sni)}#${tag}%20[VLESS-${tlsLabel}]`;
+          break;
+
+        case 'trojan':
+          config = `trojan://${uuid}@${host}:${displayPort}?security=${tlsValue}&type=ws&host=${encodeURIComponent(host)}&path=${encodeURIComponent(path)}&sni=${encodeURIComponent(sni)}#${tag}%20[Trojan-${tlsLabel}]`;
+          break;
+
+        case 'ss':
+          const ssBase64 = btoa(`none:${uuid}`);
+          config = `ss://${ssBase64}@${host}:${displayPort}?encryption=none&type=ws&host=${encodeURIComponent(host)}&path=${encodeURIComponent(path)}&security=${tlsValue}&sni=${encodeURIComponent(sni)}#${tag}%20[SS-${tlsLabel}]`;
+          break;
       }
 
       navigator.clipboard.writeText(config).then(() => {
@@ -623,20 +704,20 @@ button:disabled {
     }
 
     function checkVisibleRows() {
-  const table = $('#proxyTable').DataTable();
-  table.rows({ page: 'current' }).every(function () {
-    const row = $(this.node());
-    const ipPort = row.find('td').eq(0).text().split(':');
-    const ip = ipPort[0], port = ipPort[1];
-    const statusCell = row.find('.status-block');
+      const table = $('#proxyTable').DataTable();
+      table.rows({ page: 'current' }).every(function () {
+        const row = $(this.node());
+        const ipPort = row.find('td').eq(0).text().split(':');
+        const ip = ipPort[0], port = ipPort[1];
+        const statusCell = row.find('.status-block');
 
-    if (!statusCell.data('checked')) {
-      statusCell.html('<div class="spinner"></div>');
-      checkStatus(ip, port, statusCell[0]);
-      statusCell.data('checked', true);
+        if (!statusCell.data('checked')) {
+          statusCell.html('<div class="spinner"></div>');
+          checkStatus(ip, port, statusCell[0]);
+          statusCell.data('checked', true);
+        }
+      });
     }
-  });
-}
 
     function openModal(id) {
       document.getElementById(id).classList.add('show');
