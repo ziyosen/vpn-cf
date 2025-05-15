@@ -45,32 +45,106 @@
 }
 
 body {
-    background: var(--darker);
-    color: var(--light);
-    min-height: 85vh;
-    background-image: 
-        radial-gradient(circle at 0% 0%, rgba(0, 255, 136, 0.1) 0, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(0, 255, 255, 0.1) 0, transparent 50%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='86.6' viewBox='0 0 100 86.6'%3E%3Cg fill='%2300ff88' fill-opacity='0.04'%3E%3Cpath d='M50 0l50 28.87v57.73l-50 28.87-50-28.87V28.87L50 0zM50 8.66L8.66 33v38.6L50 95.94l41.34-24.34V33L50 8.66z'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: 120px auto;
+  background: url('https://raw.githubusercontent.com/bitzblack/ip/refs/heads/main/shubham-dhage-5LQ_h5cXB6U-unsplash.jpg') no-repeat center center fixed;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  background-size: 300% 300%; /* Untuk animasi gradient */
+  color: #fff; /* Teks putih agar kontras */
+  margin: 0;
+  font-family: Arial, sans-serif; /* Font sederhana dan bersih */
+  animation: rainbowBackground 10s infinite; /* Animasi bergerak */
+}
+
+/* Animasi untuk background */
+@keyframes rainbowBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes moveColors {
+  100% {
+    background-position: -200%; /* Mulai dari luar kiri */
+  }
+  0% {
+    background-position: 200%; /* Bergerak ke kanan */
+  }
 }
 
 h2 {
     font-family: "Orbitron", sans-serif;
-    color: #00ff9f;
+    color: #00ff00;
     text-align: center;
     margin: 0;
     padding: 20px;
-    background: rgba(10, 10, 10, 0.2);
     position: sticky;
     top: 0;
     z-index: 1000;
-    backdrop-filter: blur(6px);
+    text-shadow: 
+                0 0 5px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8),
+                0 0 30px rgba(0, 123, 255, 0.8),
+                0 0 40px rgba(0, 123, 255, 0.8);
+    
+         background: linear-gradient(45deg, var(--primary), var(--secondary), var(--dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px #000;
+        position: relative;
+        animation: titlePulse 3s ease-in-out infinite;
 }
 
+h1 {
+      font-family: "Orbitron", sans-serif;
+      padding-top: 10px;
+      margin-top: 10px;
+      color: black;
+            text-align: center;
+            font-size: 5vw;
+            font-weight: bold;
+            text-shadow: 
+                0 0 5px rgba(0, 123, 255, 0.8),
+                0 0 10px rgba(0, 123, 255, 0.8),
+                0 0 20px rgba(0, 123, 255, 0.8),
+                0 0 30px rgba(0, 123, 255, 0.8),
+                0 0 40px rgba(0, 123, 255, 0.8);
+    
+         background: linear-gradient(45deg, var(--primary), var(--secondary), var(--dark));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px #000;
+        position: relative;
+        animation: titlePulse 3s ease-in-out infinite;
+    }
+
+      footer {
+      box-sizing: border-box;
+      background-color: ;
+      color: white;
+      text-align: center;
+      border-radius: 10px;
+      padding: 0 20px;
+      position: fixed;
+      width: 100%;
+      left: 0;
+      right: 2px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    footer {
+      bottom: 0;
+    }
+    
 .table-container {
-    overflow-x: auto;
-    margin-bottom: 35px;
+  background: linear-gradient(135deg, rgba(220, 20, 60, 0.25), rgba(128, 0, 0, 0.25)); /* merah ke maroon */
+  border-radius: 16px;
+  overflow-x: auto;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 table.dataTable {
@@ -145,24 +219,35 @@ table.dataTable tbody td {
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
+    
 }
 
 .modal.show {
     display: flex;
+    
 }
 
 .modal-content {
-    background-color: #222;
-    color: white;
-    padding: 20px;
-    width: 90%;
-    max-width: 400px;
-    border-radius: 10px;
-    animation: slideIn 0.3s ease forwards;
+  background: rgba(255, 255, 255, 0.05); /* transparan */
+  color: #ffffff;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 16px;
+
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideIn 0.3s ease forwards;
+  transition: all 0.3s ease;
 }
 
 .modal-content.hide {
-    animation: slideOut 0.3s ease forwards;
+  animation: slideOut 0.3s ease forwards;
 }
 
 @keyframes slideIn {
@@ -189,30 +274,47 @@ table.dataTable tbody td {
 
 .modal-header {
     font-size: 18px;
-    margin-bottom: 10px;
+  margin-bottom: 10px;
+  color: #00ffff;
+  font-weight: bold;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 8px;
 }
 
 .config-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.05); /* semi transparan */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 15px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .config-buttons button {
-    padding: 8px 16px;
-    background-color: #0ff;
-    color: #000;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+  padding: 8px 16px;
+  background: rgba(0, 255, 255, 0.15); /* transparan glassy */
+  color: #00ffff;
+  border: 1px solid rgba(0, 255, 255, 0.4);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 255, 255, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .config-buttons button:hover {
-    background-color: #00e6e6;
+  background: rgba(0, 255, 255, 0.25);
+  box-shadow: 0 6px 24px rgba(0, 255, 255, 0.35);
 }
 
 .close {
@@ -221,7 +323,7 @@ table.dataTable tbody td {
     cursor: pointer;
 }
 
-button {
+    button {
     padding: 6px 12px;
     margin: 4px;
     border: none;
@@ -315,24 +417,24 @@ button:disabled {
         font-size: 14px;
     }
 
-    .spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 30px;
-        height: 30px;
-        border: 5px solid #f3f3f3;
-        border-top: 5px solid #00ff9f;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        transform: translate(-50%, -50%);
-        display: none;
-    }
+  .spinner {
+  display: inline-block;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #00ff9f;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 12px #00ff9f88;
+}
 
-    @keyframes spin {
-        0% { transform: translate(-50%, -50%) rotate(0deg); }
-        100% { transform: translate(-50%, -50%) rotate(360deg); }
-    }
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
 
     .status {
         position: relative;
@@ -352,9 +454,30 @@ button:disabled {
   color: yellow;
 }
 
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px lime);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 15px lime);
+  }
+}
+
+.status.active {
+  color: #00ff00; /* Hijau terang */
+  animation: pulse 1s infinite;
+}
+
   </style>
 </head>
-<body>
+<body>  
+	<footer class="footer">
+    <h1>&copy; 2025 FREE VPN CF</h1>
+  </footer>
 	<div class="quantum-container">
   <h2>GEO PROJECT</h2>
   <div class="table-container">
@@ -362,15 +485,16 @@ button:disabled {
       <thead>
         <tr>
           <th>IP PORT</th>
+          <th>STATUS</th>
           <th>COUNTRY</th>
           <th>ISP</th>
-          <th>STATUS</th>
           <th>ACTION</th>
         </tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
+  <br>
 
   <!-- Modal Protokol -->
   <div id="protocolModal" class="modal">
@@ -401,7 +525,7 @@ button:disabled {
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script>
-    let currentConfigType = '';
+    let currentConfigType = {};
 
     async function loadProxies() {
   const url = 'https://raw.githubusercontent.com/jaka2m/botak/refs/heads/main/cek/proxyList.txt';
@@ -411,32 +535,19 @@ button:disabled {
 
   const rows = lines.map(line => {
     const [ip, port, country, isp] = line.split(',');
-    const countryCode = (country || '').trim().toLowerCase(); // kode negara 2 huruf
-
-    const flagIcon = countryCode
-      ? `<img src="https://flagcdn.com/w40/${countryCode}.png" alt="${country}" style="height: 16px; margin-right: 5px; vertical-align: middle;">`
-      : '';
-
+    const flag = country ? `<img src="https://flagcdn.com/w40/${country.trim().toLowerCase()}.png" style="height:16px; margin-right:5px;">` : '';
     return [
-      `${ip}:${port || '-'}`,
-      `${flagIcon} ${country || '-'}`,
+      `${ip}:${port}`,
+      `<div class="status-block" data-checked="false"><div class="spinner"></div></div>`,
+      `${flag} ${country || '-'}`,
       isp || '-',
-      `<div class="status-block">
-         <div class="status">
-           <button class="check-btn" onclick="checkStatus('${ip}', '${port}', this)">
-             Check
-           </button>
-           <div class="spinner" style="display: none;"></div> <!-- Spinner -->
-         </div>
-       </div>`,
       `<button class="config-btn" onclick="openProtocolModal('${ip}', '${port}', '${country}', '${isp}')">Config</button>`
     ];
   });
-  
-  const table = $('#proxyTable').DataTable();
-  table.clear();
-  table.rows.add(rows).draw();
-}
+
+      const table = $('#proxyTable').DataTable();
+      table.clear().rows.add(rows).draw();
+    }
 
     function openProtocolModal(ip, port, country, isp) {
       currentConfigType = { ip, port, country, isp };
@@ -472,86 +583,91 @@ button:disabled {
       } else if (protocol === 'ss') {
         config = `ss://bm9uZTpmMjgyYjg3OC04NzExLTQ1YTEtOGM2OS01NTY0MTcyMTIzYzE=@${host}:443?encryption=none&type=ws&host=${host}&path=${encodeURIComponent(path)}&security=${tlsType}&sni=${host}#${tag}%20[SS-${tlsType.toUpperCase()}]`;
       }
-      
-    navigator.clipboard.writeText(config).then(() =>
-        alert(`Disalin (${protocol.toUpperCase()}-${tlsType.toUpperCase()}):\n${config}`)
-      );
+
+      navigator.clipboard.writeText(config).then(() => {
+        Swal.fire({
+          icon: 'success',
+          background: 'rgba(0, 255, 255, 0.15)',
+          color: 'white',
+          title: 'Copied!',
+          html: `<textarea style="width:100%;height:150px;padding:10px;font-size:14px;background:rgba(0,0,0,0.4);color:#00ff9f;border:1px solid #00ff9f;border-radius:8px;" readonly>${config}</textarea>`,
+          width: 270,
+          confirmButtonText: 'Oke'
+        });
+      }).catch(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal Menyalin',
+          text: 'Terjadi kesalahan saat menyalin konfigurasi.'
+        });
+      });
+
       closeModal('tlsModal');
     }
 
-    async function checkStatus(ip, port, buttonElement) {
-  // Menyembunyikan tombol dan menampilkan spinner
-  const spinner = buttonElement.nextElementSibling; // Spinner ada setelah tombol
-  buttonElement.style.display = 'none'; // Menyembunyikan tombol
-  spinner.style.display = 'inline-block'; // Menampilkan spinner
+    async function checkStatus(ip, port, container) {
+      const corsProxy = 'https://cors.checker-ip.web.id/?url=';
+      const url = `${corsProxy}https://api.checker-ip.web.id/check?ip=${ip}:${port}`;
 
-  const corsProxy = 'https://cors.checker-ip.web.id/?url=';
-  const url = `${corsProxy}https://api.checker-ip.web.id/check?ip=${ip}:${port}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error();
+        const data = await response.json();
+        const status = data.status === 'ACTIVE' ? 'active' : 'inactive';
+        const icon = status === 'active' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-times-circle"></i>';
+        const delay = data.delay || 0;
+        container.innerHTML = `<div class="status ${status}">${icon}</div><span class="delay">(${delay})</span>`;
+      } catch {
+        container.innerHTML = `<div class="status error"><i class="fas fa-exclamation-circle"></i> DEAD</div>`;
+      }
+    }
 
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error('Gagal ambil data');
-    const data = await response.json();
+    function checkVisibleRows() {
+  const table = $('#proxyTable').DataTable();
+  table.rows({ page: 'current' }).every(function () {
+    const row = $(this.node());
+    const ipPort = row.find('td').eq(0).text().split(':');
+    const ip = ipPort[0], port = ipPort[1];
+    const statusCell = row.find('.status-block');
 
-    const status = data.status === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE';
-    const statusClass = status === 'ACTIVE' ? 'active' : 'inactive';
-    const icon = status === 'ACTIVE'
-      ? '<i class="fas fa-check-circle"></i>'
-      : '<i class="fas fa-times-circle"></i>';
-
-    const delay = data.delay || 0;
-
-    const statusHtml = `<div class="status ${statusClass}">${icon}</div>`;
-const delayHtml = `<span class="delay">(${delay})</span>`;
-const finalHtml = `<div class="status-block">${statusHtml} ${delayHtml}</div>`;
-
-    $(buttonElement).closest('tr').find('.status-block').replaceWith(finalHtml);
-    $(buttonElement).prop('disabled', true);
-  } catch (error) {
-    console.error(error);
-    const errorHtml = `<div class="status-block"><div class="status error"><i class="fas fa-exclamation-circle"></i> DEAD</div></div>`;
-    $(buttonElement).closest('tr').find('.status-block').replaceWith(errorHtml);
-    $(buttonElement).prop('disabled', true);
-  } finally {
-    // Menghilangkan spinner setelah proses selesai
-    spinner.style.display = 'none';
-  }
+    if (!statusCell.data('checked')) {
+      statusCell.html('<div class="spinner"></div>');
+      checkStatus(ip, port, statusCell[0]);
+      statusCell.data('checked', true);
+    }
+  });
 }
 
     function openModal(id) {
-      document.getElementById(id).style.display = "block";
+      document.getElementById(id).classList.add('show');
     }
 
     function closeModal(id) {
-      document.getElementById(id).style.display = "none";
+      const modal = document.getElementById(id);
+      const content = modal.querySelector('.modal-content');
+      content.classList.add('hide');
+      setTimeout(() => {
+        modal.classList.remove('show');
+        content.classList.remove('hide');
+      }, 300);
     }
 
-    window.onclick = function (event) {
+    window.onclick = function (e) {
       ['protocolModal', 'tlsModal'].forEach(id => {
         const modal = document.getElementById(id);
-        if (event.target === modal) closeModal(id);
+        if (e.target === modal) closeModal(id);
       });
     }
 
     $(document).ready(function () {
-      $('#proxyTable').DataTable();
-      loadProxies();
-    });
-  </script>
-  <script>
-  	function openModal(id) {
-  document.getElementById(id).classList.add('show');
-}
+      $('#proxyTable').DataTable({
+        drawCallback: function () {
+          checkVisibleRows();
+        }
+      });
 
-function closeModal(id) {
-  const modal = document.getElementById(id);
-  const content = modal.querySelector('.modal-content');
-  content.classList.add('hide');
-  setTimeout(() => {
-    modal.classList.remove('show');
-    content.classList.remove('hide');
-  }, 300);
-}
+      loadProxies().then(() => checkVisibleRows());
+    });
   </script>
 </body>
 </html>
