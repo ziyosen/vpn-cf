@@ -5,21 +5,21 @@ minify = true
 workers_dev = true
 
 routes = [
-  { pattern = "project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "business.blibli.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "ava.game.naver.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "graph.instagram.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "quiz.int.vidio.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "live.iflix.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "support.zoom.us.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "blog.webex.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "investors.spotify.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "cache.netflix.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "zaintest.vuclip.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "io.ruangguru.com.joss.checker-ip.xyz", custom_domain = true },
-  { pattern = "api.midtrans.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "investor.fb.com.project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "bakrie.ac.id.project-vpn.benxx.dpdns.org", custom_domain = true }
+  { pattern = "benxx.dpdns.org", custom_domain = true },
+  { pattern = "business.blibli.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "ava.game.naver.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "graph.instagram.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "quiz.int.vidio.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "live.iflix.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "support.zoom.us.benxx.dpdns.org", custom_domain = true },
+  { pattern = "blog.webex.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "investors.spotify.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "cache.netflix.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "zaintest.vuclip.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "io.ruangguru.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "api.midtrans.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "investor.fb.com.benxx.dpdns.org", custom_domain = true },
+  { pattern = "bakrie.ac.id.benxx.dpdns.org", custom_domain = true }
 ]
 
 [[kv_namespaces]]
