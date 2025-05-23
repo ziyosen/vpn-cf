@@ -3521,7 +3521,7 @@ async function selectProxy(proxyIndex) {
 
   // Format path untuk berbagai protokol
   const proxyDetails = selectedProxy.country + " - " + selectedProxy.provider;
-  const proxyPath = "/Benxx-Project/{ip}-{port}".replace("{ip}", selectedProxy.ip).replace("{port}", selectedProxy.port);
+  const proxyPath = "/Geo-Project/{ip}-{port}".replace("{ip}", selectedProxy.ip).replace("{port}", selectedProxy.port);
   
   // Isi nilai path ke elemen input
   document.getElementById('vmess-path').value = proxyPath;
