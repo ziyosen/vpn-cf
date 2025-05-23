@@ -18,7 +18,7 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>
-   GEO - PROJECT
+   BENXX - PROJECT
   </title>
   <script src="https://cdn.tailwindcss.com">
   </script>
@@ -1208,7 +1208,7 @@ body::before {
       <div class="tech-detail tech-detail-3"></div>
 
       <div class="title-container">
-        <h1 class="title">GEO - PROJECT</h1>
+        <h1 class="title">BENXX - PROJECT</h1>
         <p class="subtitle">Advanced V2ray Generator</p>
       </div>
 
@@ -1315,7 +1315,7 @@ body::before {
         <button id="close-donation" class="close-donation">
           <i class="fas fa-times"></i>
         </button>
-        <h3 class="donation-title">Support Geo-Project</h3>
+        <h3 class="donation-title">Support Benxx-Project</h3>
         <p class="donation-text">Your donation helps keep our services running</p>
         <div class="qris-container">
           <!-- Inner animated border -->
@@ -1323,7 +1323,7 @@ body::before {
             <div class="qris-border-animation"></div>
           </div>
           <div class="qris-image-container">
-            <img src="https://raw.githubusercontent.com/jaka2m/vpn-cf/refs/heads/master/web/qris.png" alt="Donation QR Code" class="qris-image">
+            <img src="https://trakteer.id/ziyosen/tip" alt="Donation QR Code" class="qris-image">
           </div>
         </div>
         <p class="donation-small-text">Scan this QR code with your payment app to donate</p>
