@@ -40,4 +40,4 @@ MAIN_PAGE_URL = "https://raw.githubusercontent.com/ziyosen/vpn-cf/refs/heads/mas
 SUB_PAGE_URL  = "https://raw.githubusercontent.com/ziyosen/vpn-cf/refs/heads/master/web/sub.html"
 LINK_PAGE_URL = "https://raw.githubusercontent.com/ziyosen/vpn-cf/refs/heads/master/web/link.html"
 CONVERTER_PAGE_URL = "https://raw.githubusercontent.com/ziyosen/vpn-cf/refs/heads/master/web/converter.html"
-CHECKER_PAGE_URL = "https://raw.githubusercontent.com/ziyosen/vpn-cf/refs/heads/master/web/checker.html"
+VLESS_TROJAN_PAGE_URL = "https://raw.githubusercontent.com/ziyosen/vpn-cf/refs/heads/master/web/checker.html"
