@@ -1318,7 +1318,7 @@ body::before {
             <div class="qris-border-animation"></div>
           </div>
           <div class="qris-image-container">
-            <img src="https://trakteer.id/ziyosen/tip" alt="Donation QR Code" class="qris-image">
+            <img src="https://raw.githubusercontent.com/ziyosen/vpn-cf/refs/heads/master/web/qris.png" alt="Donation QR Code" class="qris-image">
           </div>
         </div>
         <p class="donation-small-text">Scan this QR code with your payment app to donate</p>
