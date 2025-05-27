@@ -1416,6 +1416,10 @@ showText();
   });
 });
 
+<audio controls>
+  <source src="ziyosen/vpn-cf/refs/heads/master/music.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
  </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
