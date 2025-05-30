@@ -7,6 +7,7 @@ workers_dev = true
 routes = [
   { pattern = "benxx.dpdns.org", custom_domain = true },
   { pattern = "project-vpn.benxx.dpdns.org", custom_domain = true },
+  { pattern = "quiz.vidio.com.cdn.cloudflare.net.benxx.dpdns.org", custom_domain = true }
   { pattern = "www.project-vpn.benxx.dpdns.org", custom_domain = true },
   { pattern = "business.blibli.com.benxx.dpdns.org", custom_domain = true },
   { pattern = "ava.game.naver.com.benxx.dpdns.org", custom_domain = true },
@@ -21,7 +22,7 @@ routes = [
   { pattern = "io.ruangguru.com.benxx.dpdns.org", custom_domain = true },
   { pattern = "api.midtrans.com.benxx.dpdns.org", custom_domain = true },
   { pattern = "investor.fb.com.benxx.dpdns.org", custom_domain = true },
-  { pattern = "quiz.vidio.com.cdn.cloudflare.net.benxx.dpdns.org", custom_domain = true }
+  { pattern = "bakrie.ac.id.benxx.dpdns.org", custom_domain = true }
 ]
 
 [[kv_namespaces]]
