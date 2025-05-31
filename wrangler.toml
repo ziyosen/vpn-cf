@@ -7,7 +7,7 @@ workers_dev = true
 routes = [
   { pattern = "benxx.dpdns.org", custom_domain = true },
   { pattern = "project-vpn.benxx.dpdns.org", custom_domain = true },
-  { pattern = "quiz.vidio.com.cdn.cloudflare.net.benxx.dpdns.org", custom_domain = true },
+  { pattern = "ava.game.naver.com.benxx.dpdns.org", custom_domain = true },
   { pattern = "www.project-vpn.benxx.dpdns.org", custom_domain = true },
   { pattern = "business.blibli.com.benxx.dpdns.org", custom_domain = true },
   { pattern = "ava.game.naver.com.benxx.dpdns.org", custom_domain = true },
